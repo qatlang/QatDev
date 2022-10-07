@@ -1,37 +1,38 @@
 .lavaCover {
-    height: 70vmin;
-    pointer-events: none;
-  }
-  
-  
-  .frontPageContent {
-    display: flex;
-    flex-direction: row;
-    padding-left: 5vw;
-    padding-right: 5vw;
-  }
-  
-  .frontCarousel {
-    display: flex;
-    flex-direction: row;
-    padding-top: 4vh;
-  }
-  
-  .catchPhrase {
-    font-size: calc(20px + 6vmin);
-    text-align: left;
-    font-weight: bold;
-    font-family: 'Poppins';
-    line-height: 9vmin;
-    color: white;
-  }
-  
-  .description {
-    padding-top: 5vh;
-    padding-bottom: 5vh;
-    font-size: calc(5px + 2vmin);
-    text-align: left;
-    font-weight: normal;
-    font-family: 'Fira Code';
-    color : rgb(20, 187, 145);
-  }
+  height: 70vmin;
+  pointer-events: none;
+  user-select: none;
+}
+
+
+.frontPageContent {
+  display: flex;
+  flex-direction: row;
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+
+.frontCarousel {
+  display: flex;
+  flex-direction: row;
+  padding-top: 4vh;
+}
+
+.catchPhrase {
+  font-size: calc(20px + 6vmin);
+  text-align: left;
+  font-weight: bold;
+  font-family: 'Poppins';
+  line-height: 9vmin;
+  color: #dddddd;
+}
+
+.description {
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+  font-size: calc(5px + 2vmin);
+  text-align: left;
+  font-weight: normal;
+  font-family: 'Fira Code';
+  color : #dddddd;
+}
