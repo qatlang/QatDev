@@ -1,0 +1,90 @@
+.App {
+  text-align: center;
+  background-color: #1a1c20;
+  height: 100vh;
+}
+
+.branding {
+  display: flex;
+  flex-direction: row;
+}
+
+.appLogo {
+  height: 5vh;
+  padding-left: 2vh;
+  padding-right: 2vh;
+}
+
+.appHeader {
+  background-color: #1a1c20;
+  max-height: 10vh;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  font-weight: bold;
+  font-family: 'Fira Code';
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.appTitle {
+  font-size: calc(8px + 2vmin);
+}
+
+.appSubtitle {
+  display: flex;
+  flex-direction: column;
+  color : grey;
+  font-style: italic;
+  font-size: calc(5px + 1vmin);
+}
+
+.navBar {
+  padding-right: 1vw;
+}
+
+.navLink {
+  text-decoration: none;
+  font-family: 'Fira Code';
+  font-weight: normal;
+  color: rgb(52, 133, 255);
+  font-size: 1.1rem;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  margin-left: 0.3vw;
+  margin-right: 0.3vw;
+  background-color: transparent;
+  transition: color 0.2s ease-in;
+}
+
+.navLink:hover {
+  color: white;
+}
+
+.navLink-active {
+  color: white;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 1.1rem;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  margin-left: 0.3vw;
+  margin-right: 0.3vw;
+  background-color: rgb(18, 143, 95);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 7px;
+}
+
+.navLink:visited {
+  text-decoration: none;
+}
