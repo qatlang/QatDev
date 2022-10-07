@@ -1,0 +1,24 @@
+.buttonOuter {
+    height: auto;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: calc(5px + 2vmin);
+    font-weight: bold;
+    color: white;
+    font-family: 'Fira Code';
+    background-color: rgb(18, 143, 95);
+    user-select: none;
+    transition: color 0.1s ease-in-out,
+                background-color 0.1s ease-in-out;
+}
+
+.buttonOuter:hover {
+    color: black;
+    background-color: white;
+    cursor: pointer;
+}
+
+.buttonOuter:active {
+    background-color: rgb(97, 97, 97);
+}
