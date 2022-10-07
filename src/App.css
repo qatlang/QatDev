@@ -16,7 +16,6 @@
 }
 
 .appHeader {
-  background-color: #1a1c20;
   max-height: 10vh;
   padding-top: 2vh;
   padding-bottom: 2vh;
@@ -38,14 +37,20 @@
 
 .appTitle {
   font-size: calc(8px + 2vmin);
+  color: #dddddd;
 }
 
 .appSubtitle {
   display: flex;
   flex-direction: column;
   color : grey;
-  font-style: italic;
+  /* font-style: italic; */
   font-size: calc(5px + 1vmin);
+}
+
+.prompts {
+  display: flex;
+  flex-direction: row;
 }
 
 .navBar {
@@ -55,15 +60,15 @@
 .navLink {
   text-decoration: none;
   font-family: 'Fira Code';
-  font-weight: normal;
-  color: rgb(52, 133, 255);
-  font-size: 1.1rem;
+  font-weight: bold;
+  color: rgb(18, 143, 95);
+  font-size: 1rem;
   padding-left: 1vw;
   padding-right: 1vw;
   margin-left: 0.3vw;
   margin-right: 0.3vw;
   background-color: transparent;
-  transition: color 0.2s ease-in;
+  transition: color 0.1s ease-in-out;
 }
 
 .navLink:hover {
@@ -71,15 +76,16 @@
 }
 
 .navLink-active {
-  color: white;
+  color: black;
+  background-color: #dddddd;
   text-decoration: none;
-  font-weight: normal;
-  font-size: 1.1rem;
+  font-weight: bold;
+  font-size: 1rem;
   padding-left: 1vw;
   padding-right: 1vw;
   margin-left: 0.3vw;
   margin-right: 0.3vw;
-  background-color: rgb(18, 143, 95);
+  /* background-color: rgb(18, 143, 95); */
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 7px;
