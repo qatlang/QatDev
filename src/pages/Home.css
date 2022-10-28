@@ -4,7 +4,6 @@
   user-select: none;
 }
 
-
 .frontPageContent {
   display: flex;
   flex-direction: row;
@@ -22,7 +21,7 @@
   font-size: calc(20px + 6vmin);
   text-align: left;
   font-weight: bold;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   line-height: 9vmin;
   color: #dddddd;
 }
@@ -33,6 +32,52 @@
   font-size: calc(5px + 2vmin);
   text-align: left;
   font-weight: normal;
-  font-family: 'Fira Code';
-  color : #dddddd;
+  font-family: "Fira Code";
+  color: #dddddd;
 }
+
+.socialIcons {
+  display: flex;
+  flex-direction: row;
+  margin-top: 50px;
+}
+
+.githubIcon {
+  background-color: #333333;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.discordIcon {
+  background-color: #5865f2;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.youtubeIcon {
+  background-color: #333333;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
