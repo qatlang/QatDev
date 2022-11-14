@@ -27,6 +27,18 @@ function App() {
           >
             Home
           </NavLink>
+          <div
+            className="navLink"
+            onClick={() => {
+              window.open(
+                "https://docs.qat.dev",
+                "_blank",
+                "noreferrer noopener"
+              );
+            }}
+          >
+            Learn
+          </div>
           <NavLink
             className={(props) => {
               return props.isActive ? "navLink-active" : "navLink";
