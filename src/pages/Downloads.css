@@ -1,3 +1,134 @@
 .downloads {
-    color: white;
+  color: white;
+  padding-top: 2%;
+  padding-left: 10%;
+  padding-right: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
+
+.releaseCard {
+  display: flex;
+  flex-direction: row;
+  overflow-y: auto;
+}
+
+.releaseVersionInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 0.7rem;
+  height: fit-content;
+  width: fit-content;
+  border-radius: 15px;
+  background: linear-gradient(to bottom right, rgb(4, 0, 255), rgb(255, 0, 98));
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.releaseVersion {
+  font-family: "Fira Code";
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.releasePrerelease {
+  font-family: "Fira Code";
+  font-size: 0.9rem;
+  margin-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: #222222ff;
+  border-radius: 7px;
+}
+
+.releaseTitle {
+  font-family: "Poppins";
+  font-weight: bold;
+  font-size: 2.2rem;
+  text-align: left;
+  margin-left: 4%;
+}
+
+.releaseContent {
+  text-align: left;
+  font-family: "Fira Code";
+}
+
+.downloadButtons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 2%;
+}
+
+.downloadButton {
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: "Fira Code";
+  background-color: rgb(18, 143, 95);
+  border-radius: 3px;
+  margin-bottom: 7px;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.downloadInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.platformIcon {
+  width: 25%;
+  margin-right: 5%;
+}
+
+.downloadButton:hover {
+  background-color: white;
+  color: black;
+}
+
+.downloadPlatform {
+  font-weight: bold;
+}
+
+.downloadArch {
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.secondColumn {
+  justify-content: left;
+  padding-left: 2%;
+}
+
+.selectReleaseBox {
+  display: flex;
+  flex-direction: row;
+}
+
+.releaseSelectButton {
+  padding: 5px;
+  margin: 5px;
+  margin-bottom: 5vh;
+  background-color: #555555ff;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+  font-family: "Fira Code";
+  font-size: small;
+}
+
