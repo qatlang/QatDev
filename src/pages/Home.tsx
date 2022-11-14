@@ -2,6 +2,7 @@ import lavaCapsule from "../media/lava_capsule.png";
 import discordIcon from "../media/discord.png";
 import githubIcon from "../media/github.png";
 import youtubeIcon from "../media/youtube.png";
+import aldrinImg from "../media/aldrin.jpeg";
 import Button from "../components/Button";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +16,7 @@ export default function Home() {
         <div className="phraseBlock">
           <div className="catchPhrase">Closer to your machine's heart 🦾</div>
           <div className="description">
-            Super-fast modern systems language for efficient & maintainable
+            Superfast modern systems language for efficient & maintainable
             software...
           </div>
           <div className="prompts">
@@ -72,6 +73,43 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="sponsorPrompt">
+          <a
+            className="githubProfileLink"
+            href="https://github.com/aldrinmathew"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img className="aldrinImage" src={aldrinImg} alt="aldrin" />
+          </a>
+          <a
+            className="sponsorButtonLink"
+            href="https://github.com/sponsors/aldrinmathew"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="sponsorButton">💛 Sponsor</div>
+          </a>
+          <a
+            className="kofiButtonLink"
+            href="https://ko-fi.com/aldrinmathew"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="kofiButton">☕ Ko-Fi</div>
+          </a>
+          <a
+            className="paypalButtonLink"
+            href="https://paypal.me/aldrinsartfactory"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="paypalButton">💵 PayPal</div>
+          </a>
+        </div>
+      </div>
+      <div className="examplesBlock">
+        <div className="examplesTitle">Examples</div>
       </div>
     </div>
   );
