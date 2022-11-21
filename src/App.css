@@ -2,7 +2,8 @@
   text-align: center;
   /* background-color: #1a1c20; */
   background-image: radial-gradient(ellipse at top, #24262b, #000000);
-  height: 100vh;
+  min-height: 100vh;
+  min-width: 100vw;
 }
 
 .branding {
