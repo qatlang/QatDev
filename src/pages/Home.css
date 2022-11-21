@@ -168,27 +168,104 @@
 }
 
 .sponsorButton:hover {
-  background-color: rgb(135, 44, 255);
+  background-color: rgb(18, 143, 95);
 }
 
 .kofiButton:hover {
-  background-color: rgb(135, 44, 255);
+  background-color: rgb(18, 143, 95);
 }
 
 .paypalButton:hover {
-  background-color: rgb(135, 44, 255);
+  background-color: rgb(18, 143, 95);
+}
+
+.secondSection {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10vh;
+}
+
+.featuresBlock {
+  width: calc(50% - 2vw);
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  font-family: "Fira Code";
+  text-align: left;
+  margin-right: 2vw;
+}
+
+.featuresTitle {
+  color: rgb(18, 143, 95);
+  font-family: "Fira Code";
+  font-weight: bold;
+  text-align: left;
+}
+
+.featuresContent {
+  font-size: small;
+  color: #cccccc;
+}
+
+.exampleSelections {
+  width: 30%;
+  margin-bottom: 1vh;
+  font-size: small;
+}
+
+.exampleItem {
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: small;
+  margin-right: 10px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .examplesBlock {
   display: flex;
   flex-direction: column;
-  width: max-content;
-  margin-top: 4vh;
+  width: 50%;
 }
 
 .examplesTitle {
-  color: rgb(18, 143, 95);
+  color: #128f5f;
   font-family: "Fira Code";
   font-weight: bold;
+  text-align: left;
+}
+
+.example {
+  font-family: "Fira Code";
+}
+
+.exampleDropdown {
+  color: white;
+}
+
+.exampleName {
+  font-weight: bold;
+  text-align: left;
+}
+
+.exampleContent {
+  height: 50vh;
+  background-color: #303030;
+  border-radius: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #dddddd;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.codeLine {
+  margin-bottom: -10px;
 }
 
