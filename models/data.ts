@@ -5,8 +5,8 @@ export const examples: ILanguageExample[] = [{
    content:
       `type String {
    buffer :: #[var u8 'heap].
-   len    :: usize          .
-   cap    :: usize          .
+   len    :: usize.
+   cap    :: usize.
   
  pub:
    default [

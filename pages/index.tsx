@@ -1,50 +1,58 @@
-import lavaCapsule from "../media/lava_capsule.png";
-import discordIcon from "../media/discord.png";
-import githubIcon from "../media/github.png";
-import youtubeIcon from "../media/youtube.png";
-import aldrinImg from "../media/aldrin.jpeg";
-import Button from "../components/Button";
-import "./Home.css";
-import { useNavigate } from "react-router-dom";
+import lavaCapsule from "../public/lava_capsule.png";
+import discordIcon from "../public/discord.png";
+import githubIcon from "../public/github.png";
+import youtubeIcon from "../public/youtube.png";
+import aldrinImg from "../public/aldrin.jpeg";
+import Button from "../components/button";
+import styles from "styles/Home.module.css";
 import { examples, features } from "../models/data";
 import { useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import Select from "react-select";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 export default function Home() {
-  const navigate = useNavigate();
+  const router = useRouter();
   return (
-    <div className="frontPageContent">
-      <div className="frontCarousel">
-        <img src={lavaCapsule} className="lavaCover" alt="lava-cover" />
-        <div className="phraseBlock">
-          <div className="catchPhrase">Closer to your machine's heart 🦾</div>
-          <div className="description">
-            Superfast modern systems language for efficient & maintainable
-            software...
+    <div className={styles.frontPageContent}>
+      <div className={styles.frontCarousel}>
+        <Image
+          src={lavaCapsule}
+          className={styles.lavaCover}
+          alt="lava-cover"
+        />
+        <div className={styles.phraseBlock}>
+          <div className={styles.catchPhrase}>
+            {"Closer to your machine's heart 🦾"}
           </div>
-          <div className="prompts">
+          <div className={styles.description}>
+            {
+              "Superfast modern systems language for efficient & maintainable software..."
+            }
+          </div>
+          <div className={styles.prompts}>
             <Button
               content="Download"
               onClick={() => {
-                navigate("/downloads");
+                router.push("/downloads");
               }}
             />
             <Button
               content="Try it Online"
               onClick={() => {
-                navigate("/playground");
+                router.push("/playground");
               }}
             />
           </div>
-          <div className="socialIcons">
-            <div className="githubIcon">
+          <div className={styles.socialIcons}>
+            <div className={styles.githubIcon}>
               <a
                 href="https://github.com/qatlang"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <img
+                <Image
                   height={40}
                   width={40}
                   src={githubIcon}
@@ -52,13 +60,13 @@ export default function Home() {
                 />
               </a>
             </div>
-            <div className="discordIcon">
+            <div className={styles.discordIcon}>
               <a
                 href="https://discord.gg/CNW3Uvptvd"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <img
+                <Image
                   height={40}
                   width={40}
                   src={discordIcon}
@@ -66,61 +74,66 @@ export default function Home() {
                 />
               </a>
             </div>
-            <div className="youtubeIcon">
+            <div className={styles.youtubeIcon}>
               <a
                 href="https://youtube.com/c/aldrinmathew"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <img width={40} src={youtubeIcon} alt="discord-icon" />
+                <Image width={40} src={youtubeIcon} alt="discord-icon" />
               </a>
             </div>
           </div>
         </div>
-        <div className="sponsorPrompt">
+        <div className={styles.sponsorPrompt}>
           <a
-            className="githubProfileLink"
+            className={styles.githubProfileLink}
             href="https://github.com/aldrinmathew"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img className="aldrinImage" src={aldrinImg} alt="aldrin" />
+            <Image
+              className={styles.aldrinImage}
+              src={aldrinImg}
+              alt="aldrin"
+            />
           </a>
           <a
-            className="sponsorButtonLink"
+            className={styles.sponsorButtonLink}
             href="https://github.com/sponsors/aldrinmathew"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="sponsorButton">💛 Sponsor</div>
+            <div className={styles.sponsorButton}>💛 Sponsor</div>
           </a>
           <a
-            className="kofiButtonLink"
+            className={styles.kofiButtonLink}
             href="https://ko-fi.com/aldrinmathew"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="kofiButton">☕ Ko-Fi</div>
+            <div className={styles.kofiButton}>☕ Ko-Fi</div>
           </a>
           <a
-            className="paypalButtonLink"
+            className={styles.paypalButtonLink}
             href="https://paypal.me/aldrinsartfactory"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="paypalButton">💵 PayPal</div>
+            <div className={styles.paypalButton}>💵 PayPal</div>
           </a>
         </div>
       </div>
-      <div className="secondSection">
-        <div className="featuresBlock">
-          <p className="featuresTitle">Key Features</p>
-          <div className="featuresContent">
+      <div className={styles.secondSection}>
+        <div className={styles.featuresBlock}>
+          <p className={styles.featuresTitle}>Key Features</p>
+          <div className={styles.featuresContent}>
+            {/* eslint-disable-next-line react/no-children-prop*/}
             <ReactMarkdown children={features} />
           </div>
         </div>
-        <div className="examplesBlock">
-          <p className="examplesTitle">Examples</p>
+        <div className={styles.examplesBlock}>
+          <p className={styles.examplesTitle}>Examples</p>
           <Examples />
         </div>
       </div>
@@ -133,9 +146,9 @@ function Examples() {
   return (
     <>
       {
-        <div className="example">
+        <div className={styles.example}>
           <Select
-            className="exampleSelections"
+            className={styles.exampleSelections}
             options={examples.flatMap((ex, i) => {
               return {
                 value: i,
@@ -192,9 +205,11 @@ function Examples() {
               },
             }}
           />
-          <div className="exampleContent">
-            {examples[active].content.split("\n").map((elem) => (
-              <p className="codeLine">{elem}</p>
+          <div className={styles.exampleContent}>
+            {examples[active].content.split("\n").map((elem, i) => (
+              <p className={styles.codeLine} key={"codeLine." + i.toString()}>
+                {elem}
+              </p>
             ))}
           </div>
         </div>

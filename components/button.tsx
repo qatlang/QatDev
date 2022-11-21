@@ -1,4 +1,4 @@
-import "./Button.css";
+import styles from "styles/Button.module.css";
 
 export default function Button(props: {
   className?: string;
@@ -7,8 +7,11 @@ export default function Button(props: {
   onClick: (e: any) => void;
 }) {
   return (
-    <div className={props.className ?? "buttonOuter"} onClick={props.onClick}>
-      <div className="buttonInner">
+    <div
+      className={props.className ?? styles.buttonOuter}
+      onClick={props.onClick}
+    >
+      <div className={styles.buttonInner}>
         {props.content}
         {props.trailing}
       </div>

@@ -142,25 +142,25 @@
 }
 
 /* width */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 8px;
-}
+} */
 
 /* Track */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background: #ffffff22;
-}
+} */
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background: #ffffff44;
   border-radius: 3px;
-}
+} */
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background: #ffffff66;
-}
+} */
 
 .probList {
   padding: 10px;

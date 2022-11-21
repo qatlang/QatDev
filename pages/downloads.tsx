@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import ReactMarkdown from "react-markdown";
 import { ILanguageRelease } from "../models/interfaces";
-import "./Downloads.css";
-import WindowsIcon from "../media/windows_icon.png";
-import LinuxIcon from "../media/linux_icon.png";
+import styles from "styles/Downloads.module.css";
+import WindowsIcon from "public/windows_icon.png";
+import LinuxIcon from "public/linux_icon.png";
+import Image from "next/image";
 
-function getIconFromPlatform(platform: string): string {
+function getIconFromPlatform(platform: string): any {
   if (platform === "windows") {
     return WindowsIcon;
   } else {
@@ -19,25 +20,29 @@ export default function Downloads() {
     fetch("http://localhost:5000/releases", {
       method: "GET",
       mode: "cors",
-    }).then(async (res) => {
-      let jsRes = (await res.json()) as
-        | { releases: ILanguageRelease[] }
-        | undefined;
-      if (jsRes) {
-        setReleases(
-          jsRes.releases.sort((a: ILanguageRelease, b: ILanguageRelease) => {
-            return b.index - a.index;
-          })
-        );
-      }
-    });
+    })
+      .then(async (res) => {
+        let jsRes = (await res.json()) as
+          | { releases: ILanguageRelease[] }
+          | undefined;
+        if (jsRes) {
+          setReleases(
+            jsRes.releases.sort((a: ILanguageRelease, b: ILanguageRelease) => {
+              return b.index - a.index;
+            })
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   let [selection, setSelection] = useState(0);
   return (
-    <div className="downloads">
-      <div className="selectReleaseBox">
+    <div className={styles.downloads}>
+      <div className={styles.selectReleaseBox}>
         <div
-          className="releaseSelectButton"
+          className={styles.releaseSelectButton}
           style={{
             color: selection > 0 ? "#ffffff" : "#777777ff",
           }}
@@ -50,7 +55,7 @@ export default function Downloads() {
           Next
         </div>
         <div
-          className="releaseSelectButton"
+          className={styles.releaseSelectButton}
           style={{
             color: selection < releases.length - 1 ? "#ffffff" : "#777777ff",
           }}
@@ -64,41 +69,41 @@ export default function Downloads() {
         </div>
       </div>
       {releases.length > 0 ? (
-        <div className="releaseCard">
-          <div className="firstColumn">
-            <div className="releaseVersionInfo">
-              <div className="releaseVersion">
+        <div className={styles.releaseCard}>
+          <div className={styles.firstColumn}>
+            <div className={styles.releaseVersionInfo}>
+              <div className={styles.releaseVersion}>
                 {releases[selection].version.value}
               </div>
               {releases[selection].version.isPrerelease ? (
-                <div className="releasePrerelease">
+                <div className={styles.releasePrerelease}>
                   {" " + releases[selection].version.prerelease}
                 </div>
               ) : (
                 <></>
               )}
             </div>
-            <div className="downloadButtons">
+            <div className={styles.downloadButtons}>
               {releases[selection].files.flatMap((artefact) => {
                 return (
                   <div
-                    className="downloadButton"
+                    className={styles.downloadButton}
                     onClick={() => {
                       window.open(artefact.path, "_blank");
                     }}
                   >
-                    <div className="platformIcon">
-                      <img
+                    <div className={styles.platformIcon}>
+                      <Image
                         height={25}
                         src={getIconFromPlatform(artefact.platform)}
                         alt="downloadPlatformIcon"
                       />
                     </div>
-                    <div className="downloadInfo">
-                      <div className="downloadPlatform">
+                    <div className={styles.downloadInfo}>
+                      <div className={styles.downloadPlatform}>
                         {artefact.platform}
                       </div>
-                      <div className="downloadArch">
+                      <div className={styles.downloadArch}>
                         {artefact.architecture}
                       </div>
                     </div>
@@ -107,10 +112,13 @@ export default function Downloads() {
               })}
             </div>
           </div>
-          <div className="secondColumn">
-            <div className="releaseTitle">{releases[selection].title}</div>
+          <div className={styles.secondColumn}>
+            <div className={styles.releaseTitle}>
+              {releases[selection].title}
+            </div>
             <ReactMarkdown
-              className="releaseContent"
+              className={styles.releaseContent}
+              // eslint-disable-next-line react/no-children-prop
               children={releases[selection].content}
             />
           </div>

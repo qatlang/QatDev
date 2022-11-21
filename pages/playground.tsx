@@ -1,8 +1,8 @@
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { linter, Diagnostic } from "@codemirror/lint";
 import { atomone } from "@uiw/codemirror-theme-atomone";
-import "./Playground.css";
-import Button from "../components/Button";
+import styles from "styles/Playground.module.css";
+import Button from "../components/button";
 import { useEffect, useRef, useState } from "react";
 
 let editorValue = `main() [
@@ -38,16 +38,18 @@ interface Problem {
 
 function TimeStats(props: { qat: number; clang: number }) {
   return (
-    <div className="timeStats">
-      <div className="timeDesc">Timing of stages</div>
-      <div className="timeStatValues">
-        <div className="timeElement">
-          <div className="timeName">qat</div>
-          <div className="timeValue">{props.qat / 1000000} seconds</div>
+    <div className={styles.timeStats}>
+      <div className={styles.timeDesc}>Timing of stages</div>
+      <div className={styles.timeStatValues}>
+        <div className={styles.timeElement}>
+          <div className={styles.timeName}>qat</div>
+          <div className={styles.timeValue}>{props.qat / 1000000} seconds</div>
         </div>
-        <div className="timeElement">
-          <div className="timeName">clang</div>
-          <div className="timeValue">{props.clang / 1000000} seconds</div>
+        <div className={styles.timeElement}>
+          <div className={styles.timeName}>clang</div>
+          <div className={styles.timeValue}>
+            {props.clang / 1000000} seconds
+          </div>
         </div>
       </div>
     </div>
@@ -56,16 +58,16 @@ function TimeStats(props: { qat: number; clang: number }) {
 
 function CodeProblem(props: { probs: Problem[] }) {
   return (
-    <div className="codeProblems">
-      <div className="probTitle">
+    <div className={styles.codeProblems}>
+      <div className={styles.probTitle}>
         {props.probs.length > 0 ? props.probs.length.toString() : ""} Problem
         {props.probs.length === 1 ? "" : "s"}
       </div>
-      <div className="probList">
+      <div className={styles.probList}>
         {props.probs.length > 0 ? (
           props.probs.flatMap((prob) => (
-            <div className="probElem">
-              <div className="probRange">
+            <div className={styles.probElem}>
+              <div className={styles.probRange}>
                 {(prob.range.start.line ?? 0).toString() +
                   ":" +
                   (prob.range.start.char ?? 0).toString() +
@@ -74,21 +76,21 @@ function CodeProblem(props: { probs: Problem[] }) {
                   ":" +
                   (prob.range.end.char ?? 0).toString()}
               </div>
-              <div className="probContent">
+              <div className={styles.probContent}>
                 <div
-                  className="probCategory"
+                  className={styles.probCategory}
                   style={{
                     backgroundColor: prob.isError ? "#c2441d88" : "#8400ff88",
                   }}
                 >
                   {prob.isError ? "Error" : "Warning"}
                 </div>
-                <div className="probValue">{prob.message}</div>
+                <div className={styles.probValue}>{prob.message}</div>
               </div>
             </div>
           ))
         ) : (
-          <div className="probTitle">No problems found</div>
+          <div className={styles.probTitle}>No problems found</div>
         )}
       </div>
     </div>
@@ -139,12 +141,16 @@ function compileCode(
       content: editorValue,
       time: "",
     }),
-  }).then(async (res) => {
-    let jsRes = await res.json();
-    updateLastRes(jsRes);
+  })
+    .then(async (res) => {
+      let jsRes = await res.json();
+      updateLastRes(jsRes);
 
-    console.log(jsRes);
-  });
+      console.log(jsRes);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export default function Playground() {
@@ -159,20 +165,24 @@ export default function Playground() {
     compileCode(updateLastRes);
   });
   return (
-    <div className="playground">
-      <div className="editorHeader">
+    <div className={styles.playground}>
+      <div className={styles.editorHeader}>
         <Button
-          className="runButton"
+          className={styles.runButton}
           content="Build"
           onClick={(e) => {
             compileCode(updateLastRes);
           }}
         />
-        <Button className="resetButton" content="Reset" onClick={() => {}} />
+        <Button
+          className={styles.resetButton}
+          content="Reset"
+          onClick={() => {}}
+        />
       </div>
-      <div className="editorPanel">
+      <div className={styles.editorPanel}>
         <ReactCodeMirror
-          className="codeMirror"
+          className={styles.codeMirror}
           value={editorValue}
           basicSetup={{
             indentOnInput: true,
@@ -218,9 +228,9 @@ export default function Playground() {
           }}
         />
         {lastRes && (
-          <div className="compileInfo">
+          <div className={styles.compileInfo}>
             <div
-              className="compilationStatus"
+              className={styles.compilationStatus}
               style={{
                 backgroundColor: lastRes.status ? "#15ac53" : "#c2441d",
               }}

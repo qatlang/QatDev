@@ -11,12 +11,6 @@
   flex-direction: row;
 }
 
-.appLogo {
-  height: 5vh;
-  padding-left: 2vh;
-  padding-right: 2vh;
-}
-
 .appHeader {
   max-height: 10vh;
   padding-top: 2vh;
@@ -82,7 +76,7 @@
   color: white;
 }
 
-.navLink-active {
+.navLinkActive {
   color: black;
   background-color: #dddddd;
   text-decoration: none;

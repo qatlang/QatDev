@@ -1,8 +1,14 @@
 .lavaCover {
   height: 55vmin;
+  width: 55vmin;
   pointer-events: none;
   user-select: none;
   margin-right: 1vw;
+}
+
+.prompts {
+  display: flex;
+  flex-direction: row;
 }
 
 .frontPageContent {
@@ -104,6 +110,7 @@
 }
 
 .sponsorButton {
+  text-align: center;
   width: 20vh;
   background-color: #393939;
   color: #ffffff;
@@ -118,6 +125,7 @@
 }
 
 .kofiButton {
+  text-align: center;
   width: 20vh;
   background-color: #393939;
   color: #ffffff;
@@ -133,6 +141,7 @@
 }
 
 .paypalButton {
+  text-align: center;
   width: 20vh;
   background-color: #393939;
   color: #ffffff;
