@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { ILanguageRelease } from "../models/interfaces";
 import styles from "styles/Downloads.module.css";
@@ -16,26 +16,27 @@ function getIconFromPlatform(platform: string): any {
 
 export default function Downloads() {
   let [releases, setReleases] = useState<ILanguageRelease[]>([]);
-  useEffect(() => {
-    async function getReleases() {
-      const res = await fetch("http://localhost:5000/releases", {
-        method: "GET",
-        mode: "cors",
-        next: { revalidate: 30 },
-      });
+  fetch("http://localhost:5000/releases", {
+    method: "GET",
+    mode: "cors",
+    next: { revalidate: 180 },
+  })
+    .then(async (res) => {
       let jsRes = (await res.json()) as
         | { releases: ILanguageRelease[] }
         | undefined;
       if (jsRes) {
+        console.log(jsRes);
         setReleases(
           jsRes.releases.sort((a: ILanguageRelease, b: ILanguageRelease) => {
             return b.index - a.index;
           })
         );
       }
-    }
-    getReleases();
-  });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   let [selection, setSelection] = useState(0);
   return (
     <div className={styles.downloads}>
@@ -83,9 +84,10 @@ export default function Downloads() {
               )}
             </div>
             <div className={styles.downloadButtons}>
-              {releases[selection].files.flatMap((artefact) => {
+              {releases[selection].files.flatMap((artefact, i) => {
                 return (
                   <div
+                    key={"downloadButton." + i.toString()}
                     className={styles.downloadButton}
                     onClick={() => {
                       window.open(artefact.path, "_blank");
