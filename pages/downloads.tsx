@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { ILanguageRelease } from "../models/interfaces";
 import styles from "styles/Downloads.module.css";
@@ -14,30 +14,28 @@ function getIconFromPlatform(platform: string): any {
   }
 }
 
-export default function Downloads() {
+export default async function Downloads() {
   let [releases, setReleases] = useState<ILanguageRelease[]>([]);
-  if (releases.length === 0) {
-    fetch("http://localhost:5000/releases", {
-      method: "GET",
-      mode: "cors",
-      next: { revalidate: 180 },
-    })
-      .then(async (res) => {
-        let jsRes = (await res.json()) as
-          | { releases: ILanguageRelease[] }
-          | undefined;
-        if (jsRes) {
-          setReleases(
-            jsRes.releases.sort((a: ILanguageRelease, b: ILanguageRelease) => {
-              return b.index - a.index;
-            })
-          );
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+  useEffect(() => {
+    async function getReleases() {
+      const res = await fetch("http://localhost:5000/releases", {
+        method: "GET",
+        mode: "cors",
+        next: { revalidate: 30 },
       });
-  }
+      let jsRes = (await res.json()) as
+        | { releases: ILanguageRelease[] }
+        | undefined;
+      if (jsRes) {
+        setReleases(
+          jsRes.releases.sort((a: ILanguageRelease, b: ILanguageRelease) => {
+            return b.index - a.index;
+          })
+        );
+      }
+    }
+    getReleases();
+  });
   let [selection, setSelection] = useState(0);
   return (
     <div className={styles.downloads}>
