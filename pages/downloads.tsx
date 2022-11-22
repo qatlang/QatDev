@@ -14,7 +14,7 @@ function getIconFromPlatform(platform: string): any {
   }
 }
 
-export default async function Downloads() {
+export default function Downloads() {
   let [releases, setReleases] = useState<ILanguageRelease[]>([]);
   useEffect(() => {
     async function getReleases() {
