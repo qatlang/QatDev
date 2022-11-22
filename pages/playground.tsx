@@ -134,18 +134,15 @@ function compileCode(
 ) {
   updateLastRes(undefined);
   lineLengths = editorValue.split("\n").map((lin) => lin.length);
-  fetch("http://127.0.0.1:5000/compile", {
+  fetch("http://localhost:5000/compile", {
     method: "POST",
     mode: "cors",
-    body: JSON.stringify({
-      content: editorValue,
-      time: "",
-    }),
+    body: JSON.stringify({ content: editorValue, time: "" }),
+    next: { revalidate: 0 },
   })
     .then(async (res) => {
       let jsRes = await res.json();
       updateLastRes(jsRes);
-
       console.log(jsRes);
     })
     .catch((err) => {

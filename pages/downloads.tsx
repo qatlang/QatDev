@@ -20,6 +20,7 @@ export default function Downloads() {
     fetch("http://localhost:5000/releases", {
       method: "GET",
       mode: "cors",
+      next: { revalidate: 180 },
     })
       .then(async (res) => {
         let jsRes = (await res.json()) as
