@@ -14,29 +14,32 @@ function getIconFromPlatform(platform: string): any {
   }
 }
 
-export default function Downloads() {
-  let [releases, setReleases] = useState<ILanguageRelease[]>([]);
-  fetch("http://localhost:5000/releases", {
+export async function getServerSideProps() {
+  const res = await fetch("http://localhost:5000/releases", {
     method: "GET",
     mode: "cors",
     next: { revalidate: 180 },
-  })
-    .then(async (res) => {
-      let jsRes = (await res.json()) as
-        | { releases: ILanguageRelease[] }
-        | undefined;
-      if (jsRes) {
-        console.log(jsRes);
-        setReleases(
-          jsRes.releases.sort((a: ILanguageRelease, b: ILanguageRelease) => {
+  });
+  let jsRes = (await res.json()) as
+    | { releases: ILanguageRelease[] }
+    | undefined;
+  if (jsRes) {
+    return {
+      props: {
+        releases: jsRes.releases.sort(
+          (a: ILanguageRelease, b: ILanguageRelease) => {
             return b.index - a.index;
-          })
-        );
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+          }
+        ),
+      },
+    };
+  } else {
+    return { props: { releases: [] } };
+  }
+}
+
+export default function Downloads(props: { releases: ILanguageRelease[] }) {
+  const releases = props.releases ?? [];
   let [selection, setSelection] = useState(0);
   return (
     <div className={styles.downloads}>

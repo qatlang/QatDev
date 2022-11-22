@@ -134,7 +134,7 @@ function compileCode(
 ) {
   updateLastRes(undefined);
   lineLengths = editorValue.split("\n").map((lin) => lin.length);
-  fetch("http://localhost:5000/compile", {
+  fetch("/api/compile", {
     method: "POST",
     mode: "cors",
     body: JSON.stringify({ content: editorValue, time: "" }),
