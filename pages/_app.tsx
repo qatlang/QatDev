@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
       />
       <meta
         property="og:image"
-        content="https://raw.githubusercontent.com/qatlang/media/main/images/qat_fancy_cover.png"
+        content="https://raw.githubusercontent.com/qatlang/media/main/images/qat_cover_1200x671.png"
       />
       <header className={styles.appHeader}>
         <Link href="/">
