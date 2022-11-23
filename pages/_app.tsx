@@ -10,6 +10,17 @@ export default function App({ Component, pageProps }: AppProps) {
   let router = useRouter();
   return (
     <div className={styles.App}>
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://qat.dev/" />
+      <meta property="og:title" content="Qat Programming Language" />
+      <meta
+        property="og:description"
+        content="Superfast modern systems language for efficient & maintainable software..."
+      />
+      <meta
+        property="og:image"
+        content="https://raw.githubusercontent.com/qatlang/media/main/images/qat_fancy_cover.png"
+      />
       <header className={styles.appHeader}>
         <div className={styles.branding}>
           <Image
