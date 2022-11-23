@@ -64,8 +64,9 @@ export const examples: ILanguageExample[] = [{
 ];
 
 export const features: string =
-   `### RAII
-**R**esource **A**cquisition **I**s **I**nitialisation (**RAII**) is a principle that achieves initialisation and cleaning up of resources. It makes it possible to cleanup stack memory at the end of the current scope
+   `I know that the capabilities of a programming language cannot be summarised to a few hundred words. But here is a short list of some key features of the language, for those who want to get a basic idea of what the language can or cannot do.
+### RAII
+**R**esource **A**cquisition **I**s **I**nitialisation is a principle that achieves initialisation and cleaning up of resources. It makes it possible to cleanup stack memory at the end of the current scope
 
 ### Copy & Move semantics
 
@@ -78,7 +79,7 @@ This is also used in conjunction with copy & move semantics.
 
 ### References
 
-One major advantage of references in C++ is the convenience you get with it, especially when you use operators. References also makes it possible to easily use data without making copies/moves. You get all that convenience in \`qat\`. References are meant to be used when the programmer is sure that the instance referred to outlives the current context of execution.
+One major advantage of references in \`C++\` is the convenience you get with it, especially when you use operators. References also makes it possible to easily use data without making copies/moves. You get all that convenience in \`qat\`. References are meant to be used when the programmer is sure that the instance referred to outlives the current context of execution.
 
 ### Raw Pointers
 
