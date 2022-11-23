@@ -8,7 +8,10 @@ export default function Button(props: {
 }) {
   return (
     <div
-      className={props.className ?? styles.buttonOuter}
+      className={
+        styles.buttonOuter +
+        (props.className != undefined ? " " + props.className : "")
+      }
       onClick={props.onClick}
     >
       <div className={styles.buttonInner}>
