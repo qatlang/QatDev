@@ -2,7 +2,7 @@ import ReactCodeMirror from "@uiw/react-codemirror";
 import { linter, Diagnostic } from "@codemirror/lint";
 import { atomone } from "@uiw/codemirror-theme-atomone";
 import styles from "styles/Playground.module.css";
-import Button from "../components/button";
+import Button from "../utils/Button";
 import { useEffect, useRef, useState } from "react";
 
 let editorValue = `main() [

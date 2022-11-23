@@ -1,14 +1,19 @@
 .App {
   text-align: center;
-  /* background-color: #1a1c20; */
   background-image: radial-gradient(ellipse at top, #24262b, #000000);
   min-height: 100vh;
-  min-width: 100vw;
+  min-width: 97vw;
 }
 
 .branding {
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.qatIcon {
+  margin-left: 2vmin;
+  margin-right: 7px;
 }
 
 .appHeader {
@@ -19,29 +24,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(2vmin);
   color: white;
   font-weight: bold;
-  font-family: "Fira Code";
-}
-
-.titleGroup {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.appTitle {
-  font-size: calc(8px + 2vmin);
-  color: #dddddd;
-}
-
-.appSubtitle {
-  display: flex;
-  flex-direction: column;
-  color: grey;
-  /* font-style: italic; */
-  font-size: calc(5px + 1vmin);
 }
 
 .prompts {
@@ -50,7 +35,7 @@
 }
 
 .navBar {
-  padding-right: 1vw;
+  margin-right: 2vw;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -58,10 +43,9 @@
 
 .navLink {
   text-decoration: none;
-  font-family: "Fira Code";
   font-weight: bold;
   color: rgb(18, 143, 95);
-  font-size: 1rem;
+  font-size: 2vmin;
   padding-left: 1vw;
   padding-right: 1vw;
   margin-left: 0.3vw;
@@ -81,7 +65,7 @@
   background-color: #dddddd;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 2vmin;
   padding-left: 1vw;
   padding-right: 1vw;
   margin-left: 0.3vw;

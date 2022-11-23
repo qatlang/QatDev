@@ -8,7 +8,7 @@
   font-size: calc(5px + 2vmin);
   font-weight: bold;
   color: white;
-  font-family: "Fira Code";
+  font-family: inherit;
   background-color: rgb(18, 143, 95);
   user-select: none;
   transition: color 0.1s ease-in-out, background-color 0.1s ease-in-out;
@@ -28,3 +28,4 @@
   display: flex;
   flex-direction: row;
 }
+
