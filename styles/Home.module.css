@@ -31,18 +31,17 @@
 }
 
 .description {
-  padding-top: 3vh;
+  padding-top: 1.5vmin;
   padding-bottom: 3vh;
   font-size: calc(2.5vmin);
   text-align: left;
   color: #dddddd;
-  margin-bottom: 2vh;
 }
 
 .socialIcons {
   display: flex;
   flex-direction: row;
-  margin-top: 4vmin;
+  margin-top: 2vmin;
 }
 
 .socialIcon {
@@ -58,106 +57,6 @@
 
 .socialIcon:hover {
   border: 2px solid #ffffff55;
-}
-
-.sponsorPrompt {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  margin-left: 30px;
-  padding: 4px;
-  background-color: #303030;
-  /* background-image: linear-gradient(rgb(52, 52, 255), rgb(255, 59, 141)); */
-  /* border: 3px solid #444444; */
-  height: fit-content;
-  width: fit-content;
-  border-radius: 12px;
-}
-
-.aldrinImage {
-  border-radius: 10px 10px 0px 0px;
-  height: 20vh;
-  width: 20vh;
-  /* border: 4px solid rgb(18, 143, 95); */
-}
-
-.sponsorButton {
-  text-align: center;
-  width: 20vh;
-  background-color: #393939;
-  color: #ffffff;
-  height: fit-content;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-family: "Fira Code";
-  font-weight: bold;
-  font-size: 0.8em;
-  transition: background-color 0.2s ease-in-out;
-  cursor: pointer;
-}
-
-.kofiButton {
-  text-align: center;
-  width: 20vh;
-  background-color: #393939;
-  color: #ffffff;
-  height: fit-content;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-family: "Fira Code";
-  font-weight: bold;
-  font-size: 0.8em;
-  transition: background-color 0.2s ease-in-out;
-  cursor: pointer;
-  margin-top: 4px;
-}
-
-.paypalButton {
-  text-align: center;
-  width: 20vh;
-  background-color: #393939;
-  color: #ffffff;
-  height: fit-content;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-family: "Fira Code";
-  font-weight: bold;
-  font-size: 0.8em;
-  transition: background-color 0.2s ease-in-out;
-  cursor: pointer;
-  margin-top: 4px;
-  border-radius: 0px 0px 10px 10px;
-}
-
-.githubProfileLink {
-  text-decoration: none;
-}
-
-.sponsorButtonLink {
-  text-decoration: none;
-  color: white;
-}
-
-.kofiButtonLink {
-  text-decoration: none;
-  color: white;
-}
-
-.paypalButtonLink {
-  text-decoration: none;
-  color: white;
-}
-
-.sponsorButton:hover {
-  background-color: rgb(18, 143, 95);
-}
-
-.kofiButton:hover {
-  background-color: rgb(18, 143, 95);
-}
-
-.paypalButton:hover {
-  background-color: rgb(18, 143, 95);
 }
 
 .secondSection {
@@ -195,7 +94,7 @@
 }
 
 .markdown code {
-  font-family: "Fira Code" !important;
+  font-family: "Fira Code", "Courier New" !important;
   font-size: smaller;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -273,38 +172,112 @@
 
 .sponsorBlock {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin-top: 3vmin;
   margin-bottom: 3vmin;
   margin-left: 5vmin;
   margin-right: 5vmin;
   background-color: #222222;
   border-radius: 2.2vmin;
-  padding: 1.5vmin;
-}
-
-.sponsorBlock:hover .sponsorIcon {
-  background-color: rgb(219, 16, 84);
+  padding: 2.5vmin;
 }
 
 .sponsorHeader {
   display: flex;
   flex-direction: row;
   color: #cccccc;
-  align-items: center;
+  align-items: flex-start;
   font-size: larger;
 }
 
 .sponsorIcon {
-  background-color: #6200ff;
-  height: 5vmin;
-  width: 5vmin;
-  border-radius: 1.5vmin;
-  margin-right: 2vmin;
+  cursor: pointer;
+  padding-left: 1.5vmin;
+  padding-right: 1.5vmin;
+  background-color: #ffbb00;
+  color: black;
+  transition: background-color 0.2s ease-in-out, color 0.1s ease-in-out;
+}
+
+.sponsorIcon:hover {
+  color: black;
+  user-select: none;
+  background-color: #ffffff;
+}
+
+.sponsorIcon:active {
+  background-color: #ffbb00;
+  color: black;
+}
+
+.sponsorIconImage {
+  fill: white;
+  margin-right: 1vmin;
+  transition: fill 0.1s ease-in-out;
+}
+
+.sponsorIcon:active .sponsorIconImage {
+  fill: black;
+}
+
+.workStats {
+  font-size: medium;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  margin-right: 2vmin;
+  width: 27vmin;
+}
+
+.workStatsHeader {
+  display: flex;
+  flex-direction: row;
   align-items: center;
+  margin-bottom: 2vmin;
+}
+
+.workStatsTitle {
+  margin-left: 1vmin;
+  font-weight: bold;
+  font-size: 1.8vmin;
+}
+
+.projectStatRow {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.8em;
+  margin-bottom: 0.7vmin;
+}
+
+.projectStatName {
+  background-color: #333333;
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  transition: background-color 0.2s ease-in-out;
+  height: 3.5vmin;
+  width: 13vmin;
+  font-size: 1em;
+  text-align: left;
+  border-radius: 7px 0px 0px 7px;
+  border-right: 2px solid #555555;
+}
+
+.projectStatTime {
+  background-color: #000000;
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  height: 3.5vmin;
+  width: 14vmin;
+  text-align: center;
+  border-radius: 0px 7px 7px 0px;
 }
 
