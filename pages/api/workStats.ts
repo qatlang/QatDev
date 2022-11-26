@@ -7,7 +7,7 @@ export default async function WorkStatsHandler(req: NextApiRequest, res: NextApi
             method: "GET",
             mode: "cors",
             headers: {
-               "Authorization": "Bearer " + process.env["WAKATIME_ACCESS_TOKEN"],
+               "Authorization": "Bearer " + process.env["NEXT_PUBLIC_WAKATIME_ACCESS_TOKEN"],
                "Access-Control-Origin-Policy": "*",
             },
             next: { revalidate: 0 },

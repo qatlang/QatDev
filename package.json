@@ -18,7 +18,6 @@
     "@types/react-dom": "18.0.9",
     "@uiw/codemirror-theme-atomone": "^4.12.4",
     "@uiw/react-codemirror": "^4.12.4",
-    "dotenv": "^16.0.3",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.4",
     "next": "13.0.4",
@@ -29,4 +28,3 @@
     "typescript": "4.9.3"
   }
 }
-
