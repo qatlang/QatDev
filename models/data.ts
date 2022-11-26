@@ -4,7 +4,7 @@ export const examples: ILanguageExample[] = [{
    title: 'String Datatype',
    content:
       `type String {
-   buffer :: #[var u8 'heap].
+   buffer :: #[+ var u8 'heap].
    len    :: usize.
    cap    :: usize.
   
@@ -66,7 +66,7 @@ export const examples: ILanguageExample[] = [{
 export const features: string =
    `I know that the capabilities of a programming language cannot be summarised to a few hundred words. But here is a short list of some key features of the language, for those who want to get a basic idea of what the language can or cannot do.
 ### RAII
-**R**esource **A**cquisition **I**s **I**nitialisation is a principle that achieves initialisation and cleaning up of resources. It makes it possible to cleanup stack memory at the end of the current scope
+_**R**esource **A**cquisition **I**s **I**nitialisation_ is a principle in which acquiring/creating a resource initialises it and it is automatically cleaned up when the scope/lifetime of the resource ends. In \`qat\`, this is achieved via Constructors and Destructors.
 
 ### Copy & Move semantics
 

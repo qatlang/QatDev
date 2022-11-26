@@ -157,8 +157,8 @@ export default function App({ Component, pageProps }: AppProps) {
                   y2="260"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#4F60FF" />
-                  <stop offset="1" stop-color="#FF1B6D" />
+                  <stop stopColor="#4F60FF" />
+                  <stop offset="1" stopColor="#FF1B6D" />
                 </linearGradient>
               </defs>
             </svg>
