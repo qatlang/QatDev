@@ -2,9 +2,8 @@ import styles from "styles/Button.module.css";
 
 export default function Button(props: {
   className?: string;
-  content: string | JSX.Element;
-  trailing?: string | JSX.Element;
   onClick: (e: any) => void;
+  children: any;
 }) {
   return (
     <div
@@ -14,10 +13,7 @@ export default function Button(props: {
       }
       onClick={props.onClick}
     >
-      <div className={styles.buttonInner}>
-        {props.content}
-        {props.trailing}
-      </div>
+      <div className={styles.buttonInner}>{props.children}</div>
     </div>
   );
 }
