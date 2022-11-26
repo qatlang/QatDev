@@ -1,43 +1,70 @@
 .downloads {
   color: white;
-  padding-top: 2%;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-top: 5vmin;
+  padding-left: 4vmin;
+  padding-right: 4vmin;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .releaseCard {
   display: flex;
   flex-direction: row;
-  overflow-y: auto;
+}
+
+.releaseSwitcher {
+  display: flex;
+  flex-direction: row;
+  height: 7vh;
+  margin-bottom: 2vmin;
+}
+
+.nextVersion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  border-radius: 10px 0px 0px 10px;
+  user-select: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.previousVersion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  border-radius: 0px 10px 10px 0px;
+  user-select: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .releaseVersionInfo {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-bottom: 0.7rem;
-  height: fit-content;
-  width: fit-content;
-  border-radius: 15px;
-  background: linear-gradient(to bottom right, rgb(4, 0, 255), rgb(255, 0, 98));
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 12vw;
 }
 
 .releaseVersion {
   font-family: "Fira Code";
-  font-size: 1.5rem;
   font-weight: bold;
+  width: 100%;
+  font-size: 1.3em;
 }
 
 .releasePrerelease {
   font-family: "Fira Code";
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-left: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -48,16 +75,42 @@
 }
 
 .releaseTitle {
-  font-family: "Poppins";
   font-weight: bold;
-  font-size: 2.2rem;
+  height: 5vmin;
+  width: 70vmin;
+  font-size: 1.1rem;
   text-align: left;
-  margin-left: 4%;
 }
 
 .releaseContent {
   text-align: left;
-  font-family: "Fira Code";
+  font-size: 1.9vmin;
+  overflow-y: auto;
+  margin-top: 2vh;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 2vh;
+  background-color: #222222ff;
+  color: #cccccc;
+  height: 60vmin;
+  width: 70vmin;
+}
+
+.releaseContent code {
+  font-family: "Fira Code", "Courier New" !important;
+  font-size: 1.5vmin;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 4px;
+  padding-right: 4px;
+  line-height: 2.5vmin;
+  color: white;
+  background-color: #ffffff22;
+  border-radius: 5px;
+}
+
+.releaseContent li {
+  margin-bottom: 5px;
 }
 
 .downloadButtons {
@@ -115,19 +168,9 @@
   padding-left: 2%;
 }
 
-.selectReleaseBox {
-  display: flex;
-  flex-direction: row;
-}
-
-.releaseSelectButton {
-  padding: 5px;
-  margin: 5px;
-  margin-bottom: 5vh;
-  background-color: #555555ff;
-  border-radius: 5px;
-  cursor: pointer;
-  user-select: none;
-  font-family: "Fira Code";
+.downloadSelections {
+  height: 5vmin;
+  width: 20vmin;
   font-size: small;
 }
+

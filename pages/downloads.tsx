@@ -5,6 +5,10 @@ import styles from "styles/Downloads.module.css";
 import WindowsIcon from "public/windows_icon.png";
 import LinuxIcon from "public/linux_icon.png";
 import Image from "next/image";
+import fonts from "../utils/fonts";
+import joinNames from "../utils/joinNames";
+import Select from "react-select";
+import useWindowSize from "../utils/WindowSize";
 
 function getIconFromPlatform(platform: string): any {
   if (platform === "windows") {
@@ -41,51 +45,168 @@ export async function getServerSideProps() {
 export default function Downloads(props: { releases: ILanguageRelease[] }) {
   const releases = props.releases ?? [];
   let [selection, setSelection] = useState(0);
+  let [downloadSelection, setDownloadSelection] = useState(0);
+  const updateVersionSelection = (val: number) => {
+    if (downloadSelection >= releases[val].files.length) {
+      setDownloadSelection(0);
+    }
+    setSelection(val);
+  };
+  const size = useWindowSize();
   return (
     <div className={styles.downloads}>
-      <div className={styles.selectReleaseBox}>
-        <div
-          className={styles.releaseSelectButton}
-          style={{
-            color: selection > 0 ? "#ffffff" : "#777777ff",
-          }}
-          onClick={() => {
-            if (selection > 0) {
-              setSelection(selection - 1);
-            }
-          }}
-        >
-          Next
-        </div>
-        <div
-          className={styles.releaseSelectButton}
-          style={{
-            color: selection < releases.length - 1 ? "#ffffff" : "#777777ff",
-          }}
-          onClick={() => {
-            if (selection < releases.length - 1) {
-              setSelection(selection + 1);
-            }
-          }}
-        >
-          Previous
-        </div>
-      </div>
       {releases.length > 0 ? (
         <div className={styles.releaseCard}>
           <div className={styles.firstColumn}>
-            <div className={styles.releaseVersionInfo}>
-              <div className={styles.releaseVersion}>
-                {releases[selection].version.value}
+            <div className={styles.releaseSwitcher}>
+              <div
+                className={joinNames([styles.nextVersion, fonts.firaCode.bold])}
+                style={{
+                  backgroundColor: selection > 0 ? "#128f5f" : "#333333",
+                  color: selection > 0 ? "#ffffff" : "#777777",
+                  cursor: selection > 0 ? "pointer" : "auto",
+                }}
+                onClick={() => {
+                  if (selection > 0) {
+                    updateVersionSelection(selection - 1);
+                  }
+                }}
+              >
+                ++
               </div>
-              {releases[selection].version.isPrerelease ? (
-                <div className={styles.releasePrerelease}>
-                  {" " + releases[selection].version.prerelease}
+              <div
+                className={styles.releaseVersionInfo}
+                style={{
+                  background:
+                    selection == 0
+                      ? `linear-gradient(to bottom right,rgb(0, 50, 255),rgb(255, 0, 80))`
+                      : "#444444",
+                }}
+              >
+                <div className={styles.releaseVersion}>
+                  {releases[selection].version.value}
                 </div>
-              ) : (
-                <></>
-              )}
+                {releases[selection].version.isPrerelease ? (
+                  <div className={styles.releasePrerelease}>
+                    {" " + releases[selection].version.prerelease}
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <div
+                className={joinNames([
+                  styles.previousVersion,
+                  fonts.firaCode.bold,
+                ])}
+                style={{
+                  backgroundColor:
+                    selection < releases.length - 1 ? "#128f5f" : "#333333",
+                  color:
+                    selection < releases.length - 1 ? "#ffffff" : "#777777",
+                  cursor: selection < releases.length - 1 ? "pointer" : "auto",
+                }}
+                onClick={() => {
+                  if (selection < releases.length - 1) {
+                    updateVersionSelection(selection + 1);
+                  }
+                }}
+              >
+                --
+              </div>
             </div>
+            <Select
+              className={joinNames([
+                styles.downloadSelections,
+                fonts.firaCode.normal,
+              ])}
+              options={releases[selection].files.flatMap((ex, i) => {
+                return {
+                  value: i,
+                  label: ex.platform + " " + ex.architecture,
+                };
+              })}
+              defaultValue={{
+                value: 0,
+                label: [
+                  releases[selection].files[0].platform,
+                  releases[selection].files[0].architecture,
+                ].join(" "),
+              }}
+              onChange={(val) => {
+                if (val) {
+                  setDownloadSelection(val.value);
+                }
+              }}
+              styles={{
+                menuList: (styles, state) => {
+                  return {
+                    ...styles,
+                    borderRadius: "5px",
+                    fontSize: size.isVertical()
+                      ? "calc(3.5vmin)"
+                      : "calc(1.5vmin)",
+                    border: "1px solid #555555",
+                  };
+                },
+                menu: (styles, state) => {
+                  return {
+                    ...styles,
+                    borderRadius: "10px",
+                  };
+                },
+                option: (styles, state) => {
+                  return {
+                    ...styles,
+                    color: "white",
+                    fontFamily: "Fira Code",
+                    fontWeight: state.isSelected ? "bold" : "normal",
+                  };
+                },
+              }}
+              theme={{
+                colors: {
+                  primary: "#128f5f",
+                  primary75: "#128f5fcc",
+                  primary50: "#128f5f99",
+                  primary25: "#128f5f55",
+                  danger: "#ff0055",
+                  dangerLight: "#ff0055",
+                  neutral0: "#303030",
+                  neutral5: "#555555",
+                  neutral10: "#666666",
+                  neutral20: "#777777",
+                  neutral30: "#888888",
+                  neutral40: "#999999",
+                  neutral50: "#aaaaaa",
+                  neutral60: "#bbbbbb",
+                  neutral70: "#cccccc",
+                  neutral80: "#dddddd",
+                  neutral90: "#ffffff",
+                },
+                borderRadius: 5,
+                spacing: {
+                  baseUnit: 2,
+                  controlHeight: 0,
+                  menuGutter: 0,
+                },
+              }}
+            />
+            <div
+              className={joinNames([styles.releaseTitle, fonts.firaCode.bold])}
+            >
+              {releases[selection].title}
+            </div>
+            <ReactMarkdown
+              className={joinNames([
+                styles.releaseContent,
+                fonts.roboto.normal,
+              ])}
+              // eslint-disable-next-line react/no-children-prop
+              children={releases[selection].content}
+            />
+          </div>
+          <div className={styles.secondColumn}>
             <div className={styles.downloadButtons}>
               {releases[selection].files.flatMap((artefact, i) => {
                 return (
@@ -115,16 +236,6 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
                 );
               })}
             </div>
-          </div>
-          <div className={styles.secondColumn}>
-            <div className={styles.releaseTitle}>
-              {releases[selection].title}
-            </div>
-            <ReactMarkdown
-              className={styles.releaseContent}
-              // eslint-disable-next-line react/no-children-prop
-              children={releases[selection].content}
-            />
           </div>
         </div>
       ) : (
