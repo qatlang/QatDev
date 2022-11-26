@@ -4,6 +4,7 @@ import { atomone } from "@uiw/codemirror-theme-atomone";
 import styles from "styles/Playground.module.css";
 import Button from "../utils/Button";
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 
 let lineLengths: number[] = [];
 
@@ -147,7 +148,9 @@ function compileCode(
     });
 }
 
-export default function Playground() {
+export default dynamic(() => Promise.resolve(Playground), { ssr: false });
+
+function Playground() {
   let [lastRes, updateLastRes] = useState<{
     problems: { isError: boolean; message: string; range: FileRange }[];
     hasMain: boolean;
