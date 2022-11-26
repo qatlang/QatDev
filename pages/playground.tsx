@@ -5,10 +5,6 @@ import styles from "styles/Playground.module.css";
 import Button from "../utils/Button";
 import { useEffect, useRef, useState } from "react";
 
-let editorValue = `main() [
-\tsay "Hello, World!".
-]`;
-
 let lineLengths: number[] = [];
 
 function findCharsUptoLine(line: number): number {
@@ -115,6 +111,7 @@ function useSaveKey(cbFn: () => void) {
 }
 
 function compileCode(
+  codeContent: string,
   updateLastRes: React.Dispatch<
     React.SetStateAction<
       | {
@@ -133,11 +130,11 @@ function compileCode(
   >
 ) {
   updateLastRes(undefined);
-  lineLengths = editorValue.split("\n").map((lin) => lin.length);
+  lineLengths = codeContent.split("\n").map((lin) => lin.length);
   fetch("/api/compile", {
     method: "POST",
     mode: "cors",
-    body: JSON.stringify({ content: editorValue, time: "" }),
+    body: JSON.stringify({ content: codeContent, time: "" }),
     next: { revalidate: 0 },
   })
     .then(async (res) => {
@@ -159,29 +156,35 @@ export default function Playground() {
     clangTime: number;
   }>();
   useSaveKey(() => {
-    compileCode(updateLastRes);
+    compileCode(editorValue, updateLastRes);
   });
+  let editorValue = `main() [
+   \tsay "Hello, World!".
+   ]`;
   return (
     <div className={styles.playground}>
       <div className={styles.editorHeader}>
         <Button
           className={styles.runButton}
-          content="Build"
           onClick={(e) => {
-            compileCode(updateLastRes);
+            compileCode(editorValue, updateLastRes);
           }}
-        />
-        <Button
+        >
+          Build
+        </Button>
+        {/* <Button
           className={styles.resetButton}
           content="Reset"
           onClick={() => {}}
-        />
+        /> */}
       </div>
       <div className={styles.editorPanel}>
         <ReactCodeMirror
           className={styles.codeMirror}
           value={editorValue}
           basicSetup={{
+            closeBrackets: true,
+            tabSize: 4,
             indentOnInput: true,
             autocompletion: true,
             bracketMatching: true,
