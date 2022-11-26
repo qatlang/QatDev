@@ -136,7 +136,7 @@ function compileCode(
     method: "POST",
     mode: "cors",
     body: JSON.stringify({ content: codeContent, time: "" }),
-    next: { revalidate: 0 },
+    cache: "no-cache",
   })
     .then(async (res) => {
       let jsRes = await res.json();
