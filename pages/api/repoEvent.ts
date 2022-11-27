@@ -46,12 +46,12 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
                            ? '' : 's'
                         } pushed to ***${pushEvent.project.path_with_namespace}***
  ` + "\n" + pushEvent.commits.map((cm) => {
-                           return `\`${cm.id}\` **${cm.title}**
+                           return `**${cm.title}**
 ${cm.url}
-${cm.message}
-✨  ${cm.added.map(val => '*' + val + '*').join(', ')}
-✍️  ${cm.modified.map(val => '*' + val + '*').join(', ')}
-🗑️  ${cm.removed.map(val => '*' + val + '*').join(', ')}
+${cm.message}` + (cm.added.length === 0 ? "" : `
+✨  ${cm.added.map(val => '*' + val + '*').join(', ')}`) + (cm.modified.length === 0 ? "" : `
+✍️  ${cm.modified.map(val => '*' + val + '*').join(', ')}`) + (cm.removed.length === 0 ? "" : `
+🗑️  ${cm.removed.map(val => '*' + val + '*').join(', ')}`) + `
 `;
                         }).join('\n') + '\n\n'
                         + `by **${pushEvent.user_name}**`
