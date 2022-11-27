@@ -64,8 +64,14 @@ ${cm.message}
                }
                return resp.status(200).send({});
             }
+         } else {
+            console.log("Incorrect content type for request")
          }
+      } else {
+         console.log("No correct Gitlab event found")
       }
+   } else {
+      console.log("Gitlab token header not found");
    }
    return resp.status(200).send({});
 }
