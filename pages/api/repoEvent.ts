@@ -9,7 +9,7 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
    if (req.headers['x-gitlab-token'] === process.env['NEXT_PUBLIC_GITLAB_EVENT_SECRET']) {
       if (req.headers['x-gitlab-event'] === "Push Hook") {
          if (req.headers['content-type'] === 'application/json') {
-            const pushEvent = JSON.parse(req.body) as IGitlabRepositoryPushEvent;
+            const pushEvent = req.body as IGitlabRepositoryPushEvent;
             if (pushEvent.commits.length !== 0) {
                if (!discordClient) {
                   discordClient = new Client({
