@@ -48,12 +48,12 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
  ` + "\n" + pushEvent.commits.map((cm) => {
                            return `**${cm.title}**
 ${cm.url}
-${cm.message}` + (cm.added.length === 0 ? "" : `
+${cm.message.includes(cm.title) ? cm.message.split(cm.title + '\n')[1] : cm.message}` + (cm.added.length === 0 ? "" : `
 ✨  ${cm.added.map(val => '*' + val + '*').join(', ')}`) + (cm.modified.length === 0 ? "" : `
 ✍️  ${cm.modified.map(val => '*' + val + '*').join(', ')}`) + (cm.removed.length === 0 ? "" : `
 🗑️  ${cm.removed.map(val => '*' + val + '*').join(', ')}`) + `
 `;
-                        }).join('\n') + '\n\n'
+                        }).join('\n--------------------------------------\n') + '\n'
                         + `by **${pushEvent.user_name}**`
                      ).catch((e) => console.log("Error while creating the message: ", e))
                   } else {
