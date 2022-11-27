@@ -196,28 +196,26 @@
   padding-right: 1.5vmin;
   background-color: #ffbb00;
   color: black;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.2s ease-in-out, color 0.1s ease-in-out;
 }
 
 .sponsorIcon:hover {
   color: black;
   user-select: none;
-  background-color: #ffffff;
+  background-color: #cccccc;
 }
 
 .sponsorIcon:active {
-  background-color: #ffbb00;
-  color: black;
+  background-color: #616161;
 }
 
 .sponsorIconImage {
   fill: white;
+  align-self: center;
   margin-right: 1vmin;
   transition: fill 0.1s ease-in-out;
-}
-
-.sponsorIcon:active .sponsorIconImage {
-  fill: black;
 }
 
 .workStats {
@@ -228,7 +226,7 @@
   justify-content: flex-start;
   text-align: left;
   margin-right: 2vmin;
-  width: 27vmin;
+  width: 31vmin;
 }
 
 .workStatsHeader {
@@ -260,7 +258,7 @@
   align-items: flex-start;
   justify-content: center;
   height: 3.5vmin;
-  width: 13vmin;
+  width: 15vmin;
   font-size: 1em;
   text-align: left;
   border-radius: 7px 0px 0px 7px;
@@ -276,7 +274,7 @@
   align-items: flex-end;
   justify-content: center;
   height: 3.5vmin;
-  width: 14vmin;
+  width: 16vmin;
   text-align: center;
   border-radius: 0px 7px 7px 0px;
 }

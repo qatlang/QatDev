@@ -19,7 +19,7 @@ function getIconFromPlatform(platform: string): any {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch("http://localhost:5000/releases", {
+  const res = await fetch(process.env["NEXT_PUBLIC_SERVER_URL"] + "/releases", {
     method: "GET",
     mode: "cors",
     next: { revalidate: 180 },
