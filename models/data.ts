@@ -14,7 +14,7 @@ export const examples: ILanguageExample[] = [{
       ''len = 0.
       ''cap = 0.
    ]
-
+ 
    from (str val) [
       ''buffer = heap'get'<u8>(val'length).
       ''len = val'length.
@@ -23,7 +23,7 @@ export const examples: ILanguageExample[] = [{
          ''buffer[I] = val[I].
       ]
    ]
-
+ 
    copy other [
       ''buffer = heap'get'<u8>(other'len).
       ''len = other'len.
@@ -32,7 +32,7 @@ export const examples: ILanguageExample[] = [{
          ''buffer[I] = other'buffer[I].
       ]
    ]
-
+ 
    move other [
       ''buffer = other'buffer.
       ''len = other'len.
@@ -41,11 +41,11 @@ export const examples: ILanguageExample[] = [{
       other'len = 0.
       other'cap = 0.
    ]
-
+ 
    display() [
       say'only str{''buffer, ''len}.
    ]
-
+ 
    end [
       heap'put(''buffer).
       ''len = 0.
