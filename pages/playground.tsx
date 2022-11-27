@@ -135,7 +135,11 @@ function compileCode(
   fetch("/api/compile", {
     method: "POST",
     mode: "cors",
-    body: JSON.stringify({ content: codeContent, time: "" }),
+    body: JSON.stringify({
+      content: codeContent,
+      time: new Date().toISOString(),
+      confirmationKey: process.env["NEXT_PUBLIC_CONFIRMATION_KEY"],
+    }),
     cache: "no-cache",
   })
     .then(async (res) => {
@@ -162,8 +166,8 @@ function Playground() {
     compileCode(editorValue, updateLastRes);
   });
   let editorValue = `main() [
-   \tsay "Hello, World!".
-   ]`;
+\tsay "Hello, World!".
+]`;
   return (
     <div className={styles.playground}>
       <div className={styles.editorHeader}>
