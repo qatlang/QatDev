@@ -62,9 +62,10 @@ ${cm.message}
                } catch (e) {
                   console.log("Error while posting repo update: ", e);
                }
-               resp.status(200).send({});
+               return resp.status(200).send({});
             }
          }
       }
    }
+   return resp.status(200).send({});
 }
