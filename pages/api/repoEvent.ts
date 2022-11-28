@@ -44,7 +44,7 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
                      (repoChannel as TextChannel).send(
                         `${pushEvent.commits.length.toString()} commit${(pushEvent.commits.length == 1)
                            ? '' : 's'
-                        } pushed to ***${pushEvent.project.path_with_namespace}***
+                        } pushed to ***${pushEvent.project.path_with_namespace}*** :: _${pushEvent.ref}_
  ` + "\n" + pushEvent.commits.map((cm) => {
                            return `**${cm.title}**
 ${cm.url}
@@ -53,7 +53,7 @@ ${cm.message.includes(cm.title) ? cm.message.split(cm.title + '\n')[1] : cm.mess
 ✍️  ${cm.modified.map(val => '*' + val + '*').join(', ')}`) + (cm.removed.length === 0 ? "" : `
 🗑️  ${cm.removed.map(val => '*' + val + '*').join(', ')}`) + `
 `;
-                        }).join('----------------------------------------------------------------------------\n') + '\n'
+                        }).join('\n-------------------------------------------------------------------------------------------\n\n') + '\n'
                         + `by **${pushEvent.user_name}**`
                      ).catch((e) => console.log("Error while creating the message: ", e))
                   } else {
