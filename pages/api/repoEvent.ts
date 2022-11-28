@@ -47,7 +47,7 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
                         } pushed to ***${pushEvent.project.path_with_namespace}*** :: _${pushEvent.ref}_
  ` + "\n" + pushEvent.commits.map((cm) => {
                            return `**${cm.title}**
-${cm.url}
+<${cm.url}>
 ${cm.message.includes(cm.title) ? cm.message.split(cm.title + '\n')[1] : cm.message}` + (cm.added.length === 0 ? "" : `
 ✨  ${cm.added.map(val => '*' + val + '*').join(', ')}`) + (cm.modified.length === 0 ? "" : `
 ✍️  ${cm.modified.map(val => '*' + val + '*').join(', ')}`) + (cm.removed.length === 0 ? "" : `
