@@ -1,15 +1,47 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { IGitlabRepositoryPushEvent as IGitlabRepositoryEvent } from "../../models/interfaces";
-import { ChannelType, TextChannel } from 'discord.js';
-let discordConfig = require('../../models/discord');
+import { ChannelType, Client, GatewayIntentBits, TextChannel } from 'discord.js';
+import { setTimeout } from "timers/promises";
+
+let discordClient: Client | null;
 
 let allChannels: {
    repo: TextChannel | null,
 } = { repo: null };
 
+async function getDiscordClient() {
+   if (!discordClient) {
+      discordClient = new Client({
+         intents: [
+            GatewayIntentBits.Guilds,
+            GatewayIntentBits.GuildMembers,
+            GatewayIntentBits.GuildBans,
+            GatewayIntentBits.GuildEmojisAndStickers,
+            GatewayIntentBits.GuildIntegrations,
+            GatewayIntentBits.GuildWebhooks,
+            GatewayIntentBits.GuildInvites,
+            GatewayIntentBits.GuildVoiceStates,
+            GatewayIntentBits.GuildPresences,
+            GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.GuildMessageReactions,
+            GatewayIntentBits.GuildMessageTyping,
+            GatewayIntentBits.DirectMessages,
+            GatewayIntentBits.DirectMessageReactions,
+            GatewayIntentBits.DirectMessageTyping,
+            GatewayIntentBits.MessageContent,
+            GatewayIntentBits.GuildScheduledEvents,
+            GatewayIntentBits.AutoModerationConfiguration,
+            GatewayIntentBits.AutoModerationExecution
+         ]
+      });
+      discordClient.login(process.env['NEXT_PUBLIC_DISCORD_BOT_TOKEN']);
+      await setTimeout(3000);
+   }
+}
+
 async function getChannels() {
-   if (discordConfig && discordConfig.discordClient && !allChannels.repo) {
-      let repoChan = await discordConfig.discordClient.channels.fetch(process.env['NEXT_PUBLIC_DISCORD_REPO_CHANNEL']?.toString() ?? '');
+   if (discordClient && !allChannels.repo) {
+      let repoChan = await discordClient.channels.fetch(process.env['NEXT_PUBLIC_DISCORD_REPO_CHANNEL']?.toString() ?? '');
       console.log("Got repo channel")
       if (repoChan && repoChan.type === ChannelType.GuildText) {
          allChannels.repo = repoChan as TextChannel;
@@ -18,6 +50,7 @@ async function getChannels() {
 }
 
 export default async function repoEvent(req: NextApiRequest, resp: NextApiResponse) {
+   await getDiscordClient();
    await getChannels();
    if (req.headers['x-gitlab-token'] === process.env['NEXT_PUBLIC_GITLAB_EVENT_SECRET']) {
       if (req.headers['x-gitlab-event'] === "Push Hook") {
