@@ -154,8 +154,8 @@
   height: 36vh;
   background-color: #303030;
   border-radius: 1vmin;
-  padding-left: 2vmin;
   padding-right: 2vmin;
+  padding-top: 1vmin;
   color: #dddddd;
   display: flex;
   flex-direction: column;
@@ -166,8 +166,22 @@
   overflow-y: auto;
 }
 
+.codeLineRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.codeLineNumber {
+  width: 4vmin;
+  margin-right: 1vmin;
+  font-size: smaller;
+  color: #ffffff55;
+  /* background-color: #00000055; */
+}
+
 .codeLine {
-  margin-bottom: -10px;
+  margin-bottom: 0.3vmin;
 }
 
 .sponsorBlock {

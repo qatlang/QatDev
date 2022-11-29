@@ -318,7 +318,7 @@ function Examples() {
                   label: ex.title,
                 };
               })}
-              defaultValue={{ value: 0, label: "String Datatype" }}
+              defaultValue={{ value: 0, label: examples[0].title }}
               onChange={(val) => {
                 if (val) {
                   setActive(val.value);
@@ -377,9 +377,15 @@ function Examples() {
             style={{ fontSize: size.isVertical() ? "3.3vmin" : undefined }}
           >
             {examples[active].content.split("\n").map((elem, i) => (
-              <p className={styles.codeLine} key={"codeLine." + i.toString()}>
-                {elem}
-              </p>
+              <div
+                className={styles.codeLineRow}
+                key={"codeLineRow." + i.toString()}
+              >
+                <div className={styles.codeLineNumber}>
+                  {(i + 1).toString()}
+                </div>
+                <div className={styles.codeLine}>{elem}</div>
+              </div>
             ))}
           </div>
         </div>
