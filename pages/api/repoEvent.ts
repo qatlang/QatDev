@@ -63,20 +63,23 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
             try {
                if (allChannels.repo) {
                   allChannels.repo.send(
-                     `**\`${pushEvent.project.path_with_namespace}\`**  ::  \`${pushEvent.ref.split('/')[pushEvent.ref.split('/').length - 1]}\`
-${pushEvent.commits.length.toString()} incoming commit${(pushEvent.commits.length == 1)
+                     `**\`${pushEvent.project.path_with_namespace}\`**  ::  \`${pushEvent.ref.includes('/')
+                        ? pushEvent.ref.split('/')[pushEvent.ref.split('/').length - 1]
+                        : pushEvent.ref}\`
+Pushed ${pushEvent.commits.length.toString()} commit${(pushEvent.commits.length == 1)
                         ? '' : 's'}
 ` + "\n" + pushEvent.commits.map((cm) => {
                            return `**${cm.title}**
 <${cm.url}>
 ${cm.message.includes(cm.title) ? cm.message.split(cm.title + '\n')[1] : cm.message}` + (cm.added.length === 0 ? "" : `
-✨  ${cm.added.map(val => '*' + val + '*').join(', ')}`) + (cm.modified.length === 0 ? "" : `
-✍️  ${cm.modified.map(val => '*' + val + '*').join(', ')}`) + (cm.removed.length === 0 ? "" : `
-🗑️  ${cm.removed.map(val => '*' + val + '*').join(', ')}`) + `
+> ✨  ${cm.added.map(val => '*' + val + '*').join(', ')}`) + (cm.modified.length === 0 ? "" : `
+> ✍️  ${cm.modified.map(val => '*' + val + '*').join(', ')}`) + (cm.removed.length === 0 ? "" : `
+> 🗑️  ${cm.removed.map(val => '*' + val + '*').join(', ')}`) + `
 `;
-                        }).join('\n-------------------------------------------------------------------------------------------\n\n') + '\n'
+                        }).join('--------------------------------------------------------------------------------------------------\n') + '\n'
                      + `by **${pushEvent.user_name}**
-
+ 
+...  ശുഭം  ...
 `
                   ).catch((e) => console.log("Error while creating the message: ", e))
                } else {
