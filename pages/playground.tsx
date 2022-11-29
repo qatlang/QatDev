@@ -165,9 +165,9 @@ function Playground() {
   useSaveKey(() => {
     compileCode(editorValue, updateLastRes);
   });
-  let editorValue = `main() [
+  let [editorValue, setEditorValue] = useState(`main() [
 \tsay "Hello, World!".
-]`;
+]`);
   return (
     <div className={styles.playground}>
       <div className={styles.editorHeader}>
@@ -231,7 +231,7 @@ function Playground() {
             }),
           ]}
           onChange={(val) => {
-            editorValue = val;
+            setEditorValue(val);
           }}
         />
         {lastRes && (
