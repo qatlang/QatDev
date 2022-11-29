@@ -1,9 +1,29 @@
 import { type ILanguageExample } from "./interfaces";
 
-export const examples: ILanguageExample[] = [{
-   title: 'String Datatype',
-   content:
-      `type String {
+export const examples: ILanguageExample[] = [
+   {
+      title: 'Hello world', content:
+         `main() [
+   say "Hello, World!".
+]`
+   },
+   {
+      title: 'Receive CLI arguments',
+      content:
+         `main -> i32
+(#[+ cstring ?] args) [
+   loop (args'length) : new I [
+      say "Argument at ", I,
+          " is: ", args[I].
+   ]
+   give 0.
+]
+ `
+   },
+   {
+      title: 'String Datatype',
+      content:
+         `type String {
    buffer :: #[+ var u8 'heap].
    len    :: usize.
    cap    :: usize.
@@ -54,13 +74,7 @@ export const examples: ILanguageExample[] = [{
 }
  
 `
-},
-{
-   title: 'Hello world', content:
-      `main() [
-   say "Hello, World!".
-]`
-},
+   },
 ];
 
 export const features: string =
