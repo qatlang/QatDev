@@ -1,4 +1,5 @@
 export interface ILanguageRelease {
+   releaseID: string,
    version: {
       value: string,
       isPrerelease: boolean,
@@ -7,6 +8,7 @@ export interface ILanguageRelease {
    title: string,
    content: string,
    files: {
+      id: string,
       platform: string,
       architecture: string,
       path: string,
