@@ -214,6 +214,23 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
                     key={"downloadButton." + i.toString()}
                     className={styles.downloadButton}
                     onClick={() => {
+                      console.log("Downloading platform: ", artefact.platform);
+                      fetch("/api/downloadedRelease", {
+                        method: "POST",
+                        mode: "cors",
+                        body: JSON.stringify({
+                          releaseID: releases[selection].releaseID,
+                          confirmationKey:
+                            process.env["NEXT_PUBLIC_CONFIRMATION_KEY"],
+                          platformID: artefact.id,
+                        }),
+                        cache: "no-cache",
+                      }).catch((e) => {
+                        console.log(
+                          "Error while incrementing download count",
+                          e
+                        );
+                      });
                       window.open(artefact.path, "_blank");
                     }}
                   >
