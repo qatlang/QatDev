@@ -105,12 +105,16 @@ Checkout SHA \`${tagEvent.checkout_sha}\``);
       } else {
          console.log("No correct Gitlab event found")
       }
-   } else if (req.headers['X-Github-Event'] === "push") {
-      if ((req.headers['X-Hub-Signature-256'] ?? '').includes('sha256=')) {
+   } else if (req.headers['x-github-event'] === "push") {
+      if ((req.headers['x-hub-signature-256'] ?? '').includes('sha256=')) {
          let bodyBuffer = Buffer.from(req.body, 'utf8');
          let hmac = crypto.createHmac('sha256', process.env['NEXT_PUBLIC_GITHUB_EVENT_SECRET'] ?? '');
          let digest = hmac.update(bodyBuffer).digest('base64');
-         if (digest === ((req.headers['X-Hub-Signature-256']! as string).substring(7))) {
+         if (digest === ((req.headers['x-hub-signature-256']! as string).substring(7))) {
+            if (req.headers['content-type'] !== "application/json") {
+               console.log("Content type is not JSON");
+               return resp.status(406).send({});
+            }
             let pushEvent = JSON.parse(req.body) as IGithubPushEvent;
             if (pushEvent.commits.length !== 0 && (pushEvent.ref.split('/')[1] !== 'tags')) {
                try {
