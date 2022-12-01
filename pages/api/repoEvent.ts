@@ -3,6 +3,7 @@ import { IGithubPushEvent, IGitlabPushEvent } from "../../models/interfaces";
 import { ChannelType, Client, GatewayIntentBits, TextChannel } from 'discord.js';
 import { setTimeout } from "timers/promises";
 import * as crypto from 'crypto';
+import { buffer } from 'micro';
 
 let discordClient: Client | null;
 
@@ -107,15 +108,15 @@ Checkout SHA \`${tagEvent.checkout_sha}\``);
       }
    } else if (req.headers['x-github-event'] === "push") {
       if ((req.headers['x-hub-signature-256'] ?? '').includes('sha256=')) {
-         let bodyBuffer = Buffer.from(req.body, 'utf8');
+         const bodyBuffer = await buffer(req.body);
          let hmac = crypto.createHmac('sha256', process.env['NEXT_PUBLIC_GITHUB_EVENT_SECRET'] ?? '');
-         let digest = hmac.update(bodyBuffer).digest('base64');
+         const digest = hmac.update(bodyBuffer).digest('base64');
          if (digest === ((req.headers['x-hub-signature-256']! as string).substring(7))) {
             if (req.headers['content-type'] !== "application/json") {
                console.log("Content type is not JSON");
                return resp.status(406).send({});
             }
-            let pushEvent = JSON.parse(req.body) as IGithubPushEvent;
+            const pushEvent = req.body as IGithubPushEvent;
             if (pushEvent.commits.length !== 0 && (pushEvent.ref.split('/')[1] !== 'tags')) {
                try {
                   if (allChannels.repo) {
