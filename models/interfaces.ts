@@ -52,7 +52,7 @@ export interface ITimeStats {
    docs: IProjectStats,
 }
 
-export interface IGitlabRepositoryPushEvent {
+export interface IGitlabPushEvent {
    object_kind: string,
    event_name: string,
    before: string,
@@ -107,4 +107,51 @@ export interface IGitlabRepositoryPushEvent {
       removed: string[]
    }[],
    total_commits_count: number
+}
+
+export interface IGithubCommit {
+   author: {
+      date?: string
+      email: string,
+      name: string,
+      username?: string,
+   },
+   committer: {
+      date?: string
+      email: string,
+      name: string,
+      username?: string,
+   },
+   distinct: boolean,
+   id: string,
+   message: string,
+   added?: string[],
+   modified?: string[],
+   removed?: string[],
+   timestamp: string,
+   tree_id: string,
+   url: string,
+}
+
+export interface IGithubPushEvent {
+   after: string,
+   base_ref: string | null,
+   before: string,
+   commits: IGithubCommit[],
+   compare: string,
+   created: boolean,
+   deleted: string,
+   forced: boolean,
+   head_commit: IGithubCommit | null,
+   installation: any,
+   organisation: any,
+   pusher: {
+      date?: string,
+      email?: string | null,
+      name: string,
+      username?: string,
+   },
+   ref: string,
+   repository: { full_name: string, private: boolean, html_url: string },
+   sender?: any,
 }
