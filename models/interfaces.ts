@@ -9,11 +9,28 @@ export interface ILanguageRelease {
    content: string,
    files: {
       id: string,
+      downloads: number,
       platform: string,
       architecture: string,
       path: string,
    }[],
    index: number,
+   createdAt: string,
+}
+
+export interface ILanguagePublicRelease {
+   version: {
+      value: string,
+      isPrerelease: boolean,
+      prerelease: string
+   },
+   title: string,
+   content: string,
+   files: {
+      platform: string,
+      architecture: string,
+      path: string,
+   }[],
    createdAt: string,
 }
 
