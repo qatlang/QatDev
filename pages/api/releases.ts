@@ -2,11 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function ReleasesListHandler(req: NextApiRequest, res: NextApiResponse) {
    try {
-      const body = await JSON.parse(req.body) as { content: string, time: string, confirmationKey: string };
-      const result = await fetch(process.env['NEXT_PUBLIC_SERVER_URL'] + "/compile", {
-         method: "POST",
+      const result = await fetch(process.env['NEXT_PUBLIC_SERVER_URL'] + "/releases", {
+         method: "GET",
          mode: "cors",
-         body: JSON.stringify(body),
          cache: 'no-cache',
       });
       return res.status(200).json(await result.json());
