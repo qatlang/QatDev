@@ -5,7 +5,7 @@ import styles from "styles/Downloads.module.css";
 import WindowsIcon from "public/windows_icon.png";
 import LinuxIcon from "public/linux_icon.png";
 import Image from "next/image";
-import fonts from "../utils/fonts";
+import fonts, { FontList } from "../utils/fonts";
 import joinNames from "../utils/joinNames";
 import Select from "react-select";
 import useWindowSize from "../utils/WindowSize";
@@ -60,7 +60,10 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
           <div className={styles.firstColumn}>
             <div className={styles.releaseSwitcher}>
               <div
-                className={joinNames([styles.nextVersion, fonts.firaCode.bold])}
+                className={joinNames([
+                  styles.nextVersion,
+                  fonts.jetbrainsMono.bold,
+                ])}
                 style={{
                   backgroundColor: selection > 0 ? "#128f5f" : "#333333",
                   color: selection > 0 ? "#ffffff" : "#777777",
@@ -97,7 +100,7 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
               <div
                 className={joinNames([
                   styles.previousVersion,
-                  fonts.firaCode.bold,
+                  fonts.jetbrainsMono.bold,
                 ])}
                 style={{
                   backgroundColor:
@@ -118,7 +121,7 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
             <Select
               className={joinNames([
                 styles.downloadSelections,
-                fonts.firaCode.normal,
+                fonts.jetbrainsMono.normal,
               ])}
               options={releases[selection].files.flatMap((ex, i) => {
                 return {
@@ -159,7 +162,7 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
                   return {
                     ...styles,
                     color: "white",
-                    fontFamily: "Fira Code",
+                    fontFamily: FontList.jetbrainsMono,
                     fontWeight: state.isSelected ? "bold" : "normal",
                   };
                 },
@@ -193,7 +196,10 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
               }}
             />
             <div
-              className={joinNames([styles.releaseTitle, fonts.firaCode.bold])}
+              className={joinNames([
+                styles.releaseTitle,
+                fonts.jetbrainsMono.bold,
+              ])}
             >
               {releases[selection].title}
             </div>

@@ -70,7 +70,7 @@
   display: flex;
   flex-direction: column;
   color: #ffffff;
-  font-family: "Fira Code";
+  font-family: "JetBrains Mono";
   text-align: left;
   margin-left: 3vw;
   margin-right: 2vw;
@@ -94,7 +94,7 @@
 }
 
 .markdown code {
-  font-family: "Fira Code", "Courier New" !important;
+  font-family: "JetBrains Mono", "Courier New" !important;
   font-size: smaller;
   padding-top: 1px;
   padding-bottom: 1px;

@@ -36,7 +36,7 @@ function LangDescription() {
   const win = useWindowSize();
   return (
     <div
-      className={joinNames([styles.description, fonts.firaCode.normal])}
+      className={joinNames([styles.description, fonts.jetbrainsMono.normal])}
       style={{ fontSize: valueIf(win.isVertical(), "3.5vmin") }}
     >
       {
@@ -63,7 +63,7 @@ function ProjectTimings(props: { stats: ITimeStats }) {
     );
   };
   return (
-    <div className={joinNames([styles.workStats, fonts.firaCode.normal])}>
+    <div className={joinNames([styles.workStats, fonts.jetbrainsMono.normal])}>
       <div className={styles.workStatsHeader}>
         <svg
           className="workStatsIcon"
@@ -141,7 +141,7 @@ export default function Home() {
             <LangDescription />
           </OnlyIf>
           <div
-            className={joinNames([styles.prompts, fonts.firaCode.bold])}
+            className={joinNames([styles.prompts, fonts.jetbrainsMono.bold])}
             style={{
               paddingLeft: valueIf(win.isVertical(), "3vmin"),
             }}
@@ -271,7 +271,12 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.sponsorBlock}>
-        <div className={joinNames([styles.sponsorHeader, fonts.firaCode.bold])}>
+        <div
+          className={joinNames([
+            styles.sponsorHeader,
+            fonts.jetbrainsMono.bold,
+          ])}
+        >
           <OnlyIf If={compilerStats != null}>
             <ProjectTimings stats={compilerStats!} />
           </OnlyIf>
@@ -280,7 +285,12 @@ export default function Home() {
       </div>
       <div className={styles.secondSection}>
         <div className={styles.featuresBlock}>
-          <p className={joinNames([styles.featuresTitle, fonts.firaCode.bold])}>
+          <p
+            className={joinNames([
+              styles.featuresTitle,
+              fonts.jetbrainsMono.bold,
+            ])}
+          >
             Overview
           </p>
           <div className={styles.featuresContent}>
@@ -302,10 +312,15 @@ function Examples() {
   return (
     <>
       {
-        <div className={joinNames([styles.example, fonts.firaCode.normal])}>
+        <div
+          className={joinNames([styles.example, fonts.jetbrainsMono.normal])}
+        >
           <div className={styles.exampleHeader}>
             <p
-              className={joinNames([styles.examplesTitle, fonts.firaCode.bold])}
+              className={joinNames([
+                styles.examplesTitle,
+                fonts.jetbrainsMono.bold,
+              ])}
               style={{ fontSize: size.isVertical() ? "3.5vmin" : undefined }}
             >
               Examples

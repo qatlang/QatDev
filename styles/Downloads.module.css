@@ -56,14 +56,14 @@
 }
 
 .releaseVersion {
-  font-family: "Fira Code";
+  font-family: "JetBrains Mono";
   font-weight: bold;
   width: 100%;
   font-size: 1.3em;
 }
 
 .releasePrerelease {
-  font-family: "Fira Code";
+  font-family: "JetBrains Mono";
   font-size: 0.8rem;
   margin-left: 10px;
   padding-top: 5px;
@@ -97,7 +97,7 @@
 }
 
 .releaseContent code {
-  font-family: "Fira Code", "Courier New" !important;
+  font-family: "JetBrains Mono", "Courier New" !important;
   font-size: 1.5vmin;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -128,7 +128,7 @@
   padding-right: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-family: "Fira Code";
+  font-family: "JetBrains Mono";
   background-color: rgb(18, 143, 95);
   border-radius: 3px;
   margin-bottom: 7px;

@@ -168,7 +168,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Link
             className={joinNames([
               router.asPath == "/" ? styles.navLinkActive : styles.navLink,
-              fonts.firaCode.bold,
+              fonts.jetbrainsMono.bold,
             ])}
             style={{ fontSize: valueIf(win.isVertical(), "2.5vmin") }}
             href="/"
@@ -176,7 +176,7 @@ export default function App({ Component, pageProps }: AppProps) {
             Home
           </Link>
           <div
-            className={joinNames([styles.navLink, fonts.firaCode.bold])}
+            className={joinNames([styles.navLink, fonts.jetbrainsMono.bold])}
             style={{ fontSize: valueIf(win.isVertical(), "2.5vmin") }}
             onClick={() => {
               if (window) {
@@ -195,7 +195,7 @@ export default function App({ Component, pageProps }: AppProps) {
               router.asPath.includes("/playground")
                 ? styles.navLinkActive
                 : styles.navLink,
-              fonts.firaCode.bold,
+              fonts.jetbrainsMono.bold,
             ])}
             style={{ fontSize: valueIf(win.isVertical(), "2.5vmin") }}
             href="/playground"
@@ -207,7 +207,7 @@ export default function App({ Component, pageProps }: AppProps) {
               router.asPath.includes("/downloads")
                 ? styles.navLinkActive
                 : styles.navLink,
-              fonts.firaCode.bold,
+              fonts.jetbrainsMono.bold,
             ])}
             style={{ fontSize: valueIf(win.isVertical(), "2.5vmin") }}
             href="/downloads"
