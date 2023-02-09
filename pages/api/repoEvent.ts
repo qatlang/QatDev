@@ -58,12 +58,12 @@ function splitCommitMessage(total: string): { title: string, message: string } {
 		let i = 0;
 		for (; i < total.length; i++) {
 			if ((total.at(i) === '\n') || ((total.length > (i + 1)) && (total.at(i + 1) === '\n'))) {
-				i = i + 1;
+				i++;
 				break;
 			}
 		}
-		title = title.split('\n')[0];
-		message = title.substring(i + 1);
+		title = total.split('\n\n')[0];
+		message = total.substring(i + 1);
 	}
 	return { title, message };
 }
