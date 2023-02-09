@@ -117,7 +117,7 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
 			const pushEvent = req.body as IGitlabPushEvent;
 			if (pushEvent.commits.length !== 0) {
 				try {
-					fetch('/newCommits', {
+					fetch('/api/newCommits', {
 						method: 'POST', cache: 'no-cache', mode: 'cors',
 						body: JSON.stringify(gitlabCommitsToPushedCommits(pushEvent))
 					});
@@ -176,7 +176,7 @@ Checkout SHA \`${tagEvent.checkout_sha}\``);
 				}
 				const pushEvent = req.body as IGithubPushEvent;
 				if (pushEvent.commits.length !== 0 && (pushEvent.ref.split('/')[1] !== 'tags')) {
-					fetch('/newCommits', {
+					fetch('/api/newCommits', {
 						method: 'POST', cache: 'no-cache', mode: 'cors',
 						body: JSON.stringify(githubCommitsToPushedCommits(pushEvent))
 					});
