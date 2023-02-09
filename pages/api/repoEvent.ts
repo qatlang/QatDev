@@ -3,6 +3,7 @@ import { IGithubPushEvent, IGitlabPushEvent, IPushedCommit } from "../../models/
 import { ChannelType, Client, GatewayIntentBits, TextChannel } from 'discord.js';
 import { setTimeout } from "timers/promises";
 import * as crypto from 'crypto';
+import uploadNewCommits from "../../utils/newCommits";
 
 let discordClient: Client | null;
 
@@ -117,10 +118,7 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
 			const pushEvent = req.body as IGitlabPushEvent;
 			if (pushEvent.commits.length !== 0) {
 				try {
-					fetch('/api/newCommits', {
-						method: 'POST', cache: 'no-cache', mode: 'cors',
-						body: JSON.stringify(gitlabCommitsToPushedCommits(pushEvent))
-					});
+					uploadNewCommits(gitlabCommitsToPushedCommits(pushEvent))
 					if (allChannels.repo) {
 						allChannels.repo.send(
 							`\`Gitlab\` **\`${pushEvent.project.path_with_namespace}\`**  ::  \`${pushEvent.ref.includes('/')
@@ -176,10 +174,7 @@ Checkout SHA \`${tagEvent.checkout_sha}\``);
 				}
 				const pushEvent = req.body as IGithubPushEvent;
 				if (pushEvent.commits.length !== 0 && (pushEvent.ref.split('/')[1] !== 'tags')) {
-					fetch('/api/newCommits', {
-						method: 'POST', cache: 'no-cache', mode: 'cors',
-						body: JSON.stringify(githubCommitsToPushedCommits(pushEvent))
-					});
+					uploadNewCommits(githubCommitsToPushedCommits(pushEvent))
 					try {
 						if (allChannels.repo) {
 							allChannels.repo.send(
