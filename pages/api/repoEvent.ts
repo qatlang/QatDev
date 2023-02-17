@@ -4,6 +4,7 @@ import { ChannelType, Client, GatewayIntentBits, TextChannel } from 'discord.js'
 import { setTimeout } from "timers/promises";
 import * as crypto from 'crypto';
 import uploadNewCommits from "../../utils/newCommits";
+import { Env } from "../../models/env";
 
 let discordClient: Client | null;
 
@@ -36,14 +37,14 @@ async function getDiscordClient() {
 				GatewayIntentBits.AutoModerationExecution
 			]
 		});
-		discordClient.login(process.env['NEXT_PUBLIC_DISCORD_BOT_TOKEN']);
+		discordClient.login(Env.discordBotToken());
 		await setTimeout(3000);
 	}
 }
 
 async function getChannels() {
 	if (discordClient && !allChannels.repo) {
-		let repoChan = await discordClient.channels.fetch(process.env['NEXT_PUBLIC_DISCORD_REPO_CHANNEL']?.toString() ?? '');
+		let repoChan = await discordClient.channels.fetch(Env.discordRepoChannel());
 		console.log("Got repo channel")
 		if (repoChan && repoChan.type === ChannelType.GuildText) {
 			allChannels.repo = repoChan as TextChannel;
@@ -73,7 +74,7 @@ function gitlabCommitsToPushedCommits(event: IGitlabPushEvent): IPushedCommit[] 
 	for (let i = 0; i < event.commits.length; i++) {
 		let { title, message } = splitCommitMessage(event.commits[i].message);
 		result.push({
-			confirmationKey: process.env['NEXT_PUBLIC_CONFIRMATION_KEY'] ?? '',
+			confirmationKey: Env.confirmationKey(),
 			author: { name: event.user_name, email: event.user_email },
 			id: crypto.randomUUID().toString(),
 			title,
@@ -92,7 +93,7 @@ function githubCommitsToPushedCommits(event: IGithubPushEvent): IPushedCommit[] 
 	for (let i = 0; i < event.commits.length; i++) {
 		let { title, message } = splitCommitMessage(event.commits[i].message);
 		result.push({
-			confirmationKey: process.env['NEXT_PUBLIC_CONFIRMATION_KEY'] ?? '',
+			confirmationKey: Env.confirmationKey(),
 			author: { name: event.pusher.name, email: event.pusher.email ?? undefined },
 			id: crypto.randomUUID().toString(),
 			title,
@@ -109,7 +110,7 @@ function githubCommitsToPushedCommits(event: IGithubPushEvent): IPushedCommit[] 
 export default async function repoEvent(req: NextApiRequest, resp: NextApiResponse) {
 	await getDiscordClient();
 	await getChannels();
-	if (req.headers['x-gitlab-token'] === process.env['NEXT_PUBLIC_GITLAB_EVENT_SECRET']) {
+	if (req.headers['x-gitlab-token'] === Env.gitlabEventSecret()) {
 		if (req.headers['x-gitlab-event'] === "Push Hook") {
 			if (req.headers['content-type'] !== 'application/json') {
 				console.log("Incorrect content type for request");
@@ -164,7 +165,7 @@ Checkout SHA \`${tagEvent.checkout_sha}\``);
 		}
 	} else if (req.headers['x-github-event'] === "push") {
 		if ((req.headers['x-hub-signature-256'] ?? '').includes('sha256=')) {
-			let hmac = crypto.createHmac('sha256', process.env['NEXT_PUBLIC_GITHUB_EVENT_SECRET'] ?? '');
+			let hmac = crypto.createHmac('sha256', Env.githubEventSecret());
 			const digest = hmac.update(JSON.stringify(req.body)).digest('hex');
 			if (digest === ((req.headers['x-hub-signature-256']! as string).substring(7))) {
 				console.log("Signature matches");

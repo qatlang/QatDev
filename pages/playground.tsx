@@ -5,6 +5,7 @@ import styles from "styles/Playground.module.css";
 import Button from "../utils/Button";
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { Env } from "../models/env";
 
 let lineLengths: number[] = [];
 
@@ -138,7 +139,7 @@ function compileCode(
     body: JSON.stringify({
       content: codeContent,
       time: new Date().toISOString(),
-      confirmationKey: process.env["NEXT_PUBLIC_CONFIRMATION_KEY"],
+      confirmationKey: Env.confirmationKey(),
     }),
     cache: "no-cache",
   })

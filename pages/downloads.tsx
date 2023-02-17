@@ -9,6 +9,7 @@ import fonts, { FontList } from "../utils/fonts";
 import joinNames from "../utils/joinNames";
 import Select from "react-select";
 import useWindowSize from "../utils/WindowSize";
+import { Env } from "../models/env";
 
 function getIconFromPlatform(platform: string): any {
   if (platform === "windows") {
@@ -19,7 +20,7 @@ function getIconFromPlatform(platform: string): any {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(process.env["NEXT_PUBLIC_SERVER_URL"] + "/releases", {
+  const res = await fetch(Env.serverUrl() + "/releases", {
     method: "GET",
     mode: "cors",
     next: { revalidate: 180 },
@@ -226,8 +227,7 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
                         mode: "cors",
                         body: JSON.stringify({
                           releaseID: releases[selection].releaseID,
-                          confirmationKey:
-                            process.env["NEXT_PUBLIC_CONFIRMATION_KEY"],
+                          confirmationKey: Env.confirmationKey(),
                           platformID: artefact.id,
                         }),
                         cache: "no-cache",

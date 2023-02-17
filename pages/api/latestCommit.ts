@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { Env } from "../../models/env";
 
-export default async function DownloadedReleaseHandler(req: NextApiRequest, res: NextApiResponse) {
+export default async function LatestCommitHandler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		if (req.method === 'GET') {
-			const result = await fetch(process.env['NEXT_PUBLIC_SERVER_URL'] + "/latestCommit", {
+			const result = await fetch(Env.serverUrl() + "/latestCommit", {
 				method: "GET",
 				mode: "cors",
 				cache: 'no-cache',
