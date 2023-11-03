@@ -11,7 +11,7 @@ export interface ILanguageRelease {
 		id: string,
 		downloads: number,
 		platform: string,
-		architecture: string,
+		target: string,
 		path: string,
 	}[],
 	index: number,
@@ -28,7 +28,7 @@ export interface ILanguagePublicRelease {
 	content: string,
 	files: {
 		platform: string,
-		architecture: string,
+		target: string,
 		path: string,
 	}[],
 	createdAt: string,
@@ -67,6 +67,7 @@ export interface ITimeStats {
 	server: IProjectStats,
 	vscode: IProjectStats,
 	docs: IProjectStats,
+	tom: IProjectStats,
 }
 
 export interface IGitlabPushEvent {

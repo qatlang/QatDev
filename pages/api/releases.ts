@@ -18,7 +18,7 @@ export default async function ReleasesListHandler(req: NextApiRequest, res: Next
 					files: r.files.map((f) => {
 						return {
 							platform: f.platform,
-							architecture: f.target,
+							target: f.target,
 							path: f.path,
 						}
 					}),
