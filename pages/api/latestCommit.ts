@@ -14,6 +14,6 @@ export default async function LatestCommitHandler(req: NextApiRequest, res: Next
 			return res.status(405).json({});
 		}
 	} catch (e) {
-		return res.status(200).json({});
+		return res.status(500).json({});
 	}
 }

@@ -18,7 +18,7 @@ export default async function ReleasesListHandler(req: NextApiRequest, res: Next
 					files: r.files.map((f) => {
 						return {
 							platform: f.platform,
-							architecture: f.architecture,
+							architecture: f.target,
 							path: f.path,
 						}
 					}),
@@ -27,6 +27,6 @@ export default async function ReleasesListHandler(req: NextApiRequest, res: Next
 			})
 		});
 	} catch (e) {
-		return res.status(200).json({});
+		return res.status(500).json({});
 	}
 }

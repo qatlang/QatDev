@@ -16,6 +16,6 @@ export default async function DownloadedReleaseHandler(req: NextApiRequest, res:
 			return res.status(406).json({});
 		}
 	} catch (e) {
-		return res.status(200).json({});
+		return res.status(500).json({});
 	}
 }

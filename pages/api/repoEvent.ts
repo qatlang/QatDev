@@ -45,7 +45,7 @@ async function getDiscordClient() {
 async function getChannels() {
 	if (discordClient && !allChannels.repo) {
 		let repoChan = await discordClient.channels.fetch(Env.discordRepoChannel());
-		console.log("Got repo channel")
+		console.debug("Got repo channel")
 		if (repoChan && repoChan.type === ChannelType.GuildText) {
 			allChannels.repo = repoChan as TextChannel;
 		}
@@ -113,7 +113,7 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
 	if (req.headers['x-gitlab-token'] === Env.gitlabEventSecret()) {
 		if (req.headers['x-gitlab-event'] === "Push Hook") {
 			if (req.headers['content-type'] !== 'application/json') {
-				console.log("Incorrect content type for request");
+				console.error("Incorrect content type for request");
 				return resp.status(406).send({});
 			}
 			const pushEvent = req.body as IGitlabPushEvent;
@@ -140,17 +140,17 @@ ${cm.message.includes(cm.title) ? cm.message.split(cm.title + '\n')[1] : cm.mess
  
 ......
 `
-						).catch((e) => console.log("Error while creating the message: ", e))
+						).catch((e) => console.error("Error while creating the message: ", e))
 					} else {
-						console.log("Repo channel could not be retrieved");
+						console.error("Repo channel could not be retrieved");
 					}
 				} catch (e) {
-					console.log("Error while posting repo update: ", e);
+					console.error("Error while posting repo update: ", e);
 				}
 			}
 		} else if (req.headers['x-gitlab-event'] == 'Tag Push Hook') {
 			if (req.headers['content-type'] !== 'application/json') {
-				console.log("Incorrect content type for request");
+				console.error("Incorrect content type for request");
 				return resp.status(406).send({});
 			}
 			if (allChannels.repo) {
@@ -161,16 +161,16 @@ Newly created tag ***${tagEvent.ref.split('/')[tagEvent.ref.split('/').length - 
 Checkout SHA \`${tagEvent.checkout_sha}\``);
 			}
 		} else {
-			console.log("No correct Gitlab event found")
+			console.error("No correct Gitlab event found")
 		}
 	} else if (req.headers['x-github-event'] === "push") {
 		if ((req.headers['x-hub-signature-256'] ?? '').includes('sha256=')) {
 			let hmac = crypto.createHmac('sha256', Env.githubEventSecret());
 			const digest = hmac.update(JSON.stringify(req.body)).digest('hex');
 			if (digest === ((req.headers['x-hub-signature-256']! as string).substring(7))) {
-				console.log("Signature matches");
+				console.debug("Signature matches");
 				if (req.headers['content-type'] !== "application/json") {
-					console.log("Content type is not JSON");
+					console.error("Content type is not JSON");
 					return resp.status(406).send({});
 				}
 				const pushEvent = req.body as IGithubPushEvent;
@@ -198,13 +198,13 @@ Checkout SHA \`${tagEvent.checkout_sha}\``);
     
    ......
    `
-							).catch((e) => console.log("Error while creating the message: ", e))
+							).catch((e) => console.error("Error while creating the message: ", e))
 						} else {
-							console.log("Repo channel could not be retrieved");
+							console.error("Repo channel could not be retrieved");
 							return resp.status(500).send({});
 						}
 					} catch (e) {
-						console.log("Error while posting repo update: ", e);
+						console.error("Error while posting repo update: ", e);
 						return resp.status(500).send({});
 					}
 				} else if (pushEvent.ref.split('/')[1] === 'tags') {
@@ -221,15 +221,15 @@ Checkout SHA \`${tagEvent.checkout_sha}\``);
 					return resp.status(406).send({});
 				}
 			} else {
-				console.log("Signature does not match")
+				console.error("Signature does not match")
 				return resp.status(400).send({});
 			}
 		} else {
-			console.log("No signature found in headers")
+			console.error("No signature found in headers")
 			return resp.status(400).send({});
 		}
 	} else {
-		console.log("No expected headers found");
+		console.error("No expected headers found");
 		return resp.status(400).send({});
 	}
 	return resp.status(200).send({});
