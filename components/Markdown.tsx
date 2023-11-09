@@ -1,3 +1,4 @@
+import { Ace } from "ace-builds";
 import ReactMarkdown from "react-markdown";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -5,27 +6,33 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Markdown(props: {
   className?: string;
   children: string;
+  editor?: Ace.Editor;
 }) {
   return (
     <ReactMarkdown
-      className={props.className}
+      className={props.className + " text-left"}
       components={{
-        ul: (value) => <div className="my-4">{value.children}</div>,
-        li: (value) => <div className="my-4">• {value.children}</div>,
+        ul: (value) => <ul className="my-4">{value.children}</ul>,
+        li: (value) => <li className="my-4">• {value.children}</li>,
+        p: (value) => <p className="my-4">{value.children}</p>,
         code: (value) =>
           value.inline ? (
             <pre className="inline bg-[#3d434d] rounded-md px-1">
               {value.children}
             </pre>
           ) : (
-            <div className="relative block bg-[#2b2f36] p-3 mb-3 rounded-lg border-2 border-solid transition-colors border-[#555555] hover:border-styleGreen">
+            <div className="relative text-left block overflow-x-auto bg-[#2b2f36] p-3 rounded-lg border-2 border-solid transition-colors border-[#555555] hover:border-styleGreen">
               {value.children}
               <ToastContainer />
               <div
                 className="select-none transition-colors absolute bottom-1 right-1 px-2 py-1 bg-styleGreen rounded-md cursor-pointer hover:bg-[#2a6b52] active:bg-[#235844]"
                 onClick={async () => {
                   try {
-                    if (navigator.clipboard && window.isSecureContext) {
+                    if (
+                      navigator &&
+                      navigator.clipboard &&
+                      window.isSecureContext
+                    ) {
                       await navigator.clipboard.writeText(
                         value.children.map((c) => c?.toString()).join()
                       );
