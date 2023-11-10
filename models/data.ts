@@ -74,3 +74,46 @@ export const examples: ILanguageExample[] = [
 `
 	},
 ];
+
+export const languageFeatures = [
+	{
+		title: 'RAII',
+		content: `_**R**esource **A**cquisition **I**s **I**nitialisation_ is a principle in which acquiring/creating a resource initialises it and it is automatically destroyed when the scope/lifetime of the resource ends. In \`qat\`, this is achieved via Constructors and Destructors.`
+	},
+	{
+		title: 'Mix types (Sum types)',
+		content: 'What if you want a number type that could either be an integer or a float? You use `mix` type in qat. This is how polymorphism is achieved in `qat`. You can mix many types into a single type.',
+	},
+	{
+		title: 'Smarter Pointers',
+		content: `Pointers in qat introduces the concept of ownership. There are anonymous pointers where you don't worry about the owner of the pointer.`
+	},
+	{
+		title: 'No Garbage Collection. No throttling',
+		content: 'RAII, Pointer ownership, Copy & Move semantics and other key features of the language makes it possible for the language to work without garbage collection. This means that your programs are never throttled by the language runtime'
+	},
+	{
+		title: 'Pattern Matching',
+		content: '`qat` makes it easy for you to work with mix types by enabling you to do pattern matching over it. So essentially you can `mix` and `match` data. This also makes it easy to do string comparisons and have optimisations to remove unused branches of code when the values are prerun expressions'
+	},
+	{
+		title: 'Generic Types (on steroids)',
+		content: 'Normal types (classes) and type definitions in `qat` can be generic types. You can input types and even **prerun expressions** to instantiate different variants of the generic type. In `qat` packing of data was actively considered during design to support memory constrained environments, so you can tightly pack the generic variant types'
+	},
+	{
+		title: 'Prerun Expressions (constexpr)',
+		content: 'Const-Expression is a major innovation in Modern C++ that enables the compiler to execute logic at compile time rather than during runtime. However in C++, this feature is significantly limited as it can be used only with some primitive datatypes. `qat` takes the next step on this concept and allows you to use any type in prerun expressions'
+	},
+	{
+		title: 'Value Semantics',
+		content: `Value Semantics allows the programmer to use/manage data whose lifetime is not bound to an address. This is also used in conjunction with copy & move semantics.`
+	},
+	{
+		title: 'Copy & Move semantics',
+		content: `Copy Constructor, Move Constructor, Copy Assignment & Move Assignment. This makes it easy to manage duplication/ownership of data. Both copy & move occurs via references, and in general, is done before an instance is passed to a different context.`
+	},
+	{
+		title: 'References',
+		content: `One major advantage of references in \`C++\` is the convenience you get with it, especially when you use operators. References also makes it possible to easily use data without making copies/moves. You get all that convenience in \`qat\`. References are meant to be used when the programmer is sure that the instance referred to outlives the current context of execution.`
+	},
+];
