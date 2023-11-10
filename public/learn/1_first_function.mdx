@@ -1,0 +1,35 @@
+title: Your first function
+index: 1
+
+---
+
+Every executable program in _qat_ should have the `main` function. This is a special function as it is expected to follow a specific syntax, and is executed at the start of the program
+
+The following code is the basic syntax of an empty `main` function
+
+```qat
+pub main() [
+
+]
+```
+
+What does `pub` in the above snippet mean? It is a visibility specifier. It is telling the compiler that the function should be publicly visible. The `main` function is always required to be public.
+
+Now lets add a comment to the above code. Comments are texts commonly used to give context or meaning to the surrounding code. These are always ignored by the compiler. The following is an example of a single line comment and is identical to the previous snippet, by means of functionality.
+
+```qat
+pub main() [
+	// This is where the logic of the program resides
+]
+```
+
+Code is essentially a method of instructing the program to behave in a certain way. A unit of instruction in _qat_ is called a sentence, similar to sentences in the english language.
+
+In order to display something to the user, you can use the `say` sentence.
+
+```qat
+pub main() [
+	say "Hello, World!".
+]
+```
+
