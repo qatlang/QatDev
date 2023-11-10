@@ -1,9 +1,12 @@
 import { Ace } from "ace-builds";
+import dynamic from "next/dynamic";
 import ReactMarkdown from "react-markdown";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function Markdown(props: {
+export default dynamic(() => Promise.resolve(Markdown), { ssr: false });
+
+export function Markdown(props: {
   className?: string;
   children: string;
   editor?: Ace.Editor;
@@ -14,14 +17,14 @@ export default function Markdown(props: {
       components={{
         ul: (value) => <ul className="my-4">{value.children}</ul>,
         li: (value) => <li className="my-4">• {value.children}</li>,
-        p: (value) => <p className="my-4">{value.children}</p>,
+        p: (value) => <p className="inline my-0">{value.children}</p>,
         code: (value) =>
           value.inline ? (
             <pre className="inline bg-[#3d434d] rounded-md px-1">
               {value.children}
             </pre>
           ) : (
-            <div className="relative text-left block overflow-x-auto bg-[#2b2f36] p-3 rounded-lg border-2 border-solid transition-colors border-[#555555] hover:border-styleGreen">
+            <div className="my-3 relative text-left block overflow-x-auto bg-[#2b2f36] p-3 rounded-lg border-2 border-solid transition-colors border-[#555555] hover:border-styleGreen">
               {value.children}
               <ToastContainer />
               <div
