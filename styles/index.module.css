@@ -1,0 +1,18 @@
+.pulseLoad {
+  background: linear-gradient(
+      to right,
+      transparent 0%,
+      #128f5f,
+      transparent 100%
+    ),
+    black center;
+  background-size: 300% 100%, cover;
+  animation: change_gradient 0.3s linear infinite;
+}
+
+@keyframes change_gradient {
+  from {
+    background-position: right, center;
+  }
+}
+
