@@ -11,6 +11,7 @@ export interface ILanguageRelease {
 		id: string,
 		downloads: number,
 		platform: string,
+		architecture: string,
 		target: string,
 		path: string,
 	}[],
