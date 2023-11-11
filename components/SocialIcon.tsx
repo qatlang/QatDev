@@ -7,9 +7,9 @@ export function SocialIcon(props: {
 }) {
   const colorVars = {
     normal:
-      "flex flex-col justify-center align-middle cursor-pointer mx-2 px-2 transition-all border-[3px] border-transparent hover:border-[#ffffff55] rounded-lg sm:rounded-xl h-12 w-12 sm:h-14 sm:w-14 bg-[#333333]",
+      "flex flex-col justify-center align-middle cursor-pointer mx-2 px-2 transition-all border-[3px] border-transparent hover:border-[#ffffff55] md:rounded-lg rounded-xl md:h-12 md:w-12 sm:h-14 sm:w-14 h-14 w-14 bg-[#333333]",
     discord:
-      "flex flex-col justify-center align-middle cursor-pointer mx-2 px-2 transition-all border-[3px] border-transparent hover:border-[#ffffff55] rounded-lg sm:rounded-xl h-12 w-12 sm:h-14 sm:w-14 bg-[#5865f2]",
+      "flex flex-col justify-center align-middle cursor-pointer mx-2 px-2 transition-all border-[3px] border-transparent hover:border-[#ffffff55] md:rounded-lg rounded-xl md:h-12 md:w-12 sm:h-14 sm:w-14 h-14 w-14 bg-[#5865f2]",
   };
   return (
     <div className={colorVars[props.color ?? "normal"]}>

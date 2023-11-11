@@ -46,33 +46,37 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
   let [downloadSelection, setDownloadSelection] = useState(0);
   let [areDownloadsVisible, setDownloadsVisible] = useState(false);
   return (
-    <div className={"text-[#eeeeee] mx-10 mb-10"}>
+    <div className={"flex flex-row text-[#eeeeee] justify-center"}>
+      <title>Downloads</title>
       {releases.length > 0 ? (
-        <div className="flex flex-col h-[89vh]">
-          <div className="mb-3 flex flex-row h-fit w-fit align-middle justify-center">
-            <div className="ml-2 font-mono font-bold text-5xl self-center">
-              {(releases[selection].version.value.startsWith("v") ? "" : "v") +
-                releases[selection].version.value}
-            </div>
-            {releases[selection].version.isPrerelease ? (
-              <div
-                className="self-center font-mono font-bold rounded-lg h-fit ml-4 mr-6 px-2 py-1 border border-[#ffffff55]"
-                style={{
-                  backgroundColor:
-                    releases[selection].version.prerelease === "alpha"
-                      ? "red"
-                      : releases[selection].version.prerelease === "beta"
-                      ? "blueviolet"
-                      : "green",
-                }}
-              >
-                {releases[selection].version.prerelease}
+        <div className="flex flex-col h-[89vh] w-[90%] lg:w-auto mx-10 lg:max-w-[80rem] self-center">
+          <div className="mb-3 flex flex-col sm:flex-row h-fit w-fit align-middle justify-center">
+            <div className="flex flex-row">
+              <div className="ml-2 font-mono font-bold text-5xl self-center">
+                {(releases[selection].version.value.startsWith("v")
+                  ? ""
+                  : "v") + releases[selection].version.value}
               </div>
-            ) : (
-              <></>
-            )}
+              {releases[selection].version.isPrerelease ? (
+                <div
+                  className="self-center font-mono font-bold rounded-lg h-fit ml-4 mr-6 px-2 py-1 border border-[#ffffff55]"
+                  style={{
+                    backgroundColor:
+                      releases[selection].version.prerelease === "alpha"
+                        ? "red"
+                        : releases[selection].version.prerelease === "beta"
+                        ? "blueviolet"
+                        : "green",
+                  }}
+                >
+                  {releases[selection].version.prerelease}
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
             <Button
-              style="h-fit font-mono"
+              style="h-fit font-mono mt-5 sm:mt-0"
               onClick={() => {
                 setDownloadsVisible(true);
               }}

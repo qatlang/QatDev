@@ -18,17 +18,34 @@ import { StringMappedInteractionTypes } from "discord.js";
 import Markdown from "../components/Markdown";
 import styles from "../styles/index.module.css";
 
-function Catchphrase() {
-  const win = useWindowSize();
+function Catchphrase(props: { className?: string }) {
   return (
-    <div className="font-mono text-left">
+    <div className={props.className ?? "font-mono text-left"}>
       <div className="flex flex-row">
-        <div className="font-bold lg:text-4xl md:text-4xl sm:text-2xl text-2xl mb-2">
+        <div className="font-bold lg:text-4xl md:text-4xl sm:text-4xl text-2xl mb-2">
           {"Closer to your machine's heart"}
         </div>
-        <div className="text-6xl self-center pr-10">🦾</div>
+        <div className="text-4xl sm:text-6xl self-center pr-5 sm:pr-10">🦾</div>
       </div>
-      <div className="pt-2 pb-3 lg:text-2xl md:text-2xl sm:text-xl text-base">
+      <div className="pt-2 sm:pb-3 lg:text-2xl md:text-2xl sm:text-xl text-sm">
+        {
+          "Superfast modern systems language for efficient & maintainable software..."
+        }
+      </div>
+    </div>
+  );
+}
+
+function MobileCatchphrase() {
+  return (
+    <div className="sm:hidden font-mono text-center mx-5">
+      <div className="flex flex-row">
+        <div className="font-bold lg:text-4xl md:text-4xl sm:text-2xl text-3xl mb-2">
+          {"Closer to your machine's heart"}
+        </div>
+        <div className="text-6xl sm:text-6xl self-center sm:pr-10">🦾</div>
+      </div>
+      <div className="mx-5 pt-2 sm:pb-3 lg:text-2xl md:text-2xl sm:text-xl text-base">
         {
           "Superfast modern systems language for efficient & maintainable software..."
         }
@@ -44,8 +61,10 @@ function SmallStat(props: {
 }) {
   return (
     <div className="flex flex-row flex-1 align-middle justify-center lg:mt-0 w-[50%] lg:w-auto">
-      <div className="flex flex-col align-middle justify-center text-lg mr-2">
-        <div className="font-mono font-bold text-2xl">{props.title}</div>
+      <div className="flex flex-col align-middle justify-center text-base sm:text-lg mr-2">
+        <div className="font-mono font-bold text-xl sm:text-2xl">
+          {props.title}
+        </div>
         {props.description}
       </div>
       <div className="text-5xl select-none self-center">{props.emoji}</div>
@@ -71,7 +90,7 @@ function ProjectInfo(props: {
       {props.workHours && props.latestCommit && props.releaseCount && (
         <>
           <div className="flex flex-row mr-0 w-[100%] lg:w-[25%] lg:flex-grow lg:align-middle lg:justify-center lg:mr-4 lg:mb-0 mb-10">
-            <div className="flex flex-row w-[100%] lg:flex-col my-5 lg:space-y-5">
+            <div className="flex flex-row w-[100%] lg:flex-col my-5 mx-10 sm:mx-0 lg:space-y-5">
               <SmallStat
                 title={props.releaseCount.toString() + " releases"}
                 description="since December 2021"
@@ -87,7 +106,7 @@ function ProjectInfo(props: {
           <div className="flex flex-col lg:max-h-72 self-center border border-solid border-[#333333] lg:w-auto lg:mx-0 w-[95%] bg-[#00000088] rounded-3xl items-start justify-start p-7">
             <div className="flex flex-row align-middle justify-center mb-4 text-sm text-white">
               <p className="py-1">Latest Commit in</p>
-              <div className="font-mono flex flex-row align-middle justify-center text-white bg-styleGreen font-bold py-1 px-2 mx-2 text-sm rounded-lg">
+              <div className="h-fit font-mono flex flex-row align-middle justify-center text-white bg-styleGreen font-bold py-1 px-2 mx-2 text-sm rounded-lg">
                 {props.latestCommit.repository +
                   ":" +
                   (props.latestCommit.ref.includes("/")
@@ -97,7 +116,7 @@ function ProjectInfo(props: {
                     : props.latestCommit.ref)}
               </div>
               <p className="py-1">on</p>
-              <div className="font-mono font-bold bg-[#4169e1] rounded-lg mx-2 py-1 px-2">
+              <div className="font-mono font-bold bg-[#4169e1] h-fit rounded-lg mx-2 py-1 px-2">
                 {props.latestCommit.site}
               </div>
             </div>
@@ -151,19 +170,21 @@ function AllButtons(props: { className: string }) {
       <div className="hidden lg:flex lg:flex-col">
         <Catchphrase />
       </div>
-      <div className="flex flex-row">
-        <Button
-          style="font-mono sm:text-xl text-sm"
-          onClick={() => router.push("/downloads")}
-        >
-          Download
-        </Button>
-        <Button
-          style="font-mono sm:text-xl text-sm"
-          onClick={() => router.push("/playground")}
-        >
-          Try
-        </Button>
+      <div className="flex flex-col sm:flex-row">
+        <div className="flex flex-row mb-2 sm:mb-0">
+          <Button
+            style="font-mono sm:text-xl text-sm"
+            onClick={() => router.push("/downloads")}
+          >
+            Download
+          </Button>
+          <Button
+            style="font-mono sm:text-xl text-sm"
+            onClick={() => router.push("/playground")}
+          >
+            Try
+          </Button>
+        </div>
         <Button
           theme="special"
           style="font-mono sm:text-xl text-sm"
@@ -268,17 +289,18 @@ export default function Home() {
   }, []);
   return (
     <div className="flex flex-col">
-      <div className="xl:w-[1280px] lg:w-[95%] self-center">
-        <div className="flex flex-col lg:flex-row pt-14 lg:h-96 lg:mb-10">
+      <div className="xl:w-[1280px] lg:w-[95%] xs:w-[100%] self-center">
+        <div className="flex flex-col lg:flex-row pt-2 sm:pt-6 md:pt-14 lg:h-96 lg:mb-10">
+          <MobileCatchphrase />
           <div className="flex flex-row lg:flex-col align-middle justify-center">
             <Image
               src={lavaCapsule}
-              className="lg:w-96 md:w-72 sm:w-52 w-40 self-center place-self-center pointer-events-none select-none lg:mr-5"
+              className="lg:w-96 md:w-72 sm:w-52 w-48 self-center place-self-center pointer-events-none select-none lg:mr-5"
               priority
               alt="lava-cover"
             />
             <div className="lg:hidden flex flex-col">
-              <Catchphrase />
+              <Catchphrase className="hidden font-mono text-left sm:flex sm:flex-col" />
               <AllButtons className="mt-5 flex flex-col" />
             </div>
           </div>
