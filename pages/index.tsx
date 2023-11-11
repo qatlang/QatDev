@@ -22,12 +22,12 @@ function Catchphrase(props: { className?: string }) {
   return (
     <div className={props.className ?? "font-mono text-left"}>
       <div className="flex flex-row">
-        <div className="font-bold lg:text-4xl md:text-4xl sm:text-4xl text-2xl mb-2">
+        <div className="font-bold xl:text-4xl lg:text-3xl md:text-4xl sm:text-4xl text-2xl mb-2">
           {"Closer to your machine's heart"}
         </div>
         <div className="text-4xl sm:text-6xl self-center pr-5 sm:pr-10">🦾</div>
       </div>
-      <div className="pt-2 sm:pb-3 lg:text-2xl md:text-2xl sm:text-xl text-sm">
+      <div className="pt-2 sm:pb-3 xl:text-2xl lg:text-xl md:text-2xl sm:text-xl text-sm">
         {
           "Superfast modern systems language for efficient & maintainable software..."
         }
@@ -45,7 +45,7 @@ function MobileCatchphrase() {
         </div>
         <div className="text-6xl sm:text-6xl self-center sm:pr-10">🦾</div>
       </div>
-      <div className="mx-5 pt-2 sm:pb-3 lg:text-2xl md:text-2xl sm:text-xl text-base">
+      <div className="pt-2 sm:pb-3 lg:text-2xl md:text-2xl sm:text-xl text-base">
         {
           "Superfast modern systems language for efficient & maintainable software..."
         }
@@ -67,7 +67,9 @@ function SmallStat(props: {
         </div>
         {props.description}
       </div>
-      <div className="text-5xl select-none self-center">{props.emoji}</div>
+      <div className="text-4xl sm:text-5xl select-none self-center">
+        {props.emoji}
+      </div>
     </div>
   );
 }
@@ -90,7 +92,7 @@ function ProjectInfo(props: {
       {props.workHours && props.latestCommit && props.releaseCount && (
         <>
           <div className="flex flex-row mr-0 w-[100%] lg:w-[25%] lg:flex-grow lg:align-middle lg:justify-center lg:mr-4 lg:mb-0 mb-10">
-            <div className="flex flex-row w-[100%] lg:flex-col my-5 mx-10 sm:mx-0 lg:space-y-5">
+            <div className="flex flex-row w-[100%] lg:flex-col my-5 mx-10 sm:mx-0 space-x-6 lg:space-x-0 lg:space-y-5">
               <SmallStat
                 title={props.releaseCount.toString() + " releases"}
                 description="since December 2021"
@@ -208,7 +210,7 @@ function AllButtons(props: { className: string }) {
           {"Donate"}
         </Button>
       </div>
-      <div className="flex flex-row mt-5 mb-10">
+      <div className="flex flex-row mt-5 mb-10 ml-[-0.5rem] sm:ml-0">
         <SocialIcon icon={githubIcon} link={"https://github.com/qatlang"} />
         <SocialIcon
           icon={discordIcon}
@@ -293,13 +295,15 @@ export default function Home() {
         <div className="flex flex-col lg:flex-row pt-2 sm:pt-6 md:pt-14 lg:h-96 lg:mb-10">
           <MobileCatchphrase />
           <div className="flex flex-row lg:flex-col align-middle justify-center">
-            <Image
-              src={lavaCapsule}
-              className="lg:w-96 md:w-72 sm:w-52 w-48 self-center place-self-center pointer-events-none select-none lg:mr-5"
-              priority
-              alt="lava-cover"
-            />
-            <div className="lg:hidden flex flex-col">
+            <div className="flex-1 pl-5 sm:pl-0 self-center pointer-events-none select-none lg:mr-5">
+              <Image
+                className="xl:w-[40rem]"
+                src={lavaCapsule}
+                priority
+                alt="lava-cover"
+              />
+            </div>
+            <div className="lg:hidden flex flex-col w-[65%] pl-5 sm:pl-0 sm:w-[70%]">
               <Catchphrase className="hidden font-mono text-left sm:flex sm:flex-col" />
               <AllButtons className="mt-5 flex flex-col" />
             </div>
@@ -314,8 +318,10 @@ export default function Home() {
           latestCommit={latestCommit}
           releaseCount={releaseCount}
         />
-
-        <div className="flex flex-row space-x-2 lg:space-x-6 mx-4 my-5 lg:my-10">
+        <p className="my-5 lg:my-10 text-xl sm:text-2xl lg:text-3xl font-bold">
+          What is qat all about?
+        </p>
+        <div className="flex flex-row space-x-2 lg:space-x-6 mx-4 my-2 lg:my-4">
           {[
             { a: 0, b: Math.floor(languageFeatures.length / 2) },
             {
@@ -326,7 +332,7 @@ export default function Home() {
             <div className="flex flex-col space-y-2 lg:space-y-6 w-[50%]">
               {languageFeatures.slice(i.a, i.b).flatMap((feature) => {
                 return (
-                  <div className="flex flex-col bg-black text-left p-8 border-2 border-solid border-[#333333] rounded-2xl">
+                  <div className="flex flex-col bg-black text-left p-4 sm:p-8 border-2 border-solid border-[#333333] rounded-2xl">
                     <p className="font-bold text-2xl mb-2">{feature.title}</p>
                     <Markdown>{feature.content}</Markdown>
                   </div>
