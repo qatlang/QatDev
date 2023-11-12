@@ -74,32 +74,27 @@ function CompileStats(props: {
   compilation: number;
   linking: number;
 }) {
+  const CompStat = (props: { name: string; value: string }) => (
+    <div className="text-sm flex flex-row align-middle">
+      <div className="mr-2 self-center">{props.name}</div>
+      <div className="font-bold rounded-lg bg-black py-1 px-2">
+        {props.value}
+      </div>
+    </div>
+  );
   return (
-    <div className="flex flex-col bg-[#01313f] w-fit p-2 rounded-lg">
+    <div className="flex flex-col bg-[#01313f] w-fit p-1 sm:p-2 space-y-1 rounded-lg">
       {props.binarySize && (
-        <div className="flex flex-row pb-1 align-middle">
-          <div className="mr-2 self-center">Binary Size:</div>
-          <div className="font-bold rounded-lg bg-black py-1 px-2">
-            {numToFileSize(props.binarySize)}
-          </div>
-        </div>
+        <CompStat name="Binary Size:" value={numToFileSize(props.binarySize)} />
       )}
-      <div className="flex flex-row pb-1 align-middle">
-        <div className="mr-2 self-center">
-          Time for compiling to LLVM IR by <i>qat</i>:
-        </div>
-        <div className="font-bold rounded-lg bg-black py-1 px-2">
-          {numToTimeUnits(props.compilation)}
-        </div>
-      </div>
-      <div className="flex flex-row pb-1 align-middle">
-        <div className="mr-2 self-center">
-          IR Compilation & Linking by clang & lld
-        </div>
-        <div className="font-bold rounded-lg bg-black py-1 px-2">
-          {numToTimeUnits(props.linking)}
-        </div>
-      </div>
+      <CompStat
+        name="Time for compiling to LLVM IR by qat:"
+        value={numToTimeUnits(props.compilation)}
+      />
+      <CompStat
+        name="IR Compilation & Linking by clang & lld:"
+        value={numToTimeUnits(props.linking)}
+      />
     </div>
   );
 }
@@ -110,12 +105,12 @@ function Diagnostics(props: {
   editor: Ace.Editor | null;
 }) {
   return (
-    <div className="flex flex-col justify-start max-h-60 overflow-y-auto text-left bg-[#002b36] border-t-4 border-solid border-[#2aa198] p-4 transition-all">
+    <div className="flex flex-col justify-start h-[35%] sm:h-auto max-h-70 overflow-y-auto text-left bg-[#002b36] border-t-4 border-solid border-[#2aa198] p-4 transition-all">
       <div className="flex flex-row">
-        <p className="text-xl font-bold mr-3">Diagnostics</p>
+        <p className="text-lg sm:text-xl font-bold mr-3">Diagnostics</p>
         {props.lastResult && (
           <div
-            className="py-1 px-3 font-mono font-bold text-base w-fit rounded-lg"
+            className="py-[0.13rem] sm:py-1 px-2 sm:px-3 font-mono font-bold text-base w-fit rounded-lg"
             style={{
               color: props.lastResult.status ? "black" : "white",
               backgroundColor: props.lastResult.status ? "#15ac53" : "#c2441d",
@@ -137,7 +132,7 @@ function Diagnostics(props: {
       <div className="mt-5">
         {props.probs.length > 0 ? (
           props.probs.flatMap((prob) => (
-            <div className="mb-5 flex flex-col justify-start font-mono cursor-pointer pb-5 rounded-lg bg-[#00000033] p-2">
+            <div className="mb-5 flex flex-col justify-start font-mono cursor-pointer rounded-lg bg-[#00000033] p-2 border border-solid border-transparent hover:border-[#ffffff33]">
               {prob.fileRange && (
                 <div className="font font-mono italic">
                   {prob.fileRange.start.line.toString() +
@@ -150,7 +145,7 @@ function Diagnostics(props: {
                 </div>
               )}
               <div
-                className="flex flex-row mt-2"
+                className="flex flex-col sm:flex-row mt-2"
                 onClick={() => {
                   if (props.editor && prob.fileRange) {
                     props.editor.clearSelection();
@@ -164,14 +159,14 @@ function Diagnostics(props: {
                 }}
               >
                 <div
-                  className="rounded-lg self-center p-2"
+                  className="rounded-lg sm:self-center w-fit text-sm sm:text-base p-1 sm:p-2 mb-1 sm:mb-0"
                   style={{
                     backgroundColor: prob.isError ? "#c2441dff" : "#8400ff88",
                   }}
                 >
                   {prob.isError ? "Error" : "Warning"}
                 </div>
-                <div className="ml-5 text-left flex flex-col justify-center font-display">
+                <div className="ml-0 sm:ml-5 text-sm sm:text-base text-left flex flex-col justify-center font-display">
                   <Markdown>{prob.message}</Markdown>
                 </div>
               </div>
@@ -235,16 +230,16 @@ interface MDXContent {
 }
 
 function PlaygroundLearnItem(props: { file: MDXContent }) {
-  let [isExpanded, setExpanded] = useState<boolean>(false);
+  let [isExpanded, setExpanded] = useState<boolean>(true);
   return (
     <div className="bg-[#181818] rounded-lg border border-solid border-1 border-[#444444]">
       <div
-        className="cursor-pointer flex flex-row align-middle rounded-lg bg-[#282828] hover:bg-[#434343] transition-colors p-4"
+        className="cursor-pointer flex flex-row align-middle rounded-lg bg-[#282828] hover:bg-[#434343] transition-colors py-2 px-4 md:p-4"
         onClick={() => {
           setExpanded(!isExpanded);
         }}
       >
-        <div className="font-bold text-xl flex-grow text-left">
+        <div className="font-bold text-lg md:text-xl flex-grow text-left">
           {props.file.index} - {props.file.title}
         </div>
         <div
@@ -283,20 +278,21 @@ function Playground(props: { files: MDXContent[] }) {
   let [editor, setEditor] = useState<Ace.Editor | null>(null);
   return (
     <div className="px-5 flex flex-col w-screen min-h-[92vh] max-h-[92vh]">
+      <title>Playground | QAT Language</title>
       <ToastContainer />
-      <div className="flex flex-col-reverse md:flex md:flex-row md:flex-1 pb-5">
-        <div className="flex flex-col max-h-[38vh] min-h-fit md:h-auto mt-5 md:mt-0 md:w-[35%] overflow-y-auto md:mr-5">
+      <div className="flex flex-col md:flex md:flex-row md:flex-1 pb-5">
+        <div className="flex flex-col h-[38vh] md:h-max my-3 md:my-0 md:w-[35%] overflow-y-auto md:mr-5">
           {props.files.flatMap((e) => {
             return <PlaygroundLearnItem file={e} />;
           })}
         </div>
-        <div className="flex flex-col md:flex-grow min-h-[50vh] max-h-[92vh]">
+        <div className="flex flex-col md:flex-grow h-[45vh] md:h-auto">
           <Button
-            style="font-mono mb-4 h-fit"
+            style="font-mono mb-2 sm:mb-4 h-fit"
             onClick={(_) => {
               if (
-                !/Android/.test(navigator.platform) &&
-                !["iPhone", "iPad", "iPod"].includes(navigator.platform)
+                navigator.userAgent.length !== 0 &&
+                !/iPhone|iPad|iPod|Android/.test(navigator.userAgent)
               ) {
                 toast.info<string>("You can press Ctrl + S to build the code", {
                   position: "top-right",
@@ -319,7 +315,7 @@ function Playground(props: { files: MDXContent[] }) {
             theme="solarized_dark"
             mode="rust"
             width="100%"
-            fontSize={25}
+            fontSize={"1.2rem"}
             enableBasicAutocompletion
             enableSnippets
             defaultValue={editorValue}

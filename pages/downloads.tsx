@@ -47,12 +47,12 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
   let [areDownloadsVisible, setDownloadsVisible] = useState(false);
   return (
     <div className={"flex flex-row text-[#eeeeee] justify-center"}>
-      <title>Downloads</title>
+      <title>Downloads | QAT Language</title>
       {releases.length > 0 ? (
         <div className="flex flex-col h-[89vh] w-[90%] lg:w-auto mx-10 lg:max-w-[80rem] self-center">
           <div className="mb-3 flex flex-col sm:flex-row h-fit w-fit align-middle justify-center">
             <div className="flex flex-row">
-              <div className="ml-2 font-mono font-bold text-5xl self-center">
+              <div className="ml-2 font-mono font-bold text-4xl lg:text-5xl self-center">
                 {(releases[selection].version.value.startsWith("v")
                   ? ""
                   : "v") + releases[selection].version.value}
@@ -76,7 +76,7 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
               )}
             </div>
             <Button
-              style="h-fit font-mono mt-5 sm:mt-0"
+              style="h-fit font-mono mt-3 sm:mt-0"
               onClick={() => {
                 setDownloadsVisible(true);
               }}
@@ -84,7 +84,7 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
               Download
             </Button>
           </div>
-          <div className="ml-2 font-mono font-bold text-3xl mb-2 text-left">
+          <div className="ml-2 font-mono font-bold text-xl sm:text-2xl lg:text-3xl mb-2 text-left">
             {releases[selection].title}
           </div>
           {areDownloadsVisible && (
@@ -148,7 +148,7 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
             </div>
           )}
           <Markdown
-            className="mt-4 py-5 px-10 text-left overflow-y-auto rounded-3xl bg-black h-max border-2 border-solid border-[#333333]"
+            className="mt-4 py-2 sm:py-5 px-5 sm:px-10 text-left overflow-y-auto rounded-3xl bg-black h-max border-2 border-solid border-[#333333]"
             // eslint-disable-next-line react/no-children-prop
             children={releases[selection].content}
           />

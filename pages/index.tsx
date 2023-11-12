@@ -106,9 +106,9 @@ function ProjectInfo(props: {
             </div>
           </div>
           <div className="flex flex-col lg:max-h-72 self-center border border-solid border-[#333333] lg:w-auto lg:mx-0 w-[95%] bg-[#00000088] rounded-3xl items-start justify-start p-7">
-            <div className="flex flex-row align-middle justify-center mb-4 text-sm text-white">
+            <div className="flex flex-row align-middle justify-center mb-4 text-xs sm:text-sm text-white">
               <p className="py-1">Latest Commit in</p>
-              <div className="h-fit font-mono flex flex-row align-middle justify-center text-white bg-styleGreen font-bold py-1 px-2 mx-2 text-sm rounded-lg">
+              <div className="h-fit font-mono flex flex-row self-center align-middle justify-center text-white bg-styleGreen font-bold py-[0.13rem] sm:py-1 px-1 sm:px-2 mx-2 rounded-md sm:rounded-lg">
                 {props.latestCommit.repository +
                   ":" +
                   (props.latestCommit.ref.includes("/")
@@ -117,8 +117,8 @@ function ProjectInfo(props: {
                       ]
                     : props.latestCommit.ref)}
               </div>
-              <p className="py-1">on</p>
-              <div className="font-mono font-bold bg-[#4169e1] h-fit rounded-lg mx-2 py-1 px-2">
+              <p className="py-1 self-center">on</p>
+              <div className="font-mono font-bold self-center bg-[#4169e1] h-fit rounded-md sm:rounded-lg mx-2 py-[0.13rem] sm:py-1 px-1 sm:px-2">
                 {props.latestCommit.site}
               </div>
             </div>
@@ -291,6 +291,7 @@ export default function Home() {
   }, []);
   return (
     <div className="flex flex-col">
+      <title>Home | QAT Language</title>
       <div className="xl:w-[1280px] lg:w-[95%] xs:w-[100%] self-center">
         <div className="flex flex-col lg:flex-row pt-2 sm:pt-6 md:pt-14 lg:h-96 lg:mb-10">
           <MobileCatchphrase />
