@@ -1,11 +1,9 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import styles from "styles/App.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useWindowSize from "../utils/WindowSize";
-import Select from "react-select";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function QatIcon() {
   const win = useWindowSize();
@@ -174,41 +172,46 @@ export default function App({ Component, pageProps }: AppProps) {
     { name: "DOWNLOADS", route: "/downloads", out: false },
     { name: "DOCS", route: "https://docs.qat.dev", out: true },
   ];
-  // const [darkMode, setDarkMode] = useState<"dark" | "light" | "system">("dark");
-  // useEffect(() => {
-  //   const colSch = localStorage.getItem("color-scheme");
-  //   if (colSch) {
-  //     setDarkMode(colSch as typeof darkMode);
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   if (darkMode === "dark") {
-  //     if (!document.documentElement.classList.contains("dark")) {
-  //       document.documentElement.classList.add("dark");
-  //       localStorage.setItem("color-scheme", "dark");
+  //   const [isSystemDark, setIsSystemDark] = useState<boolean>(false);
+  //   const [darkMode, setDarkMode] = useState<"dark" | "light" | "system">(
+  //     "light"
+  //   );
+  //   useEffect(() => {
+  //     const colSch = localStorage.getItem("color-scheme");
+  //     if (colSch) {
+  //       setDarkMode(colSch as typeof darkMode);
   //     }
-  //   } else if (darkMode === "light") {
-  //     if (document.documentElement.classList.contains("dark")) {
-  //       document.documentElement.classList.remove("dark");
-  //       localStorage.setItem("color-scheme", "dark");
-  //     }
-  //   } else {
-  //     localStorage.setItem("color-scheme", "system");
-  //     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+  //   }, []);
+  //   useEffect(() => {
+  //     if (darkMode === "dark") {
   //       if (!document.documentElement.classList.contains("dark")) {
   //         document.documentElement.classList.add("dark");
+  //         localStorage.setItem("color-scheme", "dark");
   //       }
-  //     } else {
+  //     } else if (darkMode === "light") {
   //       if (document.documentElement.classList.contains("dark")) {
   //         document.documentElement.classList.remove("dark");
+  //         localStorage.setItem("color-scheme", "light");
+  //       }
+  //     } else {
+  //       localStorage.setItem("color-scheme", "system");
+  //       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+  //         setIsSystemDark(true);
+  //         if (!document.documentElement.classList.contains("dark")) {
+  //           document.documentElement.classList.add("dark");
+  //         }
+  //       } else {
+  //         setIsSystemDark(false);
+  //         if (document.documentElement.classList.contains("dark")) {
+  //           document.documentElement.classList.remove("dark");
+  //         }
   //       }
   //     }
-  //   }
-  // }, [darkMode]);
+  //   }, [darkMode]);
   let [isSmallMenuExpanded, setSmallMenuExpand] = useState<boolean>(false);
   return (
     <div
-      className="text-center min-h-[100vh] min-w-[97vw]"
+      className="text-center min-h-[100vh] min-w-[97vw] text-white"
       style={{
         backgroundImage: "radial-gradient(ellipse at top, #282828, #000000)",
       }}
@@ -260,7 +263,7 @@ export default function App({ Component, pageProps }: AppProps) {
                       backgroundColor:
                         router.asPath === navItem.route
                           ? "rgb(18, 143, 95)"
-                          : "#444444",
+                          : "#white",
                     }}
                   >
                     {navItem.name}

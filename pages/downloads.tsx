@@ -52,7 +52,7 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
         <div className="flex flex-col h-[89vh] w-[90%] lg:w-auto mx-10 lg:max-w-[80rem] self-center">
           <div className="mb-3 flex flex-col sm:flex-row h-fit w-fit align-middle justify-center">
             <div className="flex flex-row">
-              <div className="ml-2 font-mono font-bold text-4xl lg:text-5xl self-center">
+              <div className="ml-2 font-mono font-bold text-3xl sm:text-4xl lg:text-5xl self-center">
                 {(releases[selection].version.value.startsWith("v")
                   ? ""
                   : "v") + releases[selection].version.value}
@@ -97,7 +97,7 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
                   return (
                     <div
                       key={"downloadButton." + i.toString()}
-                      className="self-center w-[30rem] mb-5 px-4 py-2 transition-colors select-none flex flex-row bg-[#128f5f] rounded-xl align-middle justify-start cursor-pointer hover:bg-white hover:text-black active:bg-gray-400"
+                      className="self-center w-[70vw] sm:w-[30rem] mb-5 px-4 py-2 transition-colors select-none flex flex-row bg-[#128f5f] rounded-xl align-middle justify-start cursor-pointer hover:bg-white hover:text-black active:bg-gray-400"
                       onClick={() => {
                         fetch("/api/downloadedRelease", {
                           method: "POST",
@@ -119,23 +119,23 @@ export default function Downloads(props: { releases: ILanguageRelease[] }) {
                     >
                       <div className="flex flex-row">
                         <Image
-                          className="h-14 w-12 mr-4 self-center"
+                          className="sm:h-14 sm:w-12 h-10 w-8 mr-4 self-center"
                           src={getIconFromPlatform(artefact.platform)}
                           alt="downloadPlatformIcon"
                         />
                         <div className="flex flex-col align-top justify-start text-left">
-                          <div className="mb-2 uppercase font-mono font-bold text-2xl">
+                          <div className="mb-1 sm:mb-2 uppercase font-mono font-bold text-xl sm:text-2xl">
                             {artefact.platform}
                           </div>
-                          <p className="mb-2">
+                          <p className="mb-1 sm:mb-2">
                             Architecture:{" "}
-                            <i className="font-mono font-bold bg-[#00000033] py-1 px-2 rounded-lg">
+                            <i className="font-mono font-bold text-sm sm:text-base bg-[#00000033] py-[0.13rem] sm:py-1 px-1 sm:px-2 rounded-lg">
                               {artefact.architecture}
                             </i>
                           </p>
                           <p>
                             Target:{" "}
-                            <i className="font-mono font-bold bg-[#00000033] py-1 px-2 rounded-lg">
+                            <i className="font-mono font-bold text-sm sm:text-base bg-[#00000033] py-[0.13rem] sm:py-1 px-1 sm:px-2 rounded-lg">
                               {artefact.target}
                             </i>
                           </p>

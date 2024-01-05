@@ -91,8 +91,8 @@ function ProjectInfo(props: {
     >
       {props.workHours && props.latestCommit && props.releaseCount && (
         <>
-          <div className="flex flex-row mr-0 w-[100%] lg:w-[25%] lg:flex-grow lg:align-middle lg:justify-center lg:mr-4 lg:mb-0 mb-10">
-            <div className="flex flex-row w-[100%] lg:flex-col my-5 mx-10 sm:mx-0 space-x-6 lg:space-x-0 lg:space-y-5">
+          <div className="flex flex-row mr-0 w-[100%] lg:w-[25%] lg:flex-grow lg:align-middle lg:justify-center lg:mr-4 mb-5 sm:mb-10 lg:mb-0">
+            <div className="flex flex-row w-[100%] lg:flex-col my-0 sm:my-5 mx-10 sm:mx-0 space-x-6 lg:space-x-0 lg:space-y-5">
               <SmallStat
                 title={props.releaseCount.toString() + " releases"}
                 description="since December 2021"
@@ -105,7 +105,7 @@ function ProjectInfo(props: {
               />
             </div>
           </div>
-          <div className="flex flex-col lg:max-h-72 self-center border border-solid border-[#333333] lg:w-auto lg:mx-0 w-[95%] bg-[#00000088] rounded-3xl items-start justify-start p-7">
+          <div className="flex flex-col lg:max-h-72 self-center border border-solid border-[#333333] lg:w-auto lg:mx-0 w-[95%] bg-[#00000088] rounded-3xl items-start justify-start p-4 sm:p-7">
             <div className="flex flex-row align-middle justify-center mb-4 text-xs sm:text-sm text-white">
               <p className="py-1">Latest Commit in</p>
               <div className="h-fit font-mono flex flex-row self-center align-middle justify-center text-white bg-styleGreen font-bold py-[0.13rem] sm:py-1 px-1 sm:px-2 mx-2 rounded-md sm:rounded-lg">
@@ -138,7 +138,7 @@ function ProjectInfo(props: {
               {props.latestCommit.message}
             </Markdown>
           </div>
-          <div className="font-mono flex flex-col flex-grow text-sm border border-solid border-[#333333] lg:w-[25%] lg:mt-0 mt-5 w-[95%] lg:self-auto self-center align-middle justify-center bg-black rounded-3xl lg:ml-5 p-5">
+          <div className="font-mono flex flex-col flex-grow text-sm border border-solid border-[#333333] lg:w-[25%] lg:mt-0 mt-3 sm:mt-5 w-[95%] lg:self-auto self-center align-middle justify-center bg-black rounded-3xl lg:ml-5 p-5">
             <div className="flex flex-row w-auto align-middle justify-center">
               <div className="flex flex-col mr-5 self-center">
                 <p>Created with ❤️</p>
@@ -227,8 +227,6 @@ function AllButtons(props: { className: string }) {
 }
 
 export default function Home() {
-  const router = useRouter();
-  const win = useWindowSize();
   let [compilerStats, setCompilerStats] = useState<ITimeStats | null>(null);
   let [latestCommit, setLatestCommit] = useState<IPushedCommit | null>(null);
   let [releaseCount, setReleaseCount] = useState<number | null>(null);
@@ -289,6 +287,16 @@ export default function Home() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const Feature = (props: { title: string; content: string }) => {
+    return (
+      <div className="flex flex-col bg-black text-left p-3 sm:p-8 border-2 border-solid border-[#333333] rounded-2xl">
+        <p className="font-bold text-xl sm:text-2xl mb-2">{props.title}</p>
+        <Markdown>{props.content}</Markdown>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col">
       <title>Home | QAT Language</title>
@@ -322,7 +330,12 @@ export default function Home() {
         <p className="my-5 lg:my-10 text-xl sm:text-2xl lg:text-3xl font-bold">
           What is qat all about?
         </p>
-        <div className="flex flex-row space-x-2 lg:space-x-6 mx-4 my-2 lg:my-4">
+        <div className="mx-2 mb-5 flex flex-col space-y-2 sm:hidden">
+          {languageFeatures.flatMap((f) => (
+            <Feature title={f.title} content={f.content} />
+          ))}
+        </div>
+        <div className="hidden sm:flex sm:flex-row space-x-2 lg:space-x-6 mx-4 my-2 lg:my-4">
           {[
             { a: 0, b: Math.floor(languageFeatures.length / 2) },
             {
@@ -333,10 +346,7 @@ export default function Home() {
             <div className="flex flex-col space-y-2 lg:space-y-6 w-[50%]">
               {languageFeatures.slice(i.a, i.b).flatMap((feature) => {
                 return (
-                  <div className="flex flex-col bg-black text-left p-4 sm:p-8 border-2 border-solid border-[#333333] rounded-2xl">
-                    <p className="font-bold text-2xl mb-2">{feature.title}</p>
-                    <Markdown>{feature.content}</Markdown>
-                  </div>
+                  <Feature title={feature.title} content={feature.content} />
                 );
               })}
             </div>
