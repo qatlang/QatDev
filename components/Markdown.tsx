@@ -15,8 +15,8 @@ export function Markdown(props: {
     <ReactMarkdown
       className={props.className + " text-left"}
       components={{
-        ul: (value) => <ul className="my-4">{value.children}</ul>,
-        li: (value) => <li className="my-4">• {value.children}</li>,
+        ul: (value) => <ul className="my-2">{value.children}</ul>,
+        li: (value) => <li className="my-2">• {value.children}</li>,
         p: (value) => <p className="inline my-0">{value.children}</p>,
         code: (value) =>
           value.inline ? (
