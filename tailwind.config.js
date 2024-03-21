@@ -6,6 +6,7 @@ module.exports = {
 		"./pages/**/*.{js,ts,jsx,tsx}",
 		"./components/**/*.{js,ts,jsx,tsx}",
 	],
+	darkMode: 'class',
 	theme: {
 		fontFamily: {
 			"display": ["Roboto"],
@@ -14,9 +15,19 @@ module.exports = {
 		textColor: {
 			"white": "#dddddd",
 			"black": "#000000",
-			"green": "#128f5f"
+			"paleWhite": "#bbbbbb",
+			"styleGreen": "#128f5f",
+			...colors
+		},
+		borderColor: {
+			"styleGray": "#444444",
+			"styleGreen": "#128f5f",
+			...colors
 		},
 		extend: {
+			gridTemplateColumns: {
+				'fluid': 'repeat(auto-fit, minmax(15rem, 1fr))',
+			},
 			colors: {
 				"styleGreen": "#128f5f",
 				...colors,
