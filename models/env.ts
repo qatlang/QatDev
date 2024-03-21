@@ -1,5 +1,5 @@
 export const Env = {
-	serverUrl: () => process.env['NEXT_PUBLIC_SERVER_URL'] ?? '',
+	pocketbaseURL: () => process.env['NEXT_PUBLIC_POCKETBASE_URL'] ?? '',
 	confirmationKey: () => process.env['NEXT_PUBLIC_CONFIRMATION_KEY'] ?? '',
 	discordBotToken: () => process.env['NEXT_PUBLIC_DISCORD_BOT_TOKEN'] ?? '',
 	discordRepoChannel: () => process.env['NEXT_PUBLIC_DISCORD_REPO_CHANNEL'] ?? '',

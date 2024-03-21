@@ -1,4 +1,5 @@
 export interface ILanguageRelease {
+	id: string,
 	releaseID: string,
 	version: {
 		value: string,
@@ -9,9 +10,11 @@ export interface ILanguageRelease {
 	content: string,
 	files: {
 		id: string,
+		name: string,
 		downloads: number,
 		platform: string,
 		architecture: string,
+		size: string,
 		target: string,
 		path: string,
 	}[],
@@ -175,8 +178,7 @@ export interface IGithubPushEvent {
 	sender?: any,
 }
 
-export interface IPushedCommit {
-	confirmationKey: string,
+export interface ICommit {
 	id: string,
 	title: string,
 	message: string,
@@ -188,4 +190,13 @@ export interface IPushedCommit {
 	site: 'github' | 'gitlab' | 'custom',
 	timestamp: string,
 	ref: string,
+}
+
+export interface IPost {
+	collectionId: string,
+	id: string,
+	title: string,
+	content: string,
+	timestamp: string,
+	source: string,
 }
