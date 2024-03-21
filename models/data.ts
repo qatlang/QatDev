@@ -12,8 +12,9 @@ export const examples: ILanguageExample[] = [
 		content:
 			`pub main -> i32
 (args :: multiptr:[cStr]) [
-   loop (args'length) : new I [
-      say "Argument at ", I, " is: ", args[I].
+   loop args'length => new I [
+      say "Argument at ", I,
+	      " is: ", args[I].
    ]
    give 0.
 ]
@@ -23,7 +24,7 @@ export const examples: ILanguageExample[] = [
 		title: 'String Datatype',
 		content:
 			`type String {
-   buffer :: multiptr:[var u8 'heap].
+   buffer :: multiptr:[var u8, heap].
    len    :: usize.
    cap    :: usize.
   
@@ -37,7 +38,7 @@ export const examples: ILanguageExample[] = [
       ''buffer = heap'get:[u8](val'length).
       ''len = val'length.
       ''cap = val'length.
-      loop (val'length) : new I [
+      loop val'length => new I [
          ''buffer[I] = val[I].
       ]
    ]
@@ -46,7 +47,7 @@ export const examples: ILanguageExample[] = [
       ''buffer = heap'get:[u8](other'len).
       ''len = other'len.
       ''cap = other'cap.
-      loop (other'len) : new I [
+      loop other'len => new I [
          ''buffer[I] = other'buffer[I].
       ]
    ]
@@ -148,13 +149,11 @@ mix (value) [
 		content: `
 Value Semantics allows the programmer to use/manage data whose lifetime is not bound to an address. This is also used in conjunction with copy & move semantics. If your type is trivially movable, you can access member fields of the value directly from (virtual) registers. Exploiting this behaviour, users can achieve extreme performance
 \`\`\`qat
-customStr -> str
-() [
+customStr -> str [
 	give "This is a custom string".
 ]
 
-pub main -> i32
-() [
+pub main -> i32 [
 	new strLen = customStr()'length.
 	give 0.
 ]
