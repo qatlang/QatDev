@@ -2,11 +2,10 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import useWindowSize from "../utils/WindowSize";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ThemeProvider, useTheme } from "../utils/darkMode";
 
 function QatIcon() {
-  const win = useWindowSize();
   return (
     <svg
       className="ml-6 mr-3 h-11 w-11"
@@ -153,8 +152,8 @@ function NavItem(props: {
     <Link
       className={
         props.isActive
-          ? "mx-2 text-[1.4rem] bg-white text-black font-mono font-bold tracking-wider p-2 rounded-xl transition-all"
-          : "mx-2 text-[1.4rem] bg-transparent text-green hover:text-white font-mono font-bold tracking-wider p-2 rounded-xl transition-all"
+          ? "mx-2 h-fit text-[1.3rem] bg-black dark:bg-white text-white dark:text-black font-mono font-bold tracking-wider p-[0.35rem] rounded-xl transition-all"
+          : "mx-2 text-[1.3rem] bg-transparent text-styleGreen hover:text-black dark:hover:text-white font-mono font-bold tracking-wider p-[0.35rem] rounded-xl transition-all"
       }
       target={props.openInNewTab ? "_blank" : undefined}
       href={props.link}
@@ -164,56 +163,240 @@ function NavItem(props: {
   );
 }
 
-export default function App({ Component, pageProps }: AppProps) {
-  let router = useRouter();
+function NavBar() {
+  const router = useRouter();
+  const [isDark, setDark] = useTheme()!;
+  const [darkModeValue, setDarkMode] = useState<
+    "dark" | "light" | "system" | null
+  >(null);
+  const ThemeButton = () => {
+    const ModeButton = (props: { mode: string }) => {
+      return (
+        <div
+          className="my-2 transition-colors rounded-lg px-3 py-1 border-2 border-solid border-gray-300 dark:border-styleGray hover:border-black dark:hover:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black cursor-pointer uppercase font-mono font-bold"
+          style={{
+            borderColor: darkModeValue === props.mode ? "#128f5f" : undefined,
+            color: darkModeValue === props.mode ? "white" : undefined,
+            backgroundColor:
+              darkModeValue === props.mode ? "#128f5f" : undefined,
+          }}
+          onClick={() => {
+            setDarkMode(props.mode as "dark" | "light" | "system");
+          }}
+        >
+          {props.mode}
+        </div>
+      );
+    };
+
+    return (
+      <div className="transition-colors relative group mx-4 p-2 w-12 h-12 border-2 border-solid rounded-xl border-gray-300 dark:border-styleGray bg-white hover:bg-black dark:bg-black dark:hover:bg-white">
+        <div className="z-50 shadow-lg rounded-lg invisible absolute top-10 right-0 group-hover:visible py-2 px-4 text-lg bg-white dark:bg-black">
+          <ModeButton mode="dark" />
+          <ModeButton mode="light" />
+          <ModeButton mode="system" />
+        </div>
+        {darkModeValue === "dark" ? (
+          <svg
+            className="icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            // xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19.9001 2.30719C19.7392 1.8976 19.1616 1.8976 19.0007 2.30719L18.5703 3.40247C18.5212 3.52752 18.4226 3.62651 18.298 3.67583L17.2067 4.1078C16.7986 4.26934 16.7986 4.849 17.2067 5.01054L18.298 5.44252C18.4226 5.49184 18.5212 5.59082 18.5703 5.71587L19.0007 6.81115C19.1616 7.22074 19.7392 7.22074 19.9001 6.81116L20.3305 5.71587C20.3796 5.59082 20.4782 5.49184 20.6028 5.44252L21.6941 5.01054C22.1022 4.849 22.1022 4.26934 21.6941 4.1078L20.6028 3.67583C20.4782 3.62651 20.3796 3.52752 20.3305 3.40247L19.9001 2.30719Z"
+              fill="#ffcf54"
+            />
+            <path
+              d="M16.0328 8.12967C15.8718 7.72009 15.2943 7.72009 15.1333 8.12967L14.9764 8.52902C14.9273 8.65407 14.8287 8.75305 14.7041 8.80237L14.3062 8.95987C13.8981 9.12141 13.8981 9.70107 14.3062 9.86261L14.7041 10.0201C14.8287 10.0694 14.9273 10.1684 14.9764 10.2935L15.1333 10.6928C15.2943 11.1024 15.8718 11.1024 16.0328 10.6928L16.1897 10.2935C16.2388 10.1684 16.3374 10.0694 16.462 10.0201L16.8599 9.86261C17.268 9.70107 17.268 9.12141 16.8599 8.95987L16.462 8.80237C16.3374 8.75305 16.2388 8.65407 16.1897 8.52902L16.0328 8.12967Z"
+              fill="#ffcf54"
+            />
+            <path
+              d="M12 22C17.5228 22 22 17.5228 22 12C22 11.5373 21.3065 11.4608 21.0672 11.8568C19.9289 13.7406 17.8615 15 15.5 15C11.9101 15 9 12.0899 9 8.5C9 6.13845 10.2594 4.07105 12.1432 2.93276C12.5392 2.69347 12.4627 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+              fill="#659bff"
+            />
+          </svg>
+        ) : darkModeValue === "system" ? (
+          <svg className="icon" viewBox="0 0 1024 1024" version="1.1">
+            <path
+              d="M516.472 946.04c-35.688 0.32-64.872-28.4-65.16-64.088l-1.104-136.856a64.64 64.64 0 0 1 64.12-65.136c35.672-0.28 64.832 28.408 65.144 64.128l1.08 136.824c0.304 35.688-28.408 64.88-64.08 65.128z"
+              fill="#E5226B"
+            />
+            <path
+              d="M938.072 979.992l-842.616 6.792c-35.688 0.28-64.88-28.44-65.16-64.096a64.648 64.648 0 0 1 64.12-65.168l842.648-6.784c35.656-0.28 64.816 28.432 65.128 64.128 0.248 35.688-28.4 64.848-64.12 65.128z"
+              fill="#aaaaaa"
+            />
+            <path
+              d="M1007.992 650.336c0.384 49.856-39.632 90.592-89.496 91.008L111.2 747.816c-49.856 0.432-90.592-39.704-90.968-89.56L16 134.68c-0.376-49.808 39.664-90.56 89.52-90.96l807.296-6.504c49.856-0.392 90.568 39.696 90.944 89.504l4.232 523.616z"
+              fill="#4797ff"
+            />
+            <path
+              d="M111.2 747.816c-49.856 0.432-90.592-39.704-90.968-89.56L16 134.68c-0.376-49.808 39.664-90.56 89.52-90.96l807.296-6.504"
+              fill="#47c0f4"
+            />
+          </svg>
+        ) : (
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="-4 0 32 32"
+            fill="none"
+            version="1.1"
+            id="svg3921"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.0912 30.5454C13.0912 29.742 12.44 29.0908 11.6367 29.0908C10.8334 29.0908 10.1821 29.742 10.1821 30.5454C10.1821 31.3487 10.8334 31.9999 11.6367 31.9999C12.44 31.9999 13.0912 31.3487 13.0912 30.5454Z"
+              fill="#000000"
+              id="path3897"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M21.2847 18.1412C22.61 16.1755 23.2727 14.0072 23.2727 11.6364C23.2727 8.42307 22.1367 5.68035 19.8646 3.40822C17.5924 1.13607 14.8496 0 11.6364 0C8.42307 0 5.68035 1.13607 3.40822 3.40822C1.13607 5.68035 0 8.42307 0 11.6364C0 14.0072 0.662666 16.1755 1.988 18.1412C2.8852 19.472 3.98233 20.5561 5.27939 21.3935V21.3984C5.90081 21.8673 6.38841 22.4812 6.74214 23.2397C7.09587 23.9983 7.27273 24.8092 7.27273 25.6727C7.27273 25.7511 7.27117 25.8295 7.26807 25.9078C7.26498 25.9862 7.26032 26.0643 7.25412 26.1424H7.27273V26.1818H16V25.6727C16 24.7962 16.1818 23.9747 16.5456 23.2079C16.9094 22.4409 17.4095 21.8247 18.046 21.3593C19.3201 20.5267 20.3996 19.454 21.2847 18.1412Z"
+              fill="url(#paint0_radial_103_1531)"
+              id="path3899"
+              style={{ fill: "#ffa91e", fillOpacity: 1 }}
+            />
+            <path
+              d="M7.27246 27.6364C7.27246 29.2431 8.57491 30.5455 10.1816 30.5455H13.0906C14.6973 30.5455 15.9997 29.2431 15.9997 27.6364V26.1819H7.27246V27.6364Z"
+              fill="url(#paint1_radial_103_1531)"
+              id="path3901"
+            />
+            <path
+              d="M13.8184 27.6364H9.45481C9.05315 27.6364 8.72754 27.962 8.72754 28.3636C8.72754 28.7653 9.05315 29.0909 9.45481 29.0909H13.8184C14.2201 29.0909 14.5457 28.7653 14.5457 28.3636C14.5457 27.962 14.2201 27.6364 13.8184 27.6364Z"
+              fill="#000000"
+              fill-opacity="0.2"
+              id="path3903"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M8.55045 8.55082C9.40251 7.69877 10.431 7.27274 11.636 7.27274C12.0377 7.27274 12.3805 7.13073 12.6645 6.84672C12.9485 6.56269 13.0906 6.21985 13.0906 5.81819C13.0906 5.41653 12.9485 5.07369 12.6645 4.78967C12.3805 4.50566 12.0377 4.36365 11.636 4.36365C9.6277 4.36365 7.9135 5.07369 6.49342 6.49379C5.07333 7.91387 4.36328 9.62806 4.36328 11.6364C4.36328 12.038 4.50529 12.3809 4.78931 12.6649C5.07333 12.9489 5.41617 13.0909 5.81783 13.0909C6.21948 13.0909 6.56232 12.9489 6.84635 12.6649C7.13037 12.3809 7.27237 12.038 7.27237 11.6364C7.27237 10.4314 7.6984 9.40287 8.55045 8.55082Z"
+              fill="white"
+              id="path3905"
+            />
+          </svg>
+        )}
+      </div>
+    );
+  };
+  useEffect(() => {
+    if (localStorage) {
+      const storageTheme = localStorage.getItem("color-scheme");
+      if (storageTheme === "dark") {
+        if (!document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.add("dark");
+        }
+        setDarkMode("dark");
+      } else if (storageTheme === "light") {
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+        }
+        setDarkMode("light");
+      } else if (storageTheme === "system") {
+        if (
+          window &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          if (!document.documentElement.classList.contains("dark")) {
+            document.documentElement.classList.add("dark");
+          }
+        } else {
+          if (document.documentElement.classList.contains("dark")) {
+            document.documentElement.classList.remove("dark");
+          }
+        }
+        setDarkMode("system");
+      }
+    }
+  }, []);
+  useEffect(() => {
+    if (darkModeValue === null) {
+      if (!document.documentElement.classList.contains("dark")) {
+        document.documentElement.classList.add("dark");
+      }
+      setDark(true);
+    } else if (darkModeValue === "dark") {
+      localStorage.setItem("color-scheme", "dark");
+      if (!document.documentElement.classList.contains("dark")) {
+        document.documentElement.classList.add("dark");
+      }
+      setDark(true);
+    } else if (darkModeValue === "light") {
+      localStorage.setItem("color-scheme", "light");
+      if (document.documentElement.classList.contains("dark")) {
+        document.documentElement.classList.remove("dark");
+      }
+      setDark(false);
+    } else {
+      localStorage.setItem("color-scheme", "system");
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        if (!document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.add("dark");
+        }
+        setDark(true);
+      } else {
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+        }
+        setDark(false);
+      }
+    }
+  }, [darkModeValue]);
+  return (
+    <>
+      <nav className="hidden md:flex md:flex-row">
+        <NavItem name="HOME" link="/" isActive={router.asPath === "/"} />
+        <NavItem
+          name="DOWNLOADS"
+          link="/downloads"
+          isActive={router.asPath.includes("/downloads")}
+        />
+        <NavItem
+          name="LEARN"
+          link="/learn"
+          isActive={router.asPath.includes("/learn")}
+        />
+        <NavItem
+          name="STORY"
+          link="/story"
+          isActive={router.asPath.includes("/story")}
+        />
+        <NavItem
+          name="DOCS"
+          link="https://docs.qat.dev"
+          openInNewTab={true}
+          isActive={false}
+        />
+        <ThemeButton />
+      </nav>
+      <div className="md:hidden">
+        <ThemeButton />
+      </div>
+    </>
+  );
+}
+
+function MainPage({ Component, router, pageProps }: AppProps) {
   const navPaths = [
     { name: "HOME", route: "/", out: false },
-    { name: "PLAYGROUND", route: "/playground", out: false },
     { name: "DOWNLOADS", route: "/downloads", out: false },
+    { name: "LEARN", route: "/learn", out: false },
+    { name: "STORY", route: "/story", out: false },
     { name: "DOCS", route: "https://docs.qat.dev", out: true },
   ];
-  //   const [isSystemDark, setIsSystemDark] = useState<boolean>(false);
-  //   const [darkMode, setDarkMode] = useState<"dark" | "light" | "system">(
-  //     "light"
-  //   );
-  //   useEffect(() => {
-  //     const colSch = localStorage.getItem("color-scheme");
-  //     if (colSch) {
-  //       setDarkMode(colSch as typeof darkMode);
-  //     }
-  //   }, []);
-  //   useEffect(() => {
-  //     if (darkMode === "dark") {
-  //       if (!document.documentElement.classList.contains("dark")) {
-  //         document.documentElement.classList.add("dark");
-  //         localStorage.setItem("color-scheme", "dark");
-  //       }
-  //     } else if (darkMode === "light") {
-  //       if (document.documentElement.classList.contains("dark")) {
-  //         document.documentElement.classList.remove("dark");
-  //         localStorage.setItem("color-scheme", "light");
-  //       }
-  //     } else {
-  //       localStorage.setItem("color-scheme", "system");
-  //       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-  //         setIsSystemDark(true);
-  //         if (!document.documentElement.classList.contains("dark")) {
-  //           document.documentElement.classList.add("dark");
-  //         }
-  //       } else {
-  //         setIsSystemDark(false);
-  //         if (document.documentElement.classList.contains("dark")) {
-  //           document.documentElement.classList.remove("dark");
-  //         }
-  //       }
-  //     }
-  //   }, [darkMode]);
+  const [isDark, _] = useTheme()!;
   let [isSmallMenuExpanded, setSmallMenuExpand] = useState<boolean>(false);
   return (
     <div
-      className="text-center min-h-[100vh] min-w-[97vw] text-white"
+      className="text-center text-black dark:text-white flex-grow w-[100%]"
       style={{
-        backgroundImage: "radial-gradient(ellipse at top, #282828, #000000)",
+        colorScheme: isDark ? "dark" : "light",
+        backgroundImage: isDark
+          ? "radial-gradient(ellipse at top, #282828, #000000)"
+          : "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='73.5' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23f3f3f3' fill-opacity='0.25' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\"), linear-gradient(to right top, #ffffff, #ffffff)",
+        backgroundColor: isDark ? "" : "white",
       }}
     >
       <meta property="og:type" content="website" />
@@ -234,66 +417,62 @@ export default function App({ Component, pageProps }: AppProps) {
             <QatNamedIcon />
           </div>
         </Link>
-        <div
-          className="visible md:hidden relative"
-          onClick={() => {
-            setSmallMenuExpand(!isSmallMenuExpanded);
-          }}
-        >
-          <svg
-            className="h-11 w-11 mr-4 fill-styleGreen transition-all"
-            viewBox="0 0 24 24"
-            style={{
-              rotate: isSmallMenuExpanded ? "135deg" : "0deg",
-              fill: isSmallMenuExpanded ? "rgb(18, 143, 95)" : "white",
+        <div className="flex flex-row">
+          <div
+            className="visible md:hidden relative"
+            onClick={() => {
+              setSmallMenuExpand(!isSmallMenuExpanded);
             }}
-            xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM16 12.75H12.75V16C12.75 16.41 12.41 16.75 12 16.75C11.59 16.75 11.25 16.41 11.25 16V12.75H8C7.59 12.75 7.25 12.41 7.25 12C7.25 11.59 7.59 11.25 8 11.25H11.25V8C11.25 7.59 11.59 7.25 12 7.25C12.41 7.25 12.75 7.59 12.75 8V11.25H16C16.41 11.25 16.75 11.59 16.75 12C16.75 12.41 16.41 12.75 16 12.75Z" />
-          </svg>
-          {isSmallMenuExpanded && (
-            <div className="flex flex-col z-[100] absolute rounded-lg bg-[#333333] w-fit py-1 px-3 right-7 top-9">
-              {navPaths.flatMap((navItem, i) => {
-                return (
-                  <Link
-                    href={navItem.route}
-                    target={navItem.out ? "_blank" : undefined}
-                    className="my-2 rounded-lg font-mono text-base py-2 px-6 tracking-wider"
-                    style={{
-                      backgroundColor:
-                        router.asPath === navItem.route
-                          ? "rgb(18, 143, 95)"
-                          : "#white",
-                    }}
-                  >
-                    {navItem.name}
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+            <svg
+              className="self-center h-12 w-12 fill-styleGreen transition-all"
+              viewBox="0 0 24 24"
+              style={{
+                rotate: isSmallMenuExpanded ? "135deg" : "0deg",
+                fill: isSmallMenuExpanded ? "#128f5f" : undefined,
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM16 12.75H12.75V16C12.75 16.41 12.41 16.75 12 16.75C11.59 16.75 11.25 16.41 11.25 16V12.75H8C7.59 12.75 7.25 12.41 7.25 12C7.25 11.59 7.59 11.25 8 11.25H11.25V8C11.25 7.59 11.59 7.25 12 7.25C12.41 7.25 12.75 7.59 12.75 8V11.25H16C16.41 11.25 16.75 11.59 16.75 12C16.75 12.41 16.41 12.75 16 12.75Z" />
+            </svg>
+            {isSmallMenuExpanded && (
+              <div className="flex flex-col z-[100] absolute rounded-lg bg-white dark:bg-[#333333] w-fit py-1 px-3 right-7 top-9">
+                {navPaths.flatMap((navItem) => {
+                  return (
+                    <Link
+                      href={navItem.route}
+                      target={navItem.out ? "_blank" : undefined}
+                      className="my-2 rounded-lg font-mono text-base py-2 px-6 tracking-wider"
+                      style={{
+                        backgroundColor:
+                          router.asPath === navItem.route
+                            ? "#128f5f"
+                            : isDark
+                            ? "black"
+                            : "white",
+                      }}
+                    >
+                      {navItem.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          <NavBar />
         </div>
-        <nav className="hidden md:visible md:flex md:flex-row">
-          <NavItem name="HOME" link="/" isActive={router.asPath === "/"} />
-          <NavItem
-            name="PLAYGROUND"
-            link="/playground"
-            isActive={router.asPath.includes("/playground")}
-          />
-          <NavItem
-            name="DOWNLOADS"
-            link="/downloads"
-            isActive={router.asPath.includes("/downloads")}
-          />
-          <NavItem
-            name="DOCS"
-            link="https://docs.qat.dev"
-            openInNewTab={true}
-            isActive={false}
-          />
-        </nav>
       </header>
       <Component {...pageProps} />
+    </div>
+  );
+}
+
+export default function App({ Component, router, pageProps }: AppProps) {
+  return (
+    <div className="flex flex-col min-h-[100vh] w-[100%]">
+      <ThemeProvider>
+        <MainPage Component={Component} router={router} pageProps={pageProps} />
+      </ThemeProvider>
     </div>
   );
 }
