@@ -199,4 +199,5 @@ export interface IPost {
 	content: string,
 	timestamp: string,
 	source: string,
+	images: string[],
 }
