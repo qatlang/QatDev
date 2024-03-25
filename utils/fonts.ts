@@ -1,4 +1,4 @@
-import { JetBrains_Mono, Poppins, Roboto } from "@next/font/google";
+import { JetBrains_Mono, Poppins, Roboto } from "next/font/google";
 
 export enum FontList {
 	jetbrainsMono = 'JetBrains Mono',
