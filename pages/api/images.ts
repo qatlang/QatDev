@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import pb from "../../models/pb";
+import pb, { Tables } from "../../models/pb";
 import http from 'http'
 
 export default async function ImagesHandler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		if (req.method === "GET" && req.query["id"]) {
-			const filename = (await pb.collection("images").getOne<{ file: string }>(req.query["id"] as string)).file;
-			let url = pb.files.getUrl({ collectionId: pb.collection("images").collectionIdOrName, id: req.query["id"] }, filename);
+			const filename = (await pb.collection(Tables.images).getOne<{ file: string }>(req.query["id"] as string)).file;
+			let url = pb.files.getUrl({ collectionId: pb.collection(Tables.images).collectionIdOrName, id: req.query["id"] }, filename);
 			http.get(url, (resp) => {
 				let chunks: any[] = [];
 				resp.on('data', chunk => {

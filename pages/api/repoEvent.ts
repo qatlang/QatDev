@@ -1,56 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { IGithubPushEvent, IGitlabPushEvent, IPushedCommit } from "../../models/interfaces";
-import { ChannelType, Client, GatewayIntentBits, TextChannel } from 'discord.js';
-import { setTimeout } from "timers/promises";
+import { IGithubPushEvent, IGitlabPushEvent, ICommit } from "../../models/interfaces";
 import * as crypto from 'crypto';
-import uploadNewCommits from "../../utils/newCommits";
 import { Env } from "../../models/env";
-
-let discordClient: Client | null;
-
-let allChannels: {
-	repo: TextChannel | null,
-} = { repo: null };
-
-async function getDiscordClient() {
-	if (!discordClient) {
-		discordClient = new Client({
-			intents: [
-				GatewayIntentBits.Guilds,
-				GatewayIntentBits.GuildMembers,
-				GatewayIntentBits.GuildBans,
-				GatewayIntentBits.GuildEmojisAndStickers,
-				GatewayIntentBits.GuildIntegrations,
-				GatewayIntentBits.GuildWebhooks,
-				GatewayIntentBits.GuildInvites,
-				GatewayIntentBits.GuildVoiceStates,
-				GatewayIntentBits.GuildPresences,
-				GatewayIntentBits.GuildMessages,
-				GatewayIntentBits.GuildMessageReactions,
-				GatewayIntentBits.GuildMessageTyping,
-				GatewayIntentBits.DirectMessages,
-				GatewayIntentBits.DirectMessageReactions,
-				GatewayIntentBits.DirectMessageTyping,
-				GatewayIntentBits.MessageContent,
-				GatewayIntentBits.GuildScheduledEvents,
-				GatewayIntentBits.AutoModerationConfiguration,
-				GatewayIntentBits.AutoModerationExecution
-			]
-		});
-		discordClient.login(Env.discordBotToken());
-		await setTimeout(3000);
-	}
-}
-
-async function getChannels() {
-	if (discordClient && !allChannels.repo) {
-		let repoChan = await discordClient.channels.fetch(Env.discordRepoChannel());
-		console.debug("Got repo channel")
-		if (repoChan && repoChan.type === ChannelType.GuildText) {
-			allChannels.repo = repoChan as TextChannel;
-		}
-	}
-}
+import pb, { Tables } from "../../models/pb";
 
 function splitCommitMessage(total: string): { title: string, message: string } {
 	let title = total;
@@ -69,12 +21,11 @@ function splitCommitMessage(total: string): { title: string, message: string } {
 	return { title, message };
 }
 
-function gitlabCommitsToPushedCommits(event: IGitlabPushEvent): IPushedCommit[] {
-	let result: IPushedCommit[] = [];
+function gitlabCommitsToICommits(event: IGitlabPushEvent): ICommit[] {
+	let result: ICommit[] = [];
 	for (let i = 0; i < event.commits.length; i++) {
 		let { title, message } = splitCommitMessage(event.commits[i].message);
 		result.push({
-			confirmationKey: Env.confirmationKey(),
 			author: { name: event.user_name, email: event.user_email },
 			id: crypto.randomUUID().toString(),
 			title,
@@ -88,12 +39,11 @@ function gitlabCommitsToPushedCommits(event: IGitlabPushEvent): IPushedCommit[] 
 	return result;
 }
 
-function githubCommitsToPushedCommits(event: IGithubPushEvent): IPushedCommit[] {
-	let result: IPushedCommit[] = [];
+function githubCommitsToICommits(event: IGithubPushEvent): ICommit[] {
+	let result: ICommit[] = [];
 	for (let i = 0; i < event.commits.length; i++) {
 		let { title, message } = splitCommitMessage(event.commits[i].message);
 		result.push({
-			confirmationKey: Env.confirmationKey(),
 			author: { name: event.pusher.name, email: event.pusher.email ?? undefined },
 			id: crypto.randomUUID().toString(),
 			title,
@@ -107,9 +57,13 @@ function githubCommitsToPushedCommits(event: IGithubPushEvent): IPushedCommit[] 
 	return result;
 }
 
+export function uploadNewCommits(commits: ICommit[]) {
+	for (let i = 0; i < commits.length; i++) {
+		pb.collection(Tables.commits).create(commits[i], { requestKey: null });
+	}
+}
+
 export default async function repoEvent(req: NextApiRequest, resp: NextApiResponse) {
-	await getDiscordClient();
-	await getChannels();
 	if (req.headers['x-gitlab-token'] === Env.gitlabEventSecret()) {
 		if (req.headers['x-gitlab-event'] === "Push Hook") {
 			if (req.headers['content-type'] !== 'application/json') {
@@ -119,46 +73,10 @@ export default async function repoEvent(req: NextApiRequest, resp: NextApiRespon
 			const pushEvent = req.body as IGitlabPushEvent;
 			if (pushEvent.commits.length !== 0) {
 				try {
-					uploadNewCommits(gitlabCommitsToPushedCommits(pushEvent))
-					if (allChannels.repo) {
-						allChannels.repo.send(
-							`\`Gitlab\` **\`${pushEvent.project.path_with_namespace}\`**  ::  \`${pushEvent.ref.includes('/')
-								? pushEvent.ref.split('/')[pushEvent.ref.split('/').length - 1]
-								: pushEvent.ref}\`
-Pushed ${pushEvent.commits.length.toString()} commit${(pushEvent.commits.length == 1)
-								? '' : 's'}
-` + "\n" + pushEvent.commits.map((cm) => {
-									return `**${cm.title}**
-<${cm.url}>
-${cm.message.includes(cm.title) ? cm.message.split(cm.title + '\n')[1] : cm.message}` + (cm.added.length === 0 ? "" : `
-> ✨  ${cm.added.map(val => '*' + val + '*').join(', ')}`) + (cm.modified.length === 0 ? "" : `
-> ✍️  ${cm.modified.map(val => '*' + val + '*').join(', ')}`) + (cm.removed.length === 0 ? "" : `
-> 🗑️  ${cm.removed.map(val => '*' + val + '*').join(', ')}`) + `
-`;
-								}).join('--------------------------------------------------------------------------------------------------\n') + '\n'
-							+ `by **${pushEvent.user_name}**
- 
-......
-`
-						).catch((e) => console.error("Error while creating the message: ", e))
-					} else {
-						console.error("Repo channel could not be retrieved");
-					}
+					uploadNewCommits(gitlabCommitsToICommits(pushEvent))
 				} catch (e) {
 					console.error("Error while posting repo update: ", e);
 				}
-			}
-		} else if (req.headers['x-gitlab-event'] == 'Tag Push Hook') {
-			if (req.headers['content-type'] !== 'application/json') {
-				console.error("Incorrect content type for request");
-				return resp.status(406).send({});
-			}
-			if (allChannels.repo) {
-				const tagEvent = req.body as IGitlabPushEvent;
-				allChannels.repo.send(
-					`\`Gitlab\` **\`${tagEvent.project.path_with_namespace}\`**
-Newly created tag ***${tagEvent.ref.split('/')[tagEvent.ref.split('/').length - 1]}***
-Checkout SHA \`${tagEvent.checkout_sha}\``);
 			}
 		} else {
 			console.error("No correct Gitlab event found")
@@ -175,48 +93,7 @@ Checkout SHA \`${tagEvent.checkout_sha}\``);
 				}
 				const pushEvent = req.body as IGithubPushEvent;
 				if (pushEvent.commits.length !== 0 && (pushEvent.ref.split('/')[1] !== 'tags')) {
-					uploadNewCommits(githubCommitsToPushedCommits(pushEvent))
-					try {
-						if (allChannels.repo) {
-							allChannels.repo.send(
-								`\`Github\` **\`${pushEvent.repository.full_name}\`**  ::  \`${pushEvent.ref.includes('/')
-									? pushEvent.ref.split('/')[pushEvent.ref.split('/').length - 1]
-									: pushEvent.ref}\`
-   Pushed ${pushEvent.commits.length.toString()} commit${(pushEvent.commits.length == 1)
-									? '' : 's'}
-   ` + "\n" + pushEvent.commits.map((cm) => {
-										let commitTitle = cm.message.includes('\n') ? cm.message.split('\n')[0] : cm.message.substring(0, cm.message.length > 20 ? 20 : undefined);
-										return `**${commitTitle}**
-   <${cm.url}>
-   ${cm.message.includes(commitTitle) ? cm.message.split(commitTitle + '\n')[1] : cm.message}` + ((cm.added ?? []).length === 0 ? "" : `
-   > ✨  ${cm.added!.map(val => '*' + val + '*').join(', ')}`) + ((cm.modified ?? []).length === 0 ? "" : `
-   > ✍️  ${cm.modified!.map(val => '*' + val + '*').join(', ')}`) + ((cm.removed ?? []).length === 0 ? "" : `
-   > 🗑️  ${cm.removed!.map(val => '*' + val + '*').join(', ')}`) + `
-   `;
-									}).join('--------------------------------------------------------------------------------------------------\n') + '\n'
-								+ `by **${pushEvent.pusher.name}**
-    
-   ......
-   `
-							).catch((e) => console.error("Error while creating the message: ", e))
-						} else {
-							console.error("Repo channel could not be retrieved");
-							return resp.status(500).send({});
-						}
-					} catch (e) {
-						console.error("Error while posting repo update: ", e);
-						return resp.status(500).send({});
-					}
-				} else if (pushEvent.ref.split('/')[1] === 'tags') {
-					if (allChannels.repo) {
-						allChannels.repo.send(
-							`\`Github\` **\`${pushEvent.repository?.full_name ?? 'Unknown repository'}\`**
-      Newly created tag ***${pushEvent.ref.split('/')[pushEvent.ref.split('/').length - 1]}***
-      Checkout SHA \`${pushEvent.after}\``);
-						return resp.status(200).send({});
-					} else {
-						return resp.status(500).send({});
-					}
+					uploadNewCommits(githubCommitsToICommits(pushEvent))
 				} else {
 					return resp.status(406).send({});
 				}
