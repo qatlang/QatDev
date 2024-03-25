@@ -12,11 +12,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useWindowSize from "../utils/WindowSize";
-import { IPushedCommit, ITimeStats } from "../models/interfaces";
+import { ICommit } from "../models/interfaces";
 import { SocialIcon } from "../components/SocialIcon";
-import { StringMappedInteractionTypes } from "discord.js";
 import Markdown from "../components/Markdown";
 import styles from "../styles/index.module.css";
+import pb, { Tables } from "../models/pb";
+import { useTheme } from "../utils/darkMode";
 
 function Catchphrase(props: { className?: string }) {
   return (
@@ -74,93 +75,90 @@ function SmallStat(props: {
   );
 }
 
-function ProjectInfo(props: {
-  className?: string;
-  workHours: number | null;
-  latestCommit: IPushedCommit | null;
-  releaseCount: number | null;
-}) {
+function ProjectInfo(props: { latestCommit: ICommit | null }) {
   return (
     <div
       className={
-        props.latestCommit && props.releaseCount && props.workHours
-          ? (props.className ?? "") +
-            " flex flex-col lg:flex-row my-3 py-4 rounded-md w-[100%] self-center justify-center"
-          : styles.pulseLoad + " h-5 rounded-md shadow-lg mx-4 my-6"
+        props.latestCommit
+          ? "flex flex-col lg:w-[95%] lg:flex-row my-3 py-4 rounded-md self-center justify-center"
+          : styles.pulseLoad +
+            " h-5 rounded-md shadow-lg dark:shadow-none mx-4 my-6"
       }
     >
-      {props.workHours && props.latestCommit && props.releaseCount && (
-        <>
-          <div className="flex flex-row mr-0 w-[100%] lg:w-[25%] lg:flex-grow lg:align-middle lg:justify-center lg:mr-4 mb-5 sm:mb-10 lg:mb-0">
-            <div className="flex flex-row w-[100%] lg:flex-col my-0 sm:my-5 mx-10 sm:mx-0 space-x-6 lg:space-x-0 lg:space-y-5">
-              <SmallStat
-                title={props.releaseCount.toString() + " releases"}
-                description="since December 2021"
-                emoji="🚀"
-              />
-              <SmallStat
-                title={props.workHours.toFixed(2) + " hours"}
-                description="of work"
-                emoji="🔥"
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:max-h-72 self-center border border-solid border-[#333333] lg:w-auto lg:mx-0 w-[95%] bg-[#00000088] rounded-3xl items-start justify-start p-4 sm:p-7">
-            <div className="flex flex-row align-middle justify-center mb-4 text-xs sm:text-sm text-white">
-              <p className="py-1">Latest Commit in</p>
-              <div className="h-fit font-mono flex flex-row self-center align-middle justify-center text-white bg-styleGreen font-bold py-[0.13rem] sm:py-1 px-1 sm:px-2 mx-2 rounded-md sm:rounded-lg">
-                {props.latestCommit.repository +
-                  ":" +
-                  (props.latestCommit.ref.includes("/")
-                    ? props.latestCommit.ref.split("/")[
-                        props.latestCommit.ref.split("/").length - 1
-                      ]
-                    : props.latestCommit.ref)}
+      {
+        //   props.workHours &&
+        props.latestCommit && (
+          <>
+            <div className="flex flex-col shadow-lg dark:shadow-none font-mono lg:h-64 self-center border-2 border-solid border-gray-300 dark:border-styleGray lg:w-[60%] lg:mx-0 w-[95%] bg-white dark:bg-black rounded-3xl items-start justify-start p-4 sm:p-7">
+              <div className="flex flex-row align-middle justify-center mb-4 text-xs sm:text-sm">
+                <p className="py-1">Latest Commit in</p>
+                <div className="h-fit flex flex-row self-center align-middle justify-center text-white bg-styleGreen font-bold py-[0.13rem] sm:py-1 px-1 sm:px-2 mx-2 rounded-md sm:rounded-lg">
+                  {props.latestCommit.repository +
+                    ":" +
+                    (props.latestCommit.ref.includes("/")
+                      ? props.latestCommit.ref.split("/")[
+                          props.latestCommit.ref.split("/").length - 1
+                        ]
+                      : props.latestCommit.ref)}
+                </div>
+                <p className="py-1 self-center">on</p>
+                <div className="font-mono font-bold self-center text-white bg-[#4169e1] h-fit rounded-md sm:rounded-lg mx-2 py-[0.13rem] sm:py-1 px-1 sm:px-2">
+                  {props.latestCommit.site}
+                </div>
               </div>
-              <p className="py-1 self-center">on</p>
-              <div className="font-mono font-bold self-center bg-[#4169e1] h-fit rounded-md sm:rounded-lg mx-2 py-[0.13rem] sm:py-1 px-1 sm:px-2">
-                {props.latestCommit.site}
-              </div>
+              <ReactMarkdown
+                className="font-mono text-left md:text-[1.3em] text-lg font-bold mb-1"
+                components={{
+                  code: (value) => (
+                    <pre className="inline bg-[#ffffff33] rounded-md px-1">
+                      {value.children}
+                    </pre>
+                  ),
+                }}
+                // eslint-disable-next-line react/no-children-prop
+                children={props.latestCommit.title}
+              />
+              <Markdown className="overflow-y-auto text-left text-sm md:text-lg">
+                {props.latestCommit.message}
+              </Markdown>
             </div>
-            <ReactMarkdown
-              className="font-mono text-left text-lg font-bold mb-2"
-              components={{
-                code: (value) => (
-                  <pre className="inline bg-[#ffffff33] rounded-md px-1">
-                    {value.children}
-                  </pre>
-                ),
-              }}
-              // eslint-disable-next-line react/no-children-prop
-              children={props.latestCommit.title}
-            />
-            <Markdown className="overflow-y-auto text-left">
-              {props.latestCommit.message}
-            </Markdown>
-          </div>
-          <div className="font-mono flex flex-col flex-grow text-sm border border-solid border-[#333333] lg:w-[25%] lg:mt-0 mt-3 sm:mt-5 w-[95%] lg:self-auto self-center align-middle justify-center bg-black rounded-3xl lg:ml-5 p-5">
-            <div className="flex flex-row w-auto align-middle justify-center">
-              <div className="flex flex-col mr-5 self-center">
-                <p>Created with ❤️</p>
-                <p>
-                  in <b>Kerala, India</b> 🇮🇳 by
-                </p>
+            <div className="shadow-lg dark:shadow:none font-mono flex flex-row flex-grow md:text-xl border-solid border-2 border-gray-300 dark:border-styleGray lg:h-64 lg:w-auto lg:mt-0 mt-3 sm:mt-5 w-[95%] lg:self-auto self-center align-middle justify-center bg-white dark:bg-black rounded-3xl lg:ml-5 p-5">
+              <div className="font-mono flex flex-col flex-grow self-center">
+                <div className="flex flex-row w-auto align-middle justify-center">
+                  <div className="flex flex-col mr-5 self-center">
+                    <p>Created with ❤️</p>
+                    <p>
+                      in <b>Kerala, India</b> 🇮🇳 by
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-row self-center mt-8">
+                  <div className="self-center mr-4">
+                    <Link
+                      href="https://github.com/aldrinmathew"
+                      target="_blank"
+                    >
+                      <Image
+                        className="w-12 dark:bg-transparent bg-black rounded-full border-4 border-transparent hover:border-solid hover:border-styleGreen transition-colors"
+                        src={githubIcon}
+                        alt="Github icon"
+                      />
+                    </Link>
+                  </div>
+                  <p className="font-bold self-center md:text-2xl">
+                    Aldrin Mathew
+                  </p>
+                </div>
               </div>
               <Image
-                className="w-[80px] h-[80px] rounded-full"
+                className="w-[120px] h-[120px] rounded-full self-center"
                 src={aldrinImg}
                 alt="Aldrin Mathew"
               />
             </div>
-            <p className="font-bold mt-4">Aldrin Mathew</p>
-            <div className="self-center mt-4">
-              <Link href="https://github.com/aldrinmathew" target="_blank">
-                <Image className="w-8" src={githubIcon} alt="Github icon" />
-              </Link>
-            </div>
-          </div>
-        </>
-      )}
+          </>
+        )
+      }
     </div>
   );
 }
@@ -179,12 +177,6 @@ function AllButtons(props: { className: string }) {
             onClick={() => router.push("/downloads")}
           >
             Download
-          </Button>
-          <Button
-            style="font-mono sm:text-xl text-sm"
-            onClick={() => router.push("/playground")}
-          >
-            Try
           </Button>
         </div>
         <Button
@@ -227,70 +219,22 @@ function AllButtons(props: { className: string }) {
 }
 
 export default function Home() {
-  let [compilerStats, setCompilerStats] = useState<ITimeStats | null>(null);
-  let [latestCommit, setLatestCommit] = useState<IPushedCommit | null>(null);
-  let [releaseCount, setReleaseCount] = useState<number | null>(null);
-  let [totalWorkHours, setTotalWorkHours] = useState<number | null>(null);
+  let [latestCommit, setLatestCommit] = useState<ICommit | null>(null);
   useEffect(() => {
-    if (
-      compilerStats &&
-      compilerStats.compiler &&
-      compilerStats.docs &&
-      compilerStats.server &&
-      compilerStats.vscode &&
-      compilerStats.website
-    ) {
-      setTotalWorkHours(
-        (compilerStats.compiler.data.total_seconds +
-          compilerStats.docs.data.total_seconds +
-          compilerStats.server.data.total_seconds +
-          compilerStats.vscode.data.total_seconds +
-          compilerStats.website.data.total_seconds +
-          compilerStats.tom.data.total_seconds) /
-          3600 +
-          400 /* Estimated Untracked time for the compiler repo */
-      );
-    }
-  }, [compilerStats]);
-  useEffect(() => {
-    fetch("/api/workStats", { next: { revalidate: 7200 } })
-      .then(async (resp) => {
-        if (resp.status === 200) {
-          setCompilerStats(await resp.json());
-          console.debug("Fetched work stats:", compilerStats);
-        } else {
-          console.error("Fetching work statistics returned invalid response");
-        }
+    pb.collection(Tables.commits)
+      .getFirstListItem<ICommit>("", { sort: "-created" })
+      .then((c) => {
+        setLatestCommit(c);
       })
-      .catch((err) => {
-        console.error("Error while retrieving work statistics: ", err);
+      .catch((_) => {
+        console.error("Error while fetching the latest commit");
       });
-    fetch("/api/latestCommit", { next: { revalidate: 7200 } })
-      .then(async (resp) => {
-        if (resp.status === 200) {
-          setLatestCommit(await resp.json());
-        } else {
-          console.error("Fetching latest commit returned invalid response");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-    fetch("/api/releaseCount", { next: { revalidate: 7200 } }).then(
-      async (resp) => {
-        if (resp.status === 200) {
-          setReleaseCount((await resp.json()).count);
-        } else {
-          console.error("Fetching release count returned invalid response");
-        }
-      }
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const Feature = (props: { title: string; content: string }) => {
     return (
-      <div className="flex flex-col bg-black text-left p-3 sm:p-8 border-2 border-solid border-[#333333] rounded-2xl">
+      <div className="flex flex-col bg-white dark:bg-black text-left p-3 sm:p-8 border-2 border-solid border-gray-300 shadow-lg dark:shadow-none dark:border-[#333333] rounded-3xl">
         <p className="font-bold text-xl sm:text-2xl mb-2">{props.title}</p>
         <Markdown>{props.content}</Markdown>
       </div>
@@ -298,44 +242,38 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-[100%]">
       <title>Home | QAT Language</title>
-      <div className="xl:w-[1280px] lg:w-[95%] xs:w-[100%] self-center">
+      <div className="flex flex-col xl:w-[1280px] lg:w-[90%] xs:w-[95%] self-center">
         <div className="flex flex-col lg:flex-row pt-2 sm:pt-6 md:pt-14 lg:h-96 lg:mb-10">
           <MobileCatchphrase />
-          <div className="flex flex-row lg:flex-col align-middle justify-center">
-            <div className="flex-1 pl-5 sm:pl-0 self-center pointer-events-none select-none lg:mr-5">
-              <Image
-                className="xl:w-[40rem]"
-                src={lavaCapsule}
-                priority
-                alt="lava-cover"
-              />
-            </div>
+          <div className="lg:w-[25%] w-[100%] flex flex-row lg:flex-col align-middle justify-center">
+            <Image
+              className="self-center xs:h-[48vw] xs:w-[40vw] h-[41vw] w-[30vw] lg:h-auto lg:w-[100%] pointer-events-none select-none"
+              src={lavaCapsule}
+              priority
+              alt="lava-cover"
+            />
             <div className="lg:hidden flex flex-col w-[65%] pl-5 sm:pl-0 sm:w-[70%]">
               <Catchphrase className="hidden font-mono text-left sm:flex sm:flex-col" />
               <AllButtons className="mt-5 flex flex-col" />
             </div>
           </div>
-          <AllButtons className="lg:flex lg:flex-col hidden" />
-          <div className="lg:ml-2 lg:w-[33%] w-[95%] self-center h-[100%] lg:h-auto p-2 lg:mt-0 mt-5">
+          <AllButtons className="lg:w-[40%] lg:flex lg:flex-col hidden" />
+          <div className="lg:w-[35%] lg:ml-2 h-[100%] p-2 lg:mt-0 mt-5">
             <Examples />
           </div>
         </div>
-        <ProjectInfo
-          workHours={totalWorkHours}
-          latestCommit={latestCommit}
-          releaseCount={releaseCount}
-        />
-        <p className="my-5 lg:my-10 text-xl sm:text-2xl lg:text-3xl font-bold">
+        <ProjectInfo latestCommit={latestCommit} />
+        <p className="my-5 lg:my-8 text-lg sm:text-xl lg:text-2xl font-bold">
           What is qat all about?
         </p>
-        <div className="mx-2 mb-5 flex flex-col space-y-2 sm:hidden">
+        <div className="mx-2 mb-5 flex flex-col space-y-4 sm:hidden">
           {languageFeatures.flatMap((f) => (
             <Feature title={f.title} content={f.content} />
           ))}
         </div>
-        <div className="hidden sm:flex sm:flex-row space-x-2 lg:space-x-6 mx-4 my-2 lg:my-4">
+        <div className="hidden sm:flex sm:flex-row space-x-2 lg:space-x-6 xs:w-[95%] self-center my-2 lg:my-4">
           {[
             { a: 0, b: Math.floor(languageFeatures.length / 2) },
             {
@@ -358,7 +296,8 @@ export default function Home() {
 }
 
 function Examples() {
-  let [active, setActive] = useState(1);
+  const [active, setActive] = useState(1);
+  const [isDark, _] = useTheme()!;
   const size = useWindowSize();
   return (
     <>
@@ -367,7 +306,7 @@ function Examples() {
           <div className="flex flex-row font-mono align-middle justify-between">
             <p className="font-bold text-md text-left">Examples</p>
             <Select
-              className="w-1/2 text-sm mb-2"
+              className="w-1/2 text-sm mb-2 text-black dark:text-white"
               options={examples.flatMap((ex, i) => {
                 return {
                   value: i,
@@ -384,6 +323,8 @@ function Examples() {
                 singleValue: (styles, _) => {
                   return {
                     ...styles,
+                    color: isDark ? "white" : "black",
+                    fontWeight: "bold",
                     fontSize: size.isVertical() ? "1rem" : "1rem",
                   };
                 },
@@ -398,7 +339,12 @@ function Examples() {
                 option: (styles, state) => {
                   return {
                     ...styles,
-                    color: "white",
+                    // backgroundColor: state.isSelected
+                    //   ? "#128f5f"
+                    //   : isDark
+                    //   ? "#333333"
+                    //   : "white",
+                    color: isDark || state.isSelected ? "white" : "black",
                     fontWeight: state.isSelected ? "bold" : "normal",
                   };
                 },
@@ -411,17 +357,17 @@ function Examples() {
                   primary25: "#128f5f55",
                   danger: "#ff0055",
                   dangerLight: "#ff0055",
-                  neutral0: "#303030",
-                  neutral5: "#555555",
-                  neutral10: "#666666",
-                  neutral20: "#777777",
-                  neutral30: "#888888",
-                  neutral40: "#999999",
-                  neutral50: "#aaaaaa",
-                  neutral60: "#bbbbbb",
-                  neutral70: "#cccccc",
-                  neutral80: "#dddddd",
-                  neutral90: "#ffffff",
+                  neutral0: isDark ? "#303030" : "#ffffff",
+                  neutral5: isDark ? "#555555" : "#aaaaaa",
+                  neutral10: isDark ? "#666666" : "#999999",
+                  neutral20: isDark ? "#777777" : "#888888",
+                  neutral30: isDark ? "#888888" : "#777777",
+                  neutral40: isDark ? "#999999" : "#666666",
+                  neutral50: isDark ? "#aaaaaa" : "#555555",
+                  neutral60: isDark ? "#bbbbbb" : "#444444",
+                  neutral70: isDark ? "#cccccc" : "#333333",
+                  neutral80: isDark ? "#dddddd" : "#222222",
+                  neutral90: isDark ? "#ffffff" : "#000000",
                 },
                 borderRadius: 5,
                 spacing: { baseUnit: 2, controlHeight: 0, menuGutter: 0 },
@@ -429,7 +375,7 @@ function Examples() {
             />
           </div>
           <div
-            className="max-h-72 bg-[#303030] rounded-lg pr-1 pt-1 text-[#dddddd] flex flex-col align-top justify-start overflow-x-auto overflow-y-auto"
+            className="shadow-lg dark:shadow-none w-[100%] max-h-72 border-2 border-solid border-gray-400 dark:border-styleGray bg-[#dce7f9] dark:bg-[#303030] rounded-lg pr-1 pt-1 font-bold text-black dark:text-[#dddddd] flex flex-col align-top justify-start overflow-x-clip overflow-y-auto"
             style={{ fontSize: size.isVertical() ? "3.3vmin" : "1.8vmin" }}
           >
             {examples[active].content.split("\n").map((elem, i) => (
