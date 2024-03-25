@@ -64,6 +64,22 @@ export function Markdown(props: { className?: string; children: string }) {
         li: (value) => <li className="my-2">• {value.children}</li>,
         p: (value) => <p className="inline my-0">{value.children}</p>,
         code: CodeBlock,
+        img: (value) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="my-4 rounded-2xl max-w-[100%]"
+            alt={
+              value.src?.startsWith("image:")
+                ? "/api/images?id=" + value.src!.substring("image:".length)
+                : value.src!
+            }
+            src={
+              value.src?.startsWith("image:")
+                ? "/api/images?id=" + value.src!.substring("image:".length)
+                : value.src!
+            }
+          />
+        ),
       }}
       // eslint-disable-next-line react/no-children-prop
       children={props.children}
