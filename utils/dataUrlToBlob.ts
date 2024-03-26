@@ -1,6 +1,9 @@
 export function dataUrlToBlob(dataURI: string): Blob {
 	var byteString = atob(dataURI.split(',')[1]);
-	var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+	var mimeString = dataURI.substring(
+		dataURI.indexOf(":") + 1,
+		dataURI.indexOf(";")
+	);
 	var ab = new ArrayBuffer(byteString.length);
 	var ia = new Uint8Array(ab);
 	for (var i = 0; i < byteString.length; i++) {
