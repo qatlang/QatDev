@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import pb, { Tables } from "../../models/pb";
 import http from 'http'
 import { Env } from "../../models/env";
+import { dataUrlToBlob } from "../../utils/dataUrlToBlob";
 
 export default async function ImagesHandler(req: NextApiRequest, res: NextApiResponse) {
 	try {
@@ -21,10 +22,13 @@ export default async function ImagesHandler(req: NextApiRequest, res: NextApiRes
 				return res.status(500).send({});
 			});
 		} else if (req.method === "POST") {
-			const body = JSON.parse(req.body) as { confirmationKey: string; data: FormData };
+			const body = JSON.parse(req.body) as { confirmationKey: string; name: string; dataURL: string };
 			if (body.confirmationKey === Env.confirmationKey()) {
-				const res = await pb.collection(Tables.images).create(body.data)
-				return res.status(200).json(res);
+				let form = new FormData();
+				const blob = dataUrlToBlob(body.dataURL);
+				form.set("file", blob, body.name);
+				const imageRes = await pb.collection(Tables.images).create(form);
+				return res.status(200).json(imageRes);
 			} else {
 				return res.status(404).json({});
 			}
@@ -40,6 +44,7 @@ export default async function ImagesHandler(req: NextApiRequest, res: NextApiRes
 			return res.status(500).json({});
 		}
 	} catch (e) {
+		console.debug(e);
 		return res.status(500).json({});
 	}
 }
