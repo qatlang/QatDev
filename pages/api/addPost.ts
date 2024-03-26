@@ -5,7 +5,7 @@ import { Env } from "../../models/env";
 export default async function AddPostHandler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		if (req.method === "POST") {
-			let post: { confirmationKey: string; title: string; content: string; images: string[] } = JSON.parse(req.body) as typeof post;
+			let post = JSON.parse(req.body) as { confirmationKey: string; title: string; content: string; images: string[] };
 			if (post.confirmationKey === Env.confirmationKey()) {
 				const createRes = await pb.collection(Tables.story).create({
 					title: post.title,
