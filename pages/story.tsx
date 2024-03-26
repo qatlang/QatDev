@@ -83,8 +83,10 @@ export function Blog(props: { posts: IPost[]; totalPage: number }) {
               })
                 .then(async (res) => {
                   if (res.status === 200) {
-                    const resVal: { totalPages: number; items: IPost[] } =
-                      (await res.json()) as typeof resVal;
+                    const resVal = (await res.json()) as {
+                      totalPages: number;
+                      items: IPost[];
+                    };
                     totalPage = resVal.totalPages;
                     setPosts([...posts, ...resVal.items]);
                     setPage(page + 1);
