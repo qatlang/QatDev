@@ -3,6 +3,7 @@ import { IPost } from "../models/interfaces";
 import { useState } from "react";
 import pb, { Tables } from "../models/pb";
 import Markdown from "../components/Markdown";
+import { Env } from "../models/env";
 
 export default dynamic(() => Promise.resolve(Blog), { ssr: false });
 
@@ -73,12 +74,24 @@ export function Blog(props: { posts: IPost[]; totalPage: number }) {
           className="bg-styleGreen select-none text-[#ffffff] cursor-pointer py-2 px-4 font-bold w-fit self-center mt-10 mb-20 hover:bg-black dark:hover:bg-white active:bg-white dark:active:bg-black hover:text-white dark:hover:text-black rounded-lg"
           onClick={() => {
             if (page + 1 <= totalPage) {
-              pb.collection(Tables.story)
-                .getList<IPost>(page + 1, 10, { sort: "-timestamp" })
-                .then((val) => {
-                  totalPage = val.totalPages;
-                  setPosts([...posts, ...val.items]);
-                  setPage(page + 1);
+              fetch("/api/getPosts?previousPage=" + page.toString(), {
+                body: JSON.stringify({
+                  confirmationKey: Env.confirmationKey(),
+                }),
+                cache: "no-store",
+                method: "POST",
+              })
+                .then(async (res) => {
+                  if (res.status === 200) {
+                    const resVal: { totalPages: number; items: IPost[] } =
+                      (await res.json()) as typeof resVal;
+                    totalPage = resVal.totalPages;
+                    setPosts([...posts, ...resVal.items]);
+                    setPage(page + 1);
+                  }
+                })
+                .catch((e) => {
+                  console.debug("Error while fetching posts: ", e);
                 });
             }
           }}

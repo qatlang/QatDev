@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import pb, { Tables } from "../models/pb";
+import pb from "../models/pb";
 import router from "next/router";
 import dynamic from "next/dynamic";
 import { Markdown } from "../components/Markdown";
 import { useFilePicker } from "use-file-picker";
-import { addImageFromBlob, removeImageByID } from "../utils/imageUtils";
+import { addImageToDB, removeImageByID } from "../utils/imageUtils";
 import { dataUrlToBlob } from "../utils/dataUrlToBlob";
+import { Env } from "../models/env";
 
 export default dynamic(() => Promise.resolve(Post), { ssr: false });
 
@@ -33,12 +34,22 @@ function Post() {
   }, []);
   useEffect(() => {
     filesContent.map((it) => {
-      const blob = dataUrlToBlob(it.content);
-      addImageFromBlob(it.name, blob).then((res) => {
-        setImages([
-          ...images,
-          { name: it.name, mimeType: it.type, content: it.content, id: res.id },
-        ]);
+      const mimeType = it.content.substring(
+        it.content.indexOf(":") + 1,
+        it.content.indexOf(";")
+      );
+      addImageToDB(it.name, it.content).then((res) => {
+        if (res) {
+          setImages([
+            ...images,
+            {
+              name: it.name,
+              mimeType: mimeType,
+              content: it.content,
+              id: res.id,
+            },
+          ]);
+        }
       });
     });
   }, [filesContent]);
@@ -114,12 +125,14 @@ function Post() {
                     ></img>
                     <p className="mb-2 text-sm font-bold">{it.name}</p>
                     <div
-                      onClick={() => {
-                        removeImageByID(it.id);
-                        setImages([
-                          ...images.slice(0, ind),
-                          ...images.slice(ind + 1),
-                        ]);
+                      onClick={async () => {
+                        const removed = await removeImageByID(it.id);
+                        if (removed) {
+                          setImages([
+                            ...images.slice(0, ind),
+                            ...images.slice(ind + 1),
+                          ]);
+                        }
                       }}
                       className="px-2 py-1 text-sm font-bold bg-red-600 select-none cursor-pointer active:bg-white hover:bg-black hover:text-white hover:dark:bg-white hover:dark:text-black active:dark:bg-black text-white active:dark:text-black rounded-lg"
                     >
@@ -158,21 +171,27 @@ function Post() {
                 pb.authStore.isValid
               ) {
                 try {
-                  await pb.collection(Tables.story).create({
-                    title: title,
-                    content: content,
-                    images: images.map((it) => {
-                      return it.id;
+                  let res = await fetch("/api/addPost", {
+                    method: "POST",
+                    body: JSON.stringify({
+                      confirmationKey: Env.confirmationKey(),
+                      title: title,
+                      content: content,
+                      images: images.map((it) => it.id),
                     }),
-                    source: "site",
-                    timestamp: new Date().toUTCString(),
+                    cache: "no-store",
                   });
-                  setTitle("");
-                  setContent("");
-                  setImages([]);
-                  clear();
+                  if (res.status !== 200) {
+                    console.error("Could not create the post");
+                  } else {
+                    setTitle("");
+                    setContent("");
+                    setImages([]);
+                    clear();
+                  }
                 } catch (e) {
-                  console.error("Error while creating new post: ", e);
+                  console.debug(e);
+                  console.error("Error while creating new post");
                 }
               } else {
                 console.error("Could not create post");
