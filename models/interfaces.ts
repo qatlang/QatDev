@@ -179,7 +179,7 @@ export interface IGithubPushEvent {
 }
 
 export interface ICommit {
-	id: string,
+	commitID: string,
 	title: string,
 	message: string,
 	author: {

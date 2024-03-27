@@ -13,14 +13,8 @@ export default async function RepoEventHandler(req: NextApiRequest, resp: NextAp
 			}
 			const pushEvent = req.body as IGitlabPushEvent;
 			if (pushEvent.commits.length !== 0) {
-				try {
-					uploadNewCommits(gitlabCommitsToICommits(pushEvent));
-					return resp.status(200).send({});
-				} catch (e) {
-					console.dir(e, { depth: null });
-					console.error("Error while posting repo update");
-					return resp.status(500).send({});
-				}
+				await uploadNewCommits(gitlabCommitsToICommits(pushEvent));
+				return resp.status(200).send({});
 			}
 		} else {
 			console.error("No correct Gitlab event found")
@@ -38,7 +32,8 @@ export default async function RepoEventHandler(req: NextApiRequest, resp: NextAp
 				}
 				const pushEvent = req.body as IGithubPushEvent;
 				if (pushEvent.commits.length !== 0 && (pushEvent.ref.split('/')[1] !== 'tags')) {
-					uploadNewCommits(githubCommitsToICommits(pushEvent))
+					await uploadNewCommits(githubCommitsToICommits(pushEvent))
+					return resp.status(200).send({});
 				} else {
 					return resp.status(406).send({});
 				}
@@ -80,7 +75,7 @@ function gitlabCommitsToICommits(event: IGitlabPushEvent): ICommit[] {
 		let { title, message } = splitCommitMessage(event.commits[i].message);
 		result.push({
 			author: { name: event.user_name, email: event.user_email },
-			id: crypto.randomUUID().toString(),
+			commitID: crypto.randomUUID().toString(),
 			title,
 			message,
 			ref: event.ref,
@@ -98,7 +93,7 @@ function githubCommitsToICommits(event: IGithubPushEvent): ICommit[] {
 		let { title, message } = splitCommitMessage(event.commits[i].message);
 		result.push({
 			author: { name: event.pusher.name, email: event.pusher.email ?? undefined },
-			id: crypto.randomUUID().toString(),
+			commitID: crypto.randomUUID().toString(),
 			title,
 			message,
 			ref: event.ref,
@@ -110,8 +105,13 @@ function githubCommitsToICommits(event: IGithubPushEvent): ICommit[] {
 	return result;
 }
 
-export function uploadNewCommits(commits: ICommit[]) {
+export async function uploadNewCommits(commits: ICommit[]) {
 	for (let i = 0; i < commits.length; i++) {
-		pb.collection(Tables.commits).create(commits[i], { requestKey: null });
+		try {
+			await pb.collection(Tables.commits).create(commits[i], { requestKey: null });
+		} catch (e) {
+			console.error("Error while creating DB record for commit at ", i, ": ", e);
+			console.dir(e, { depth: null });
+		}
 	}
 }
