@@ -14,13 +14,17 @@ export default async function RepoEventHandler(req: NextApiRequest, resp: NextAp
 			const pushEvent = req.body as IGitlabPushEvent;
 			if (pushEvent.commits.length !== 0) {
 				try {
-					uploadNewCommits(gitlabCommitsToICommits(pushEvent))
+					uploadNewCommits(gitlabCommitsToICommits(pushEvent));
+					return resp.status(200).send({});
 				} catch (e) {
-					console.error("Error while posting repo update: ", e);
+					console.dir(e, { depth: null });
+					console.error("Error while posting repo update");
+					return resp.status(500).send({});
 				}
 			}
 		} else {
 			console.error("No correct Gitlab event found")
+			return resp.status(404).send({});
 		}
 	} else if (req.headers['x-github-event'] === "push") {
 		if ((req.headers['x-hub-signature-256'] ?? '').includes('sha256=')) {
