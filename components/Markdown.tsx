@@ -117,7 +117,7 @@ export function Markdown(props: {
 				),
 			}}
 			rehypePlugins={[rehypeRaw] as any}
-			skipHtml={false}
+			skipHtml={!props.allowHTML}
 			// eslint-disable-next-line react/no-children-prop
 			children={props.children}
 		/>
