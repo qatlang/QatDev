@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import pb from "../models/pb";
 import router from "next/router";
 import dynamic from "next/dynamic";
-import { Markdown } from "../components/Markdown";
+import Markdown from "../components/Markdown";
 import { useFilePicker } from "use-file-picker";
 import { addImageToDB, removeImageByID } from "../utils/imageUtils";
 import { dataUrlToBlob } from "../utils/dataUrlToBlob";
