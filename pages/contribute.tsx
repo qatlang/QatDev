@@ -1,25 +1,44 @@
-export default function Donate() {
+export default function Contribute() {
 	return (
-		<div className="flex flex-col flex-grow self-center w-full md:w-[70%] px-4 pt-10">
-			<title>Donate | QAT Language</title>
+		<div className="flex flex-col flex-grow self-center w-full md:w-[80%] px-4 pt-10">
+			<title>Contribute | QAT Language</title>
 			<div className="flex flex-row flex-grow">
-				<div className="flex flex-col w-80 h-fit px-4 py-4 bg-[#ffffff] dark:bg-[#222222] border-2 border-solid border-lightGray dark:border-styleGray rounded-xl shadow-xl">
-					<div className="flex flex-row">
-						<DonationIcon />
-						<div className="flex flex-col px-4 text-3xl font-bold self-center">
-							Why help
-							<div>out?</div>
+				<div className="flex-grow">Devices</div>
+				<div className="flex flex-col w-[50%] h-fit px-6 py-4 bg-[#ffffff] dark:bg-[#222222] border-2 border-solid border-lightGray dark:border-styleGray rounded-xl shadow-xl">
+					<div className="flex flex-row self-center">
+						<HelpIcon />
+						<div className="flex flex-col px-4 text-4xl font-bold self-center">
+							Why help out?
 						</div>
 					</div>
-					<p className="mt-4"></p>
+					<p className="mt-4 text-justify">
+						qat started back in November 2021, and it has been a major
+						part of my life ever since. I have dedicated a significant
+						amount of time and effort to this project. This is, as I can
+						best put it, my passion project. I have been alone in this
+						adventure, and I wish for it to remain that way. I have a
+						clear vision and direction for this project, that is best
+						achieved in isolation from the outside world. I want the
+						community to grow around this language, instead of the
+						language growing to expand the community. I am not expecting a
+						huge financial backing for this project. My motivation is the
+						personal satisfaction from seeing one of my biggest dreams
+						coming to life and adding value in others' life. However, if
+						you can spare a buck or two, that will definitely be helpful
+						to compensate for the time I have invested in this project. If
+						you are unable to donate, letting your friends and peers know
+						about this project would be equally helpful in my eyes. I
+						thank you from the bottom of my heart, whichever way you
+						choose to help.
+					</p>
+					<p className="mt-2 text-right font-bold">Aldrin Mathew</p>
 				</div>
-				<div className="flex-grow">Devices</div>
 			</div>
 		</div>
 	);
 }
 
-function DonationIcon() {
+function HelpIcon() {
 	return (
 		<svg
 			className="h-24 w-24"
